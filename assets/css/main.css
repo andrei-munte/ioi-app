@@ -4,7 +4,7 @@ Theme URI: https://getioi.app
 Author: IOI Team
 Author URI: https://getioi.app
 Description: Black and gold premium theme for IOI crypto trading platform landing page
-Version: 1.0.0
+Version: 1.2.2
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 8.0
@@ -255,6 +255,17 @@ h6 { font-size: 0.875rem; }
     color: var(--ioi-white);
 }
 
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--ioi-gray-2);
+    color: var(--ioi-white);
+}
+
+.btn-outline:hover {
+    border-color: var(--ioi-gold);
+    color: var(--ioi-gold);
+}
+
 .btn-lg {
     padding: var(--space-lg) var(--space-2xl);
     font-size: 1.1rem;
@@ -262,7 +273,7 @@ h6 { font-size: 0.875rem; }
 
 .btn-sm {
     padding: var(--space-sm) var(--space-md);
-    font-size: 0.875rem;
+    font-size: 0.85rem;
 }
 
 .btn-block {
@@ -331,17 +342,18 @@ h6 { font-size: 0.875rem; }
 }
 
 .step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--ioi-gold-20);
+    border: 2px solid var(--ioi-gold);
+    color: var(--ioi-gold);
+    font-size: 1.5rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: var(--ioi-gold-10);
-    border: 2px solid var(--ioi-gold);
-    border-radius: 50%;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--ioi-gold);
+    margin: 0 auto var(--space-lg);
 }
 
 /* ============================================================
@@ -474,15 +486,15 @@ h6 { font-size: 0.875rem; }
 }
 
 /* ============================================================
-   HERO SECTION
+   HERO SECTION - With Phone Mockup
    ============================================================ */
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: var(--space-4xl) var(--space-lg);
-    background: radial-gradient(ellipse at center top, #1a1510 0%, var(--ioi-black) 70%);
+    padding: 100px var(--space-xl) var(--space-3xl);
+    background: radial-gradient(ellipse at 70% 20%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at center top, #1a1510 0%, var(--ioi-black) 70%);
     position: relative;
     overflow: hidden;
 }
@@ -510,36 +522,125 @@ h6 { font-size: 0.875rem; }
     100% { transform: translate(200px, 200px); }
 }
 
-.hero-content {
+.hero-grid {
     position: relative;
     z-index: 1;
-    text-align: center;
-    max-width: 800px;
+    max-width: var(--container-xl);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-3xl);
+    align-items: center;
+    width: 100%;
 }
 
-.hero .badge {
+.hero-content {
+    text-align: left;
+}
+
+.hero-content .badge {
     margin-bottom: var(--space-lg);
 }
 
-.hero h1 {
+.hero-content h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.1;
     margin-bottom: var(--space-lg);
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--ioi-gray-3);
-    margin-bottom: var(--space-2xl);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 1.15rem;
+    color: var(--ioi-gray-4);
+    max-width: 500px;
+    margin-bottom: var(--space-xl);
 }
 
 .hero-cta {
     display: flex;
     gap: var(--space-md);
-    justify-content: center;
-    flex-wrap: wrap;
     margin-bottom: var(--space-xl);
+}
+
+.hero-phone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.phone-mockup {
+    position: relative;
+    width: 280px;
+    border-radius: 36px;
+    padding: 8px;
+    background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+    box-shadow: 
+        0 0 0 2px #333,
+        0 25px 60px rgba(0, 0, 0, 0.6),
+        0 0 100px rgba(212, 175, 55, 0.15),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+    animation: float 4s ease-in-out infinite;
+}
+
+.phone-mockup::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 24px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 10;
+}
+
+.phone-mockup img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 28px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Hero Mobile Responsive */
+@media (max-width: 900px) {
+    .hero {
+        padding-top: 120px;
+    }
+    
+    .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--space-2xl);
+    }
+    
+    .hero-content {
+        text-align: center;
+        order: 2;
+    }
+    
+    .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-cta {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .hero-phone {
+        order: 1;
+    }
+    
+    .phone-mockup {
+        width: 200px;
+        animation: none;
+    }
 }
 
 /* ============================================================
@@ -643,19 +744,28 @@ h6 { font-size: 0.875rem; }
 /* ============================================================
    PRICING SECTION
    ============================================================ */
-.pricing-grid {
+.pricing-models-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-xl);
-    max-width: 900px;
-    margin: 0 auto;
+    margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+    .pricing-models-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .pricing-card {
+    padding: var(--space-2xl);
+    text-align: center;
     position: relative;
 }
 
-.pricing-card h3 {
+.pricing-card h3,
+.pricing-card h4 {
+    color: var(--ioi-white);
     margin-bottom: var(--space-sm);
 }
 
@@ -668,22 +778,116 @@ h6 { font-size: 0.875rem; }
 
 .pricing-card .price span {
     font-size: 1rem;
+    font-weight: 400;
     color: var(--ioi-gray-3);
 }
 
+.pricing-tagline {
+    color: var(--ioi-gray-4);
+    margin-bottom: var(--space-lg);
+}
+
 .pricing-features {
-    margin: var(--space-lg) 0;
+    list-style: none;
+    text-align: left;
+    margin: var(--space-xl) 0;
+    padding: 0;
 }
 
 .pricing-features li {
     padding: var(--space-sm) 0;
+    color: var(--ioi-gray-4);
+    border-bottom: 1px solid var(--ioi-dark-4);
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-note {
+    font-size: 0.85rem;
+    color: var(--ioi-gray-3);
+    font-style: italic;
+    margin-bottom: var(--space-lg);
+}
+
+/* Subscription Tiers Grid */
+.pricing-tiers-section {
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--ioi-dark-4);
+}
+
+.pricing-tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-md);
+}
+
+@media (max-width: 1024px) {
+    .pricing-tiers-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .pricing-tiers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.pricing-tier-card {
+    padding: var(--space-lg);
+    text-align: center;
+    position: relative;
+}
+
+.pricing-tier-card h4 {
+    font-size: 1rem;
+    color: var(--ioi-white);
+    margin-bottom: var(--space-xs);
+}
+
+.tier-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ioi-gold);
+}
+
+.tier-price span {
+    font-size: 0.75rem;
+    font-weight: 400;
     color: var(--ioi-gray-3);
 }
 
-@media (max-width: 768px) {
-    .pricing-grid {
-        grid-template-columns: 1fr;
-    }
+.tier-budget {
+    font-size: 0.85rem;
+    color: var(--ioi-gray-4);
+    margin: var(--space-xs) 0;
+}
+
+.tier-bots {
+    font-size: 0.75rem;
+    color: var(--ioi-gray-3);
+    margin-bottom: var(--space-md);
+}
+
+/* Highlight Popular Tier */
+.pricing-tier-card.card-highlight {
+    border-color: var(--ioi-gold);
+    transform: scale(1.05);
+}
+
+.pricing-tier-card.card-highlight .badge-top {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ioi-gold);
+    color: var(--ioi-black);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
 }
 
 /* ============================================================
@@ -888,185 +1092,3 @@ h6 { font-size: 0.875rem; }
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
 .mb-xl { margin-bottom: var(--space-xl); }
-
-/* ============================================================
-   PRICING SECTION - Updated
-   ============================================================ */
-
-.pricing-models-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-xl);
-    margin-bottom: var(--space-3xl);
-}
-
-@media (max-width: 768px) {
-    .pricing-models-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.pricing-card {
-    padding: var(--space-2xl);
-    text-align: center;
-}
-
-.pricing-card h3,
-.pricing-card h4 {
-    color: var(--ioi-white);
-    margin-bottom: var(--space-sm);
-}
-
-.pricing-card .price {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--ioi-gold);
-    margin: var(--space-md) 0;
-}
-
-.pricing-card .price span {
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--ioi-gray-3);
-}
-
-.pricing-tagline {
-    color: var(--ioi-gray-4);
-    margin-bottom: var(--space-lg);
-}
-
-.pricing-features {
-    list-style: none;
-    text-align: left;
-    margin: var(--space-xl) 0;
-    padding: 0;
-}
-
-.pricing-features li {
-    padding: var(--space-sm) 0;
-    color: var(--ioi-gray-4);
-    border-bottom: 1px solid var(--ioi-dark-4);
-}
-
-.pricing-features li:last-child {
-    border-bottom: none;
-}
-
-.pricing-note {
-    font-size: 0.85rem;
-    color: var(--ioi-gray-3);
-    font-style: italic;
-    margin-bottom: var(--space-lg);
-}
-
-/* Subscription Tiers Grid */
-.pricing-tiers-section {
-    padding-top: var(--space-2xl);
-    border-top: 1px solid var(--ioi-dark-4);
-}
-
-.pricing-tiers-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: var(--space-md);
-}
-
-@media (max-width: 1024px) {
-    .pricing-tiers-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .pricing-tiers-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.pricing-tier-card {
-    padding: var(--space-lg);
-    text-align: center;
-    position: relative;
-}
-
-.pricing-tier-card h4 {
-    font-size: 1rem;
-    color: var(--ioi-white);
-    margin-bottom: var(--space-xs);
-}
-
-.tier-price {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--ioi-gold);
-}
-
-.tier-price span {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: var(--ioi-gray-3);
-}
-
-.tier-budget {
-    font-size: 0.85rem;
-    color: var(--ioi-gray-4);
-    margin: var(--space-xs) 0;
-}
-
-.tier-bots {
-    font-size: 0.75rem;
-    color: var(--ioi-gray-3);
-    margin-bottom: var(--space-md);
-}
-
-/* Highlight Popular Tier */
-.pricing-tier-card.card-highlight {
-    border-color: var(--ioi-gold);
-    transform: scale(1.05);
-}
-
-.pricing-tier-card.card-highlight .badge-top {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--ioi-gold);
-    color: var(--ioi-black);
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: var(--radius-full);
-}
-
-/* Button Variants */
-.btn-outline {
-    background: transparent;
-    border: 1px solid var(--ioi-gray-2);
-    color: var(--ioi-white);
-}
-
-.btn-outline:hover {
-    border-color: var(--ioi-gold);
-    color: var(--ioi-gold);
-}
-
-.btn-sm {
-    padding: var(--space-sm) var(--space-md);
-    font-size: 0.85rem;
-}
-
-/* Step Number Styling */
-.step-number {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--ioi-gold-20);
-    border: 2px solid var(--ioi-gold);
-    color: var(--ioi-gold);
-    font-size: 1.5rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto var(--space-lg);
-}
