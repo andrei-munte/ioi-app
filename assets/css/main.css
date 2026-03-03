@@ -4,7 +4,7 @@ Theme URI: https://getioi.app
 Author: IOI Team
 Author URI: https://getioi.app
 Description: Black and gold premium theme for IOI crypto trading platform landing page
-Version: 1.2.2
+Version: 1.2.3
 Requires at least: 6.0
 Tested up to: 6.4
 Requires PHP: 8.0
@@ -609,13 +609,15 @@ h6 { font-size: 0.875rem; }
 /* Hero Mobile Responsive */
 @media (max-width: 900px) {
     .hero {
-        padding-top: 120px;
+        padding-top: 100px;
+        padding-bottom: var(--space-2xl);
+        min-height: auto;
     }
     
     .hero-grid {
         grid-template-columns: 1fr;
         text-align: center;
-        gap: var(--space-2xl);
+        gap: var(--space-xl);
     }
     
     .hero-content {
@@ -623,9 +625,14 @@ h6 { font-size: 0.875rem; }
         order: 2;
     }
     
+    .hero-content h1 {
+        font-size: clamp(1.8rem, 7vw, 2.5rem);
+    }
+    
     .hero-subtitle {
         margin-left: auto;
         margin-right: auto;
+        font-size: 1rem;
     }
     
     .hero-cta {
@@ -635,11 +642,47 @@ h6 { font-size: 0.875rem; }
     
     .hero-phone {
         order: 1;
+        margin-bottom: var(--space-md);
     }
     
     .phone-mockup {
-        width: 200px;
+        width: 180px;
         animation: none;
+        margin: 0 auto;
+    }
+    
+    .phone-mockup::before {
+        width: 50px;
+        height: 16px;
+        top: 8px;
+    }
+    
+    .spots-indicator {
+        margin-top: var(--space-md);
+    }
+    
+    .spots-indicator .number {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+    }
+    
+    .phone-mockup {
+        width: 160px;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    .hero-cta .btn {
+        width: 100%;
     }
 }
 
