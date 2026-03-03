@@ -1,25 +1,45 @@
 /**
  * IOI Content Manager - Admin Styles
+ * Dark theme for IOI admin pages
  */
 
-/* General Admin Styling */
+/* ============================================
+   BASE WRAPPER
+   ============================================ */
 .ioi-admin {
+    background: #1a1a1a;
     color: #f0f0f0;
+    padding: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-top: -10px;
+    min-height: 100vh;
 }
 
-.ioi-admin h1,
-.ioi-admin h2,
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+.ioi-admin h1 {
+    color: #D4AF37;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.ioi-admin h2 {
+    color: #f0f0f0;
+    font-size: 20px;
+    margin-top: 30px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
 .ioi-admin h3,
 .ioi-admin h4 {
     color: #f0f0f0;
 }
 
-.ioi-admin p,
-.ioi-admin label,
-.ioi-admin span,
-.ioi-admin td,
-.ioi-admin th {
-    color: #ccc;
+.ioi-admin > p {
+    color: #aaa;
 }
 
 .ioi-admin a {
@@ -30,7 +50,9 @@
     color: #f0d060;
 }
 
-/* Dashboard Grid */
+/* ============================================
+   DASHBOARD GRID
+   ============================================ */
 .ioi-dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -41,7 +63,7 @@
 .ioi-card {
     display: block;
     padding: 25px;
-    background: #1e1e1e;
+    background: #252525;
     border: 1px solid #333;
     border-radius: 8px;
     text-decoration: none;
@@ -51,6 +73,7 @@
 .ioi-card:hover {
     border-color: #D4AF37;
     transform: translateY(-2px);
+    background: #2a2a2a;
 }
 
 .ioi-card .dashicons {
@@ -73,12 +96,15 @@
     font-size: 13px;
 }
 
-/* Stats Bar */
+/* ============================================
+   STATS BAR
+   ============================================ */
 .ioi-stats-bar {
     display: flex;
     gap: 30px;
     padding: 20px;
-    background: #1e1e1e;
+    background: #252525;
+    border: 1px solid #333;
     border-radius: 8px;
     margin-top: 30px;
 }
@@ -98,25 +124,47 @@
     font-size: 13px;
 }
 
-/* Form Styling */
-.ioi-form {
-    max-width: 800px;
+/* ============================================
+   FORM TABLES
+   ============================================ */
+.ioi-admin .form-table {
+    background: transparent;
+    margin-top: 15px;
 }
 
 .ioi-admin .form-table th {
-    color: #f0f0f0;
-    padding: 15px 10px 15px 0;
+    color: #f0f0f0 !important;
+    padding: 20px 10px 20px 0;
     font-weight: 600;
+    font-size: 14px;
+    vertical-align: top;
+    width: 200px;
 }
 
 .ioi-admin .form-table td {
-    padding: 10px 0;
-}
-
-.ioi-admin .form-table label {
+    padding: 15px 0;
     color: #ccc;
 }
 
+.ioi-admin .form-table td p.description {
+    color: #888;
+    font-style: italic;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.ioi-admin label {
+    color: #ccc !important;
+}
+
+.ioi-admin .description,
+.ioi-admin p.description {
+    color: #888 !important;
+}
+
+/* ============================================
+   FORM INPUTS
+   ============================================ */
 .ioi-admin input[type="text"],
 .ioi-admin input[type="url"],
 .ioi-admin input[type="email"],
@@ -124,38 +172,42 @@
 .ioi-admin input[type="password"],
 .ioi-admin textarea,
 .ioi-admin select {
-    background: #2a2a2a;
-    border: 1px solid #444;
-    color: #f0f0f0;
+    background: #2a2a2a !important;
+    border: 1px solid #444 !important;
+    color: #f0f0f0 !important;
     border-radius: 4px;
     padding: 8px 12px;
 }
 
-.ioi-admin input[type="text"]:focus,
-.ioi-admin input[type="url"]:focus,
-.ioi-admin input[type="email"]:focus,
-.ioi-admin input[type="number"]:focus,
-.ioi-admin input[type="password"]:focus,
+.ioi-admin input:focus,
 .ioi-admin textarea:focus,
 .ioi-admin select:focus {
-    border-color: #D4AF37;
+    border-color: #D4AF37 !important;
     outline: none;
     box-shadow: 0 0 0 1px #D4AF37;
 }
 
 .ioi-admin input::placeholder,
 .ioi-admin textarea::placeholder {
-    color: #666;
+    color: #666 !important;
 }
 
-.ioi-admin .description {
-    color: #888;
-    font-style: italic;
+.ioi-admin select option {
+    background: #2a2a2a;
+    color: #f0f0f0;
 }
 
-/* Tier Form Specific */
+.ioi-admin input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #D4AF37;
+}
+
+/* ============================================
+   TIER FORM BOX
+   ============================================ */
 #tier-form {
-    background: #1e1e1e;
+    background: #252525;
     border: 1px solid #333;
     border-radius: 8px;
     padding: 25px;
@@ -164,14 +216,14 @@
 
 #tier-form h3,
 #tier-form-title {
-    color: #D4AF37;
+    color: #D4AF37 !important;
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 18px;
 }
 
 #tier-form .form-table th {
-    color: #f0f0f0;
+    color: #f0f0f0 !important;
     width: 180px;
 }
 
@@ -180,60 +232,68 @@
 }
 
 #tier-form label {
-    color: #ccc;
+    color: #ccc !important;
 }
 
 #tier-form .description {
-    color: #888;
+    color: #888 !important;
     margin-top: 5px;
 }
 
-#tier-form input[type="text"],
-#tier-form input[type="number"],
-#tier-form textarea {
-    background: #2a2a2a;
-    border: 1px solid #444;
-    color: #f0f0f0;
+/* ============================================
+   BUTTONS
+   ============================================ */
+.ioi-admin .button,
+.ioi-admin input[type="submit"] {
+    background: #333 !important;
+    border-color: #444 !important;
+    color: #f0f0f0 !important;
+    border-radius: 4px;
+    padding: 6px 12px;
+    height: auto;
+    line-height: 1.5;
 }
 
-#tier-form input[type="checkbox"] {
-    margin-right: 8px;
+.ioi-admin .button:hover,
+.ioi-admin input[type="submit"]:hover {
+    background: #444 !important;
+    border-color: #555 !important;
+    color: #fff !important;
 }
 
-/* Buttons */
-.ioi-admin .button {
-    background: #333;
-    border-color: #444;
-    color: #f0f0f0;
+.ioi-admin .button-primary,
+.ioi-admin input[type="submit"].button-primary {
+    background: #D4AF37 !important;
+    border-color: #D4AF37 !important;
+    color: #000 !important;
+    font-weight: 600;
 }
 
-.ioi-admin .button:hover {
-    background: #444;
-    border-color: #555;
-    color: #fff;
+.ioi-admin .button-primary:hover,
+.ioi-admin input[type="submit"].button-primary:hover {
+    background: #e5c04a !important;
+    border-color: #e5c04a !important;
+    color: #000 !important;
 }
 
-.ioi-admin .button-primary {
-    background: #D4AF37;
-    border-color: #D4AF37;
-    color: #000;
+.ioi-admin .submit {
+    padding-top: 15px;
 }
 
-.ioi-admin .button-primary:hover {
-    background: #e5c04a;
-    border-color: #e5c04a;
-    color: #000;
-}
-
-/* Tables */
+/* ============================================
+   DATA TABLES
+   ============================================ */
 .ioi-admin .wp-list-table {
     border: 1px solid #333;
+    background: #1e1e1e;
 }
 
 .ioi-admin .wp-list-table thead th {
-    background: #1a1a1a;
-    color: #D4AF37;
+    background: #252525;
+    color: #D4AF37 !important;
     border-bottom: 1px solid #333;
+    padding: 12px 10px;
+    font-weight: 600;
 }
 
 .ioi-admin .wp-list-table tbody tr {
@@ -244,20 +304,28 @@
     background: #222;
 }
 
+.ioi-admin .wp-list-table tbody tr:hover {
+    background: #2a2a2a;
+}
+
 .ioi-admin .wp-list-table tbody td {
     border-bottom: 1px solid #333;
     color: #ccc;
     vertical-align: middle;
+    padding: 12px 10px;
 }
 
 .ioi-admin .wp-list-table code {
     background: #333;
-    color: #888;
+    color: #999;
     padding: 2px 6px;
     border-radius: 3px;
+    font-size: 12px;
 }
 
-/* Popular Badge */
+/* ============================================
+   BADGES
+   ============================================ */
 .popular-badge {
     background: #D4AF37;
     color: #000;
@@ -268,10 +336,12 @@
     margin-left: 8px;
 }
 
-/* Feature Cards in Admin */
+/* ============================================
+   FEATURE & FAQ CARDS
+   ============================================ */
 .ioi-feature-card,
 .ioi-faq-item {
-    background: #1e1e1e;
+    background: #252525;
     padding: 20px;
     margin: 15px 0;
     border-radius: 8px;
@@ -280,28 +350,14 @@
 
 .ioi-feature-card h3,
 .ioi-faq-item h3 {
-    color: #D4AF37;
+    color: #D4AF37 !important;
     margin-top: 0;
     font-size: 16px;
 }
 
-/* Translation Input */
-.translation-input {
-    transition: border-color 0.3s ease;
-}
-
-.translation-input:focus {
-    border-color: #D4AF37 !important;
-}
-
-/* Checkbox styling */
-.ioi-admin input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #D4AF37;
-}
-
-/* Image Upload */
+/* ============================================
+   IMAGE UPLOAD
+   ============================================ */
 .ioi-image-upload img {
     display: block;
     margin-bottom: 10px;
@@ -313,9 +369,18 @@
     margin-right: 5px;
 }
 
-/* Notices */
+/* ============================================
+   NOTICES
+   ============================================ */
 .ioi-admin .notice {
-    border-left-color: #D4AF37;
+    background: #252525;
+    border-left-width: 4px;
+    color: #ccc;
+    margin: 15px 0;
+}
+
+.ioi-admin .notice p {
+    color: #ccc;
 }
 
 .ioi-admin .notice-success {
@@ -326,30 +391,40 @@
     border-left-color: #dc3232;
 }
 
-/* Horizontal Rule */
+/* ============================================
+   MISC
+   ============================================ */
 .ioi-admin hr {
     border: none;
     border-top: 1px solid #333;
     margin: 30px 0;
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media screen and (max-width: 782px) {
+    .ioi-admin {
+        margin-left: -10px;
+        margin-right: -10px;
+        padding: 15px;
+    }
+
     .ioi-dashboard-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .ioi-stats-bar {
         flex-wrap: wrap;
     }
-    
-    #tier-form .form-table th {
+
+    .ioi-admin .form-table th {
         width: 100%;
         display: block;
         padding-bottom: 5px;
     }
-    
-    #tier-form .form-table td {
+
+    .ioi-admin .form-table td {
         display: block;
         padding-left: 0;
     }
