@@ -50,21 +50,21 @@ get_header();
                 <div class="step-content">
                     <p>Download IOI from one of our official sources:</p>
                     <div class="download-options">
-                        <a href="#" class="download-option">
+                        <a href="<?php echo esc_url(get_option('ioi_apk_url', '#')); ?>" class="download-option">
                             <span class="option-icon">📥</span>
                             <span class="option-text">
                                 <strong>Direct APK Download</strong>
                                 <small>For all Android devices</small>
                             </span>
                         </a>
-                        <a href="#" class="download-option">
+                        <a href="<?php echo esc_url(get_option('ioi_galaxy_url', '#')); ?>" class="download-option">
                             <span class="option-icon">🌌</span>
                             <span class="option-text">
                                 <strong>Samsung Galaxy Store</strong>
                                 <small>For Samsung devices</small>
                             </span>
                         </a>
-                        <a href="#" class="download-option">
+                        <a href="<?php echo esc_url(get_option('ioi_huawei_url', '#')); ?>" class="download-option">
                             <span class="option-icon">📦</span>
                             <span class="option-text">
                                 <strong>Huawei AppGallery</strong>
@@ -79,10 +79,55 @@ get_header();
                 </div>
             </section>
 
-            <!-- Step 2 -->
+            <!-- Step 2 - Choose Payment Model -->
             <section class="setup-step">
                 <div class="step-header">
                     <div class="step-number">2</div>
+                    <h2>Choose Your Payment Model</h2>
+                </div>
+                <div class="step-content">
+                    <p>Before creating your API key, decide how you want to pay for IOI:</p>
+                    
+                    <div class="payment-models-comparison">
+                        <div class="payment-model-card">
+                            <h4>💳 Commission Model</h4>
+                            <div class="model-price">0.065% per trade</div>
+                            <ul>
+                                <li>No monthly subscription</li>
+                                <li>Pay only when you trade</li>
+                                <li>Unlimited trading budget</li>
+                                <li>Commissions accumulate and are collected automatically when reaching the minimum threshold</li>
+                            </ul>
+                            <div class="model-api-note">
+                                <strong>API Requirement:</strong> Withdrawal permission with whitelisted IOI address
+                            </div>
+                        </div>
+                        
+                        <div class="payment-model-card">
+                            <h4>📅 Subscription Model</h4>
+                            <div class="model-price">$5 - $1,000/month</div>
+                            <ul>
+                                <li>Zero trading fees</li>
+                                <li>Fixed monthly cost</li>
+                                <li>Budget limits per tier</li>
+                                <li>Choose auto-pay or manual payment</li>
+                            </ul>
+                            <div class="model-api-note">
+                                <strong>API Requirement:</strong> 
+                                <br>• Auto-pay: Withdrawal permission with whitelisted IOI address
+                                <br>• Manual pay: No withdrawal permission needed
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="mt-lg">Your choice affects which API permissions you'll need in the next step. The IOI app will guide you through this during the Binance connection process.</p>
+                </div>
+            </section>
+
+            <!-- Step 3 -->
+            <section class="setup-step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
                     <h2>Create Your Binance API Key</h2>
                 </div>
                 <div class="step-content">
@@ -103,21 +148,54 @@ get_header();
                         </li>
                         <li>
                             <strong>Configure Permissions</strong>
-                            <p>Enable ONLY these permissions:</p>
-                            <ul class="permission-list">
-                                <li class="permission-yes">✅ Enable Reading</li>
-                                <li class="permission-yes">✅ Enable Spot & Margin Trading</li>
-                                <li class="permission-no">❌ Enable Withdrawals - NEVER enable this!</li>
-                                <li class="permission-no">❌ Enable Internal Transfer - Not needed</li>
-                            </ul>
-                        </li>
-                        <li>
-                            <strong>Set IP Restriction (Recommended)</strong>
-                            <p>For maximum security, restrict API access to IOI's server IPs:</p>
-                            <div class="ip-list">
-                                <code>Coming soon - IPs will be displayed here</code>
+                            <p>Enable the permissions based on your chosen payment model:</p>
+                            
+                            <div class="permissions-tabs">
+                                <div class="permission-scenario">
+                                    <h5>🅰️ Commission Model or Subscription with Auto-Pay</h5>
+                                    <ul class="permission-list">
+                                        <li class="permission-yes">✅ Enable Reading</li>
+                                        <li class="permission-yes">✅ Enable Spot & Margin Trading</li>
+                                        <li class="permission-yes">✅ Enable Withdrawals <span class="permission-note">— with whitelisted address only (see below)</span></li>
+                                        <li class="permission-no">❌ Enable Internal Transfer — Not needed</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="permission-scenario">
+                                    <h5>🅱️ Subscription with Manual Payment</h5>
+                                    <ul class="permission-list">
+                                        <li class="permission-yes">✅ Enable Reading</li>
+                                        <li class="permission-yes">✅ Enable Spot & Margin Trading</li>
+                                        <li class="permission-no">❌ Enable Withdrawals — Not needed</li>
+                                        <li class="permission-no">❌ Enable Internal Transfer — Not needed</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <p><small>Or select "Unrestricted" if you prefer flexibility (still safe since withdrawals are disabled).</small></p>
+                        </li>
+                        
+                        <li id="withdrawal-whitelist">
+                            <strong>Set Up Withdrawal Whitelist (Commission & Auto-Pay Only)</strong>
+                            <p>If you enabled withdrawals, you <strong>must</strong> set up address whitelisting for your security:</p>
+                            <ol class="sub-instructions">
+                                <li>In Binance, go to "Withdrawal" → "Address Management"</li>
+                                <li>Enable "Whitelist" feature if not already enabled</li>
+                                <li>Add IOI's official collection address:
+                                    <div class="address-box">
+                                        <code id="ioi-wallet-address">Will be displayed in the IOI app during setup</code>
+                                    </div>
+                                </li>
+                                <li>Label it "IOI Payments" for easy identification</li>
+                            </ol>
+                            <p><strong>Important:</strong> With whitelisting enabled, withdrawals can ONLY go to addresses you've approved. This means even with withdrawal permission, funds can only be sent to IOI's verified address—nowhere else.</p>
+                        </li>
+                        
+                        <li>
+                            <strong>Set IP Restriction (Optional but Recommended)</strong>
+                            <p>For additional security, you can restrict API access to IOI's server IPs:</p>
+                            <div class="ip-list">
+                                <code>Server IPs will be displayed in the IOI app</code>
+                            </div>
+                            <p><small>Or select "Unrestricted" if you prefer flexibility.</small></p>
                         </li>
                         <li>
                             <strong>Save Your Keys</strong>
@@ -125,17 +203,72 @@ get_header();
                         </li>
                     </ol>
 
-                    <div class="warning-box">
-                        <strong>🔒 Security Warning</strong>
-                        <p>NEVER enable withdrawal permissions. IOI only needs trading permissions. With withdrawals disabled, your funds cannot leave your Binance account even if your API key is compromised.</p>
+                    <!-- Trust & Transparency Section -->
+                    <div class="trust-section">
+                        <h4>🔒 Understanding Withdrawal Permissions</h4>
+                        <p>We understand enabling withdrawal permissions requires trust. Here's why it's safe and how we handle it:</p>
+                        
+                        <div class="trust-points">
+                            <div class="trust-point">
+                                <span class="trust-icon">📋</span>
+                                <div class="trust-content">
+                                    <strong>Whitelisted Address Only</strong>
+                                    <p>Binance's whitelist feature ensures withdrawals can ONLY go to IOI's verified address. No other destination is possible.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="trust-point">
+                                <span class="trust-icon">💰</span>
+                                <div class="trust-content">
+                                    <strong>Used Only for Payments You Owe</strong>
+                                    <p>Withdrawals are used <em>exclusively</em> for:
+                                    <br>• Commission payments (0.065% of each trade)
+                                    <br>• Automatic subscription renewals
+                                    <br>Nothing else. Ever.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="trust-point">
+                                <span class="trust-icon">📊</span>
+                                <div class="trust-content">
+                                    <strong>Full Transparency & Audit Trail</strong>
+                                    <p>Every payment is logged with detailed reports available in the IOI app:
+                                    <br>• Trade-by-trade commission breakdown
+                                    <br>• Payment history with timestamps
+                                    <br>• Running balance of accumulated fees
+                                    <br>• Receipts for every collection</p>
+                                </div>
+                            </div>
+                            
+                            <div class="trust-point">
+                                <span class="trust-icon">⏰</span>
+                                <div class="trust-content">
+                                    <strong>Collected at Thresholds</strong>
+                                    <p>Commissions accumulate over time and are only collected when reaching a minimum threshold (e.g., $10). You won't see tiny withdrawals after every trade.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="trust-point">
+                                <span class="trust-icon">🔄</span>
+                                <div class="trust-content">
+                                    <strong>You Can Switch Anytime</strong>
+                                    <p>If you're not comfortable with withdrawal permissions, choose a subscription with manual payment instead. You can always change later.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 The App Guides You</strong>
+                        <p>Don't worry about memorizing all this! The IOI app walks you through the entire Binance connection process step-by-step, showing you exactly which permissions to enable based on your chosen payment model.</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Step 3 -->
+            <!-- Step 4 -->
             <section class="setup-step">
                 <div class="step-header">
-                    <div class="step-number">3</div>
+                    <div class="step-number">4</div>
                     <h2>Connect API to IOI</h2>
                 </div>
                 <div class="step-content">
@@ -145,16 +278,20 @@ get_header();
                             <p>Launch the app and tap "Connect Binance Account"</p>
                         </li>
                         <li>
+                            <strong>Select Payment Model</strong>
+                            <p>Choose Commission (0.065% per trade) or Subscription ($5-$1k/month)</p>
+                        </li>
+                        <li>
                             <strong>Enter API Credentials</strong>
                             <p>Paste your API Key and Secret Key from Binance</p>
                         </li>
                         <li>
                             <strong>Create Your PIN</strong>
-                            <p>Set a 6-digit PIN to encrypt your credentials. This PIN is used to secure your API keys locally on your device.</p>
+                            <p>Set a 6-digit PIN to encrypt your credentials. This PIN secures your API keys locally on your device.</p>
                         </li>
                         <li>
                             <strong>Verify Connection</strong>
-                            <p>IOI will test the connection and display your Binance balance if successful.</p>
+                            <p>IOI will test the connection, verify permissions match your payment model, and display your Binance balance if successful.</p>
                         </li>
                     </ol>
 
@@ -165,10 +302,10 @@ get_header();
                 </div>
             </section>
 
-            <!-- Step 4 -->
+            <!-- Step 5 -->
             <section class="setup-step">
                 <div class="step-header">
-                    <div class="step-number">4</div>
+                    <div class="step-number">5</div>
                     <h2>Start Your First Bot</h2>
                 </div>
                 <div class="step-content">
@@ -176,8 +313,8 @@ get_header();
                         <li>
                             <strong>Choose a Mode</strong>
                             <ul>
-                                <li><strong>Dry Run (DR)</strong> - Simulated trading with fake money. Perfect for testing!</li>
-                                <li><strong>Real Trading (RT)</strong> - Live trading with your actual balance.</li>
+                                <li><strong>Dry Run (DR)</strong> — Simulated trading with fake money. Perfect for testing!</li>
+                                <li><strong>Real Trading (RT)</strong> — Live trading with your actual balance.</li>
                             </ul>
                             <p><em>We recommend starting with Dry Run to understand how the bot works.</em></p>
                         </li>
@@ -191,13 +328,13 @@ get_header();
                         </li>
                         <li>
                             <strong>Start the Bot</strong>
-                            <p>Tap "Start New Bot" and watch it work! The bot will automatically find opportunities and execute trades 24/7.</p>
+                            <p>Tap "Start Bot" and watch it work! The bot will automatically find opportunities and execute trades 24/7.</p>
                         </li>
                     </ol>
 
                     <div class="success-box">
                         <strong>🎉 You're All Set!</strong>
-                        <p>Your bot is now trading. Check back anytime to monitor performance, adjust settings, or start additional bots.</p>
+                        <p>Your bot is now trading. Check back anytime to monitor performance, view payment history, adjust settings, or start additional bots.</p>
                     </div>
                 </div>
             </section>
@@ -229,6 +366,59 @@ get_header();
                 </div>
             </section>
 
+            <!-- Payment Summary -->
+            <section class="setup-payment-summary">
+                <h2>Payment Model Summary</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Commission</th>
+                            <th>Subscription (Auto-Pay)</th>
+                            <th>Subscription (Manual)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cost</strong></td>
+                            <td>0.065% per trade</td>
+                            <td>$5-$1k/month</td>
+                            <td>$5-$1k/month</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Trading Fees</strong></td>
+                            <td>0.065%</td>
+                            <td>0%</td>
+                            <td>0%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Budget Limit</strong></td>
+                            <td>Unlimited</td>
+                            <td>Per tier ($100-$25k)</td>
+                            <td>Per tier ($100-$25k)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Withdrawal Permission</strong></td>
+                            <td>Required</td>
+                            <td>Required</td>
+                            <td>Not required</td>
+                        </tr>
+                        <tr>
+                            <td><strong>How You Pay</strong></td>
+                            <td>Auto-collected at threshold</td>
+                            <td>Auto-deducted monthly</td>
+                            <td>You send manually</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Testing, occasional trading</td>
+                            <td>Active traders, convenience</td>
+                            <td>Maximum control</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
             <!-- Need Help -->
             <section class="setup-help">
                 <h2>Need Help?</h2>
@@ -242,5 +432,195 @@ get_header();
         </div>
     </div>
 </main>
+
+<style>
+/* Additional styles for new sections */
+.payment-models-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.payment-model-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.payment-model-card h4 {
+    color: #D4AF37;
+    margin-bottom: 0.5rem;
+}
+
+.payment-model-card .model-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.payment-model-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+.payment-model-card li {
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.payment-model-card li::before {
+    content: "•";
+    color: #D4AF37;
+    position: absolute;
+    left: 0;
+}
+
+.model-api-note {
+    background: rgba(212, 175, 55, 0.1);
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #D4AF37;
+}
+
+.permissions-tabs {
+    display: grid;
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.permission-scenario {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1.25rem;
+}
+
+.permission-scenario h5 {
+    color: #D4AF37;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.permission-note {
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: normal;
+}
+
+.sub-instructions {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.sub-instructions li {
+    margin-bottom: 0.75rem;
+}
+
+.address-box {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    font-family: monospace;
+    word-break: break-all;
+}
+
+.trust-section {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.trust-section h4 {
+    color: #D4AF37;
+    margin-bottom: 1rem;
+}
+
+.trust-points {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.trust-point {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.trust-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.trust-content strong {
+    color: #fff;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.trust-content p {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.comparison-table th {
+    background: rgba(212, 175, 55, 0.1);
+    color: #D4AF37;
+    font-weight: 600;
+}
+
+.comparison-table td:first-child {
+    color: #888;
+}
+
+.comparison-table tbody tr:hover {
+    background: rgba(255,255,255,0.02);
+}
+
+.setup-payment-summary {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 768px) {
+    .comparison-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .trust-point {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+</style>
 
 <?php get_footer(); ?>
