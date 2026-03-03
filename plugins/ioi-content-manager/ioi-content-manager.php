@@ -2,7 +2,7 @@
 /**
  * Plugin Name: IOI Content Manager
  * Description: Full admin control for IOI landing page content, sections, and settings
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: IOI Team
  */
 
@@ -22,10 +22,10 @@ class IOI_Content_Manager {
     private function __construct() {
         add_action('admin_menu', [$this, 'add_admin_menus']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+        add_action('admin_init', [$this, 'handle_tier_actions']);
         add_action('wp_ajax_ioi_save_content', [$this, 'ajax_save_content']);
         add_action('wp_ajax_ioi_save_settings', [$this, 'ajax_save_settings']);
-        add_action('wp_ajax_ioi_add_pricing_tier', [$this, 'ajax_add_pricing_tier']);
-        add_action('wp_ajax_ioi_delete_pricing_tier', [$this, 'ajax_delete_pricing_tier']);
+        add_action('wp_ajax_ioi_save_translation', [$this, 'ajax_save_translation']);
     }
     
     public function add_admin_menus() {
@@ -52,15 +52,69 @@ class IOI_Content_Manager {
     }
     
     public function enqueue_admin_assets($hook) {
-        if (strpos($hook, 'ioi-') === false) return;
+        if (strpos($hook, 'ioi-') === false && strpos($hook, 'ioi-manager') === false) return;
         
-        wp_enqueue_media(); // For logo upload
-        wp_enqueue_style('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.css', [], '1.0.0');
-        wp_enqueue_script('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.js', ['jquery'], '1.0.0', true);
+        wp_enqueue_media();
+        wp_enqueue_style('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.css', [], '1.1.0');
+        wp_enqueue_script('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.js', ['jquery'], '1.1.0', true);
         wp_localize_script('ioi-admin', 'ioiAdmin', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('ioi_admin'),
         ]);
+    }
+    
+    // =========================================================
+    // HANDLE TIER ACTIONS (Add/Edit/Delete)
+    // =========================================================
+    public function handle_tier_actions() {
+        // Handle Delete
+        if (isset($_GET['page']) && $_GET['page'] === 'ioi-pricing' && isset($_GET['action']) && $_GET['action'] === 'delete_tier') {
+            $tier_code = sanitize_text_field($_GET['tier']);
+            if (wp_verify_nonce($_GET['_wpnonce'], 'delete_tier_' . $tier_code)) {
+                $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
+                unset($tiers[$tier_code]);
+                update_option('ioi_pricing_tiers', $tiers);
+                wp_redirect(admin_url('admin.php?page=ioi-pricing&deleted=1'));
+                exit;
+            }
+        }
+        
+        // Handle Add/Edit Tier
+        if (isset($_POST['save_tier']) && isset($_POST['ioi_tier_nonce'])) {
+            if (wp_verify_nonce($_POST['ioi_tier_nonce'], 'ioi_save_tier')) {
+                $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
+                
+                $code = strtoupper(sanitize_text_field($_POST['tier_code']));
+                $features_raw = sanitize_textarea_field($_POST['tier_features']);
+                $features = array_filter(array_map('trim', explode("\n", $features_raw)));
+                
+                $tiers[$code] = [
+                    'name' => sanitize_text_field($_POST['tier_name']),
+                    'price' => intval($_POST['tier_price']),
+                    'budget' => intval($_POST['tier_budget']),
+                    'max_bots' => intval($_POST['tier_max_bots']),
+                    'features' => $features,
+                    'is_popular' => !empty($_POST['tier_popular']),
+                ];
+                
+                update_option('ioi_pricing_tiers', $tiers);
+                
+                $mode = sanitize_text_field($_POST['tier_mode']);
+                $msg = ($mode === 'edit') ? 'updated' : 'added';
+                wp_redirect(admin_url('admin.php?page=ioi-pricing&' . $msg . '=1'));
+                exit;
+            }
+        }
+        
+        // Handle Commission Settings
+        if (isset($_POST['save_commission']) && isset($_POST['_wpnonce'])) {
+            if (wp_verify_nonce($_POST['_wpnonce'], 'ioi_save_commission')) {
+                update_option('ioi_commission_rate', sanitize_text_field($_POST['commission_rate']));
+                update_option('ioi_commission_description', sanitize_textarea_field($_POST['commission_description']));
+                wp_redirect(admin_url('admin.php?page=ioi-pricing&commission_saved=1'));
+                exit;
+            }
+        }
     }
     
     // =========================================================
@@ -128,7 +182,7 @@ class IOI_Content_Manager {
                     <span>Spots Remaining</span>
                 </div>
                 <div class="stat">
-                    <strong><?php echo count(ioi_get_languages()); ?></strong>
+                    <strong><?php echo count($this->get_languages()); ?></strong>
                     <span>Languages</span>
                 </div>
                 <div class="stat">
@@ -138,6 +192,15 @@ class IOI_Content_Manager {
             </div>
         </div>
         <?php
+    }
+    
+    private function get_languages() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'ioi_languages';
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table'") === $table) {
+            return $wpdb->get_results("SELECT * FROM $table WHERE is_active = 1");
+        }
+        return [['code' => 'en', 'name' => 'English']];
     }
     
     // =========================================================
@@ -225,10 +288,18 @@ class IOI_Content_Manager {
     // PRICING EDITOR
     // =========================================================
     public function render_pricing_editor() {
+        // Show notices
+        if (isset($_GET['added'])) echo '<div class="notice notice-success"><p>Tier added successfully!</p></div>';
+        if (isset($_GET['updated'])) echo '<div class="notice notice-success"><p>Tier updated successfully!</p></div>';
+        if (isset($_GET['deleted'])) echo '<div class="notice notice-success"><p>Tier deleted successfully!</p></div>';
+        if (isset($_GET['commission_saved'])) echo '<div class="notice notice-success"><p>Commission settings saved!</p></div>';
+        
+        $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
         ?>
         <div class="wrap ioi-admin">
             <h1>Pricing</h1>
             
+            <!-- Commission Model -->
             <h2>Commission Model (Default)</h2>
             <form method="post" class="ioi-form">
                 <?php wp_nonce_field('ioi_save_commission'); ?>
@@ -248,102 +319,133 @@ class IOI_Content_Manager {
                         </td>
                     </tr>
                 </table>
-                <?php submit_button('Save Commission Settings', 'secondary'); ?>
+                <?php submit_button('Save Commission Settings', 'secondary', 'save_commission'); ?>
             </form>
             
-            <hr>
+            <hr style="margin: 30px 0;">
             
+            <!-- Subscription Tiers Table -->
             <h2>Subscription Tiers</h2>
-            <p>Zero trading fees when subscribed. Each tier has a monthly budget limit.</p>
+            <p class="description">Zero trading fees when subscribed. Each tier has a monthly budget limit.</p>
             
-            <table class="wp-list-table widefat fixed striped" id="pricing-tiers">
+            <table class="wp-list-table widefat fixed striped ioi-tier-table" style="margin-top: 15px;">
                 <thead>
                     <tr>
-                        <th>Tier Name</th>
-                        <th>Price/Month</th>
-                        <th>Budget Limit</th>
-                        <th>Max Bots</th>
-                        <th>Features</th>
-                        <th>Actions</th>
+                        <th style="width: 18%;">Tier Name</th>
+                        <th style="width: 10%;">Price/Month</th>
+                        <th style="width: 12%;">Budget Limit</th>
+                        <th style="width: 8%;">Max Bots</th>
+                        <th style="width: 32%;">Features</th>
+                        <th style="width: 20%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php echo $this->render_pricing_tiers_rows(); ?>
+                    <?php foreach ($tiers as $code => $tier) : 
+                        $features_text = is_array($tier['features']) ? implode("\n", $tier['features']) : $tier['features'];
+                        $features_html = is_array($tier['features']) ? implode('<br>', array_map('esc_html', $tier['features'])) : nl2br(esc_html($tier['features']));
+                    ?>
+                    <tr data-tier-code="<?php echo esc_attr($code); ?>"
+                        data-tier-name="<?php echo esc_attr($tier['name']); ?>"
+                        data-tier-price="<?php echo esc_attr($tier['price']); ?>"
+                        data-tier-budget="<?php echo esc_attr($tier['budget']); ?>"
+                        data-tier-max-bots="<?php echo esc_attr($tier['max_bots']); ?>"
+                        data-tier-features="<?php echo esc_attr($features_text); ?>"
+                        data-tier-popular="<?php echo !empty($tier['is_popular']) ? '1' : '0'; ?>">
+                        <td>
+                            <?php echo esc_html($tier['name']); ?>
+                            <?php if (!empty($tier['is_popular'])) : ?>
+                                <span style="background: #D4AF37; color: #000; padding: 2px 6px; border-radius: 3px; font-size: 10px; margin-left: 5px;">★ Popular</span>
+                            <?php endif; ?>
+                            <br><code style="font-size: 11px; color: #888;"><?php echo esc_html($code); ?></code>
+                        </td>
+                        <td>$<?php echo esc_html($tier['price']); ?>/mo</td>
+                        <td>$<?php echo number_format($tier['budget']); ?></td>
+                        <td><?php echo esc_html($tier['max_bots']); ?></td>
+                        <td style="font-size: 12px; line-height: 1.6;"><?php echo $features_html; ?></td>
+                        <td>
+                            <button type="button" class="button edit-tier-btn">Edit</button>
+                            <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=ioi-pricing&action=delete_tier&tier=' . $code), 'delete_tier_' . $code); ?>" 
+                               class="button delete-tier-btn"
+                               onclick="return confirm('Are you sure you want to delete the <?php echo esc_js($tier['name']); ?> tier?');">Delete</a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
             
-            <h3>Add New Tier</h3>
-            <form method="post" id="add-tier-form">
-                <?php wp_nonce_field('ioi_add_tier'); ?>
-                <table class="form-table">
-                    <tr>
-                        <th>Tier Code</th>
-                        <td><input type="text" name="tier_code" placeholder="STARTER" class="small-text" required></td>
-                    </tr>
-                    <tr>
-                        <th>Display Name</th>
-                        <td><input type="text" name="tier_name" placeholder="Starter" class="regular-text" required></td>
-                    </tr>
-                    <tr>
-                        <th>Price (USD/month)</th>
-                        <td><input type="number" name="price" placeholder="5" min="0" step="1" class="small-text" required></td>
-                    </tr>
-                    <tr>
-                        <th>Budget Limit (USD)</th>
-                        <td><input type="number" name="budget" placeholder="100" min="0" step="1" class="small-text" required></td>
-                    </tr>
-                    <tr>
-                        <th>Max Real Bots</th>
-                        <td><input type="number" name="max_bots" placeholder="1" min="1" step="1" class="small-text" required></td>
-                    </tr>
-                    <tr>
-                        <th>Features (one per line)</th>
-                        <td><textarea name="features" rows="4" class="large-text" placeholder="$100 trading budget&#10;1 real bot&#10;Zero platform fees"></textarea></td>
-                    </tr>
-                    <tr>
-                        <th>Popular?</th>
-                        <td><label><input type="checkbox" name="is_popular" value="1"> Mark as "Most Popular"</label></td>
-                    </tr>
-                </table>
-                <?php submit_button('Add Tier', 'primary'); ?>
-            </form>
+            <!-- Add/Edit Tier Form -->
+            <div id="tier-form" style="margin-top: 30px; padding: 20px; background: #1e1e1e; border: 1px solid #333; border-radius: 8px;">
+                <h3 id="tier-form-title">Add New Tier</h3>
+                
+                <form method="post" action="">
+                    <?php wp_nonce_field('ioi_save_tier', 'ioi_tier_nonce'); ?>
+                    <input type="hidden" id="tier-form-mode" name="tier_mode" value="add">
+                    
+                    <table class="form-table">
+                        <tr>
+                            <th><label for="tier_code">Tier Code</label></th>
+                            <td>
+                                <input type="text" id="tier_code" name="tier_code" class="regular-text" 
+                                       placeholder="e.g., STARTER" style="text-transform: uppercase;" required>
+                                <p class="description">Unique identifier (uppercase, no spaces). Cannot be changed after creation.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="tier_name">Display Name</label></th>
+                            <td>
+                                <input type="text" id="tier_name" name="tier_name" class="regular-text" 
+                                       placeholder="e.g., Starter" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="tier_price">Price (USD/month)</label></th>
+                            <td>
+                                <input type="number" id="tier_price" name="tier_price" class="small-text" 
+                                       min="0" step="1" placeholder="5" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="tier_budget">Budget Limit (USD)</label></th>
+                            <td>
+                                <input type="number" id="tier_budget" name="tier_budget" class="regular-text" 
+                                       min="0" step="100" placeholder="100" required>
+                                <p class="description">Maximum monthly trading budget for this tier.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="tier_max_bots">Max Real Bots</label></th>
+                            <td>
+                                <input type="number" id="tier_max_bots" name="tier_max_bots" class="small-text" 
+                                       min="1" step="1" placeholder="1" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="tier_features">Features</label></th>
+                            <td>
+                                <textarea id="tier_features" name="tier_features" rows="4" class="large-text" 
+                                          placeholder="$100 trading budget&#10;1 real bot + 2 test bots&#10;Zero platform fees&#10;All strategies included"></textarea>
+                                <p class="description">One feature per line. These appear on the pricing cards.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="tier_popular">Mark as Popular</label></th>
+                            <td>
+                                <label>
+                                    <input type="checkbox" id="tier_popular" name="tier_popular" value="1">
+                                    Show "Popular" badge on this tier
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <p class="submit">
+                        <input type="submit" id="tier-submit-btn" name="save_tier" class="button button-primary" value="Add Tier">
+                        <button type="button" id="tier-cancel-btn" class="button" style="display: none;">Cancel Edit</button>
+                    </p>
+                </form>
+            </div>
         </div>
         <?php
-    }
-    
-    private function render_pricing_tiers_rows() {
-        $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
-        $html = '';
-        
-        foreach ($tiers as $code => $tier) {
-            $popular = !empty($tier['is_popular']) ? ' <span class="popular-badge">★ Popular</span>' : '';
-            $features = is_array($tier['features']) ? implode('<br>', $tier['features']) : $tier['features'];
-            
-            $html .= sprintf(
-                '<tr data-tier="%s">
-                    <td><strong>%s</strong>%s<br><code>%s</code></td>
-                    <td>$%s/mo</td>
-                    <td>$%s</td>
-                    <td>%s</td>
-                    <td>%s</td>
-                    <td>
-                        <button class="button edit-tier">Edit</button>
-                        <button class="button delete-tier" data-tier="%s">Delete</button>
-                    </td>
-                </tr>',
-                esc_attr($code),
-                esc_html($tier['name']),
-                $popular,
-                esc_html($code),
-                esc_html($tier['price']),
-                esc_html($tier['budget']),
-                esc_html($tier['max_bots']),
-                $features,
-                esc_attr($code)
-            );
-        }
-        
-        return $html;
     }
     
     private function get_default_tiers() {
@@ -421,7 +523,7 @@ class IOI_Content_Manager {
                 
                 <h2>Feature Cards</h2>
                 <?php for ($i = 1; $i <= 4; $i++) : ?>
-                <div class="ioi-feature-card">
+                <div class="ioi-feature-card" style="background: #1e1e1e; padding: 15px; margin: 15px 0; border-radius: 8px;">
                     <h3>Feature <?php echo $i; ?></h3>
                     <table class="form-table">
                         <tr>
@@ -507,7 +609,7 @@ class IOI_Content_Manager {
                 </table>
                 
                 <?php for ($i = 1; $i <= 6; $i++) : ?>
-                <div class="ioi-faq-item">
+                <div class="ioi-faq-item" style="background: #1e1e1e; padding: 15px; margin: 15px 0; border-radius: 8px;">
                     <h3>FAQ <?php echo $i; ?></h3>
                     <p>
                         <label>Question:</label><br>
@@ -591,11 +693,11 @@ class IOI_Content_Manager {
                         <td>
                             <div class="ioi-image-upload" data-target="logo_id">
                                 <?php if ($logo_id) : ?>
-                                    <img src="<?php echo esc_url(wp_get_attachment_image_url($logo_id, 'thumbnail')); ?>" style="max-width: 100px;">
+                                    <img src="<?php echo esc_url(wp_get_attachment_image_url($logo_id, 'thumbnail')); ?>" style="max-width: 100px; margin-bottom: 10px; display: block;">
                                 <?php endif; ?>
                                 <input type="hidden" name="logo_id" id="logo_id" value="<?php echo esc_attr($logo_id); ?>">
-                                <button type="button" class="button upload-image">Select Image</button>
-                                <button type="button" class="button remove-image">Remove</button>
+                                <button type="button" class="button ioi-upload-btn" data-target="#logo_id">Select Image</button>
+                                <button type="button" class="button ioi-remove-btn">Remove</button>
                             </div>
                             <p class="description">Square logo, recommended 512x512px</p>
                         </td>
@@ -605,11 +707,11 @@ class IOI_Content_Manager {
                         <td>
                             <div class="ioi-image-upload" data-target="favicon_id">
                                 <?php if ($favicon_id) : ?>
-                                    <img src="<?php echo esc_url(wp_get_attachment_image_url($favicon_id, 'thumbnail')); ?>" style="max-width: 32px;">
+                                    <img src="<?php echo esc_url(wp_get_attachment_image_url($favicon_id, 'thumbnail')); ?>" style="max-width: 32px; margin-bottom: 10px; display: block;">
                                 <?php endif; ?>
                                 <input type="hidden" name="favicon_id" id="favicon_id" value="<?php echo esc_attr($favicon_id); ?>">
-                                <button type="button" class="button upload-image">Select Image</button>
-                                <button type="button" class="button remove-image">Remove</button>
+                                <button type="button" class="button ioi-upload-btn" data-target="#favicon_id">Select Image</button>
+                                <button type="button" class="button ioi-remove-btn">Remove</button>
                             </div>
                         </td>
                     </tr>
@@ -618,11 +720,11 @@ class IOI_Content_Manager {
                         <td>
                             <div class="ioi-image-upload" data-target="og_image_id">
                                 <?php if ($og_image_id) : ?>
-                                    <img src="<?php echo esc_url(wp_get_attachment_image_url($og_image_id, 'medium')); ?>" style="max-width: 300px;">
+                                    <img src="<?php echo esc_url(wp_get_attachment_image_url($og_image_id, 'medium')); ?>" style="max-width: 300px; margin-bottom: 10px; display: block;">
                                 <?php endif; ?>
                                 <input type="hidden" name="og_image_id" id="og_image_id" value="<?php echo esc_attr($og_image_id); ?>">
-                                <button type="button" class="button upload-image">Select Image</button>
-                                <button type="button" class="button remove-image">Remove</button>
+                                <button type="button" class="button ioi-upload-btn" data-target="#og_image_id">Select Image</button>
+                                <button type="button" class="button ioi-remove-btn">Remove</button>
                             </div>
                             <p class="description">1200x630px recommended for social media</p>
                         </td>
@@ -663,7 +765,7 @@ class IOI_Content_Manager {
                 <?php submit_button('Save Navigation'); ?>
             </form>
             
-            <hr>
+            <hr style="margin: 30px 0;">
             
             <form method="post" class="ioi-form">
                 <?php wp_nonce_field('ioi_save_footer'); ?>
@@ -688,13 +790,19 @@ class IOI_Content_Manager {
     public function render_translations() {
         global $wpdb;
         
+        $table_name = $wpdb->prefix . 'ioi_languages';
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") !== $table_name) {
+            echo '<div class="wrap"><h1>Translations</h1><p>Translation tables not found. Please ensure the database is set up correctly.</p></div>';
+            return;
+        }
+        
         $languages = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}ioi_languages WHERE is_active = 1 ORDER BY sort_order");
         $current_lang = isset($_GET['lang']) ? sanitize_text_field($_GET['lang']) : 'en';
         ?>
         <div class="wrap ioi-admin">
             <h1>Translations</h1>
             
-            <form method="get">
+            <form method="get" style="margin-bottom: 20px;">
                 <input type="hidden" name="page" value="ioi-translations">
                 <label>Language: 
                     <select name="lang" onchange="this.form.submit()">
@@ -712,10 +820,10 @@ class IOI_Content_Manager {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
-                        <th>Section</th>
-                        <th>Key</th>
-                        <th>English (source)</th>
-                        <th>Translation</th>
+                        <th style="width: 12%;">Section</th>
+                        <th style="width: 15%;">Key</th>
+                        <th style="width: 33%;">English (source)</th>
+                        <th style="width: 40%;">Translation</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -729,10 +837,14 @@ class IOI_Content_Manager {
     private function render_translation_rows($lang) {
         global $wpdb;
         
-        $lang_id = $wpdb->get_var($wpdb->prepare(
+        $lang_row = $wpdb->get_row($wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}ioi_languages WHERE code = %s",
             $lang
         ));
+        
+        if (!$lang_row) return '<tr><td colspan="4">Language not found.</td></tr>';
+        
+        $lang_id = $lang_row->id;
         
         $results = $wpdb->get_results($wpdb->prepare("
             SELECT s.section_key, str.id, str.string_key, 
@@ -745,6 +857,10 @@ class IOI_Content_Manager {
             ORDER BY s.sort_order, str.id
         ", $lang_id));
         
+        if (empty($results)) {
+            return '<tr><td colspan="4">No strings found.</td></tr>';
+        }
+        
         $html = '';
         foreach ($results as $row) {
             $html .= sprintf(
@@ -752,12 +868,15 @@ class IOI_Content_Manager {
                     <td><code>%s</code></td>
                     <td><code>%s</code></td>
                     <td>%s</td>
-                    <td><input type="text" class="translation-input large-text" data-id="%d" data-lang="%s" value="%s"></td>
+                    <td><input type="text" class="translation-input large-text" 
+                               data-section="%s" data-key="%s" data-lang="%s" 
+                               value="%s" style="width: 100%%;"></td>
                 </tr>',
                 esc_html($row->section_key),
                 esc_html($row->string_key),
-                esc_html($row->english),
-                $row->id,
+                esc_html($row->english ?? ''),
+                esc_attr($row->section_key),
+                esc_attr($row->string_key),
                 esc_attr($lang),
                 esc_attr($row->translation ?? '')
             );
@@ -771,6 +890,11 @@ class IOI_Content_Manager {
     // =========================================================
     private function get_string($section, $key) {
         global $wpdb;
+        
+        $table_name = $wpdb->prefix . 'ioi_translations';
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") !== $table_name) {
+            return '';
+        }
         
         $result = $wpdb->get_var($wpdb->prepare("
             SELECT t.content
@@ -807,7 +931,7 @@ class IOI_Content_Manager {
         // Handle other strings
         foreach ($_POST as $key => $value) {
             if (in_array($key, ['ioi_section', '_wpnonce', '_wp_http_referer', 'submit', 'ioi_spots_remaining'])) continue;
-            if (strpos($key, 'stat_') === 0) continue; // Already handled
+            if (strpos($key, 'stat_') === 0) continue;
             
             $this->update_string($section, $key, sanitize_textarea_field($value));
         }
@@ -818,7 +942,11 @@ class IOI_Content_Manager {
     private function update_string($section, $key, $value) {
         global $wpdb;
         
-        // Get string ID
+        $table_name = $wpdb->prefix . 'ioi_strings';
+        if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") !== $table_name) {
+            return;
+        }
+        
         $string_id = $wpdb->get_var($wpdb->prepare("
             SELECT str.id FROM {$wpdb->prefix}ioi_strings str
             JOIN {$wpdb->prefix}ioi_sections s ON s.id = str.section_id
@@ -827,7 +955,6 @@ class IOI_Content_Manager {
         
         if (!$string_id) return;
         
-        // Update English translation
         $wpdb->query($wpdb->prepare("
             INSERT INTO {$wpdb->prefix}ioi_translations (string_id, language_id, content, is_approved)
             VALUES (%d, 1, %s, 1)
@@ -838,38 +965,53 @@ class IOI_Content_Manager {
     // AJAX handlers
     public function ajax_save_content() {
         check_ajax_referer('ioi_admin', 'nonce');
-        // Handle inline saves
         wp_send_json_success();
     }
     
-    public function ajax_add_pricing_tier() {
-        check_ajax_referer('ioi_add_tier');
-        
-        $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
-        
-        $code = strtoupper(sanitize_text_field($_POST['tier_code']));
-        $tiers[$code] = [
-            'name' => sanitize_text_field($_POST['tier_name']),
-            'price' => intval($_POST['price']),
-            'budget' => intval($_POST['budget']),
-            'max_bots' => intval($_POST['max_bots']),
-            'features' => array_filter(array_map('trim', explode("\n", sanitize_textarea_field($_POST['features'])))),
-            'is_popular' => !empty($_POST['is_popular']),
-        ];
-        
-        update_option('ioi_pricing_tiers', $tiers);
-        wp_redirect(admin_url('admin.php?page=ioi-pricing&saved=1'));
-        exit;
+    public function ajax_save_settings() {
+        check_ajax_referer('ioi_admin', 'nonce');
+        wp_send_json_success();
     }
     
-    public function ajax_delete_pricing_tier() {
+    public function ajax_save_translation() {
         check_ajax_referer('ioi_admin', 'nonce');
         
-        $tier_code = sanitize_text_field($_POST['tier']);
-        $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
+        global $wpdb;
         
-        unset($tiers[$tier_code]);
-        update_option('ioi_pricing_tiers', $tiers);
+        $section = sanitize_text_field($_POST['section']);
+        $key = sanitize_text_field($_POST['key']);
+        $lang = sanitize_text_field($_POST['lang']);
+        $value = sanitize_textarea_field($_POST['value']);
+        
+        // Get language ID
+        $lang_id = $wpdb->get_var($wpdb->prepare(
+            "SELECT id FROM {$wpdb->prefix}ioi_languages WHERE code = %s",
+            $lang
+        ));
+        
+        if (!$lang_id) {
+            wp_send_json_error('Language not found');
+            return;
+        }
+        
+        // Get string ID
+        $string_id = $wpdb->get_var($wpdb->prepare("
+            SELECT str.id FROM {$wpdb->prefix}ioi_strings str
+            JOIN {$wpdb->prefix}ioi_sections s ON s.id = str.section_id
+            WHERE s.section_key = %s AND str.string_key = %s
+        ", $section, $key));
+        
+        if (!$string_id) {
+            wp_send_json_error('String not found');
+            return;
+        }
+        
+        // Upsert translation
+        $wpdb->query($wpdb->prepare("
+            INSERT INTO {$wpdb->prefix}ioi_translations (string_id, language_id, content, is_approved)
+            VALUES (%d, %d, %s, 1)
+            ON DUPLICATE KEY UPDATE content = %s, updated_at = NOW()
+        ", $string_id, $lang_id, $value, $value));
         
         wp_send_json_success();
     }
