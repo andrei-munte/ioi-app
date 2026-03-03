@@ -12,17 +12,24 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
 
 <!-- Hero -->
 <section class="hero" id="hero">
-    <div class="hero-content">
-        <span class="badge">⚠️ <?php ioi_e('hero', 'badge'); ?></span>
-        <h1><?php ioi_e('hero', 'title_1'); ?> <span class="text-gradient"><?php ioi_e('hero', 'title_highlight'); ?></span></h1>
-        <p class="hero-subtitle"><?php ioi_e('hero', 'subtitle'); ?></p>
-        <div class="hero-cta">
-            <a href="#download" class="btn btn-primary btn-lg"><?php ioi_e('hero', 'cta_primary'); ?></a>
-            <a href="#how-it-works" class="btn btn-secondary btn-lg"><?php ioi_e('hero', 'cta_secondary'); ?></a>
+    <div class="hero-grid">
+        <div class="hero-content">
+            <span class="badge">⚠️ <?php ioi_e('hero', 'badge'); ?></span>
+            <h1><?php ioi_e('hero', 'title_1'); ?> <span class="text-gradient"><?php ioi_e('hero', 'title_highlight'); ?></span></h1>
+            <p class="hero-subtitle"><?php ioi_e('hero', 'subtitle'); ?></p>
+            <div class="hero-cta">
+                <a href="#download" class="btn btn-primary btn-lg"><?php ioi_e('hero', 'cta_primary'); ?></a>
+                <a href="#how-it-works" class="btn btn-secondary btn-lg"><?php ioi_e('hero', 'cta_secondary'); ?></a>
+            </div>
+            <div class="spots-indicator">
+                <span class="number"><?php echo esc_html($spots); ?></span>
+                <span class="label"><?php ioi_e('hero', 'spots_label'); ?></span>
+            </div>
         </div>
-        <div class="spots-indicator">
-            <span class="number"><?php echo esc_html($spots); ?></span>
-            <span class="label"><?php ioi_e('hero', 'spots_label'); ?></span>
+        <div class="hero-phone">
+            <div class="phone-mockup">
+                <img src="<?php echo IOI_THEME_URI; ?>/assets/images/app-screenshot.jpg" alt="IOI App Dashboard">
+            </div>
         </div>
     </div>
 </section>
