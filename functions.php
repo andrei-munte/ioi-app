@@ -38,6 +38,14 @@ function ioi_enqueue_assets() {
         [],
         IOI_VERSION
     );
+
+    // Pricing Carousel CSS  <-- ADD THIS
+    wp_enqueue_style(
+        'ioi-pricing-carousel',
+        IOI_THEME_URI . '/assets/css/pricing-carousel.css',
+        ['ioi-main'],
+        IOI_VERSION
+    );
     
     // Main JavaScript
     wp_enqueue_script(
@@ -46,6 +54,15 @@ function ioi_enqueue_assets() {
         [],
         IOI_VERSION,
         true // Load in footer
+    );
+
+    // Pricing Carousel JS  <-- ADD THIS
+    wp_enqueue_script(
+        'ioi-pricing-carousel',
+        IOI_THEME_URI . '/assets/js/pricing-carousel.js',
+        [],
+        IOI_VERSION,
+        true
     );
 }
 add_action('wp_enqueue_scripts', 'ioi_enqueue_assets');

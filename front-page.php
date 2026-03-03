@@ -125,72 +125,59 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
     </div>
 </section>
 
-<!-- Pricing -->
-<section class="section bg-dark-2" id="pricing">
+<!-- PRICING SECTION - 3D CAROUSEL
+     Replace the existing pricing section in front-page.php with this -->
+<section id="pricing" class="pricing">
     <div class="container">
         <div class="section-header">
-            <h2><?php ioi_e('pricing', 'section_title'); ?></h2>
-            <p>Choose commission-based trading or subscribe for zero fees.</p>
+            <h2>Subscription Tiers</h2>
+            <p>Zero trading fees. Choose the budget that fits your goals.</p>
         </div>
         
-        <!-- Two Pricing Models Side by Side -->
-        <div class="pricing-models-grid">
-            
-            <!-- Commission Model -->
-            <div class="card pricing-card pricing-commission">
-                <h3>Commission</h3>
-                <div class="price"><?php echo esc_html($commission_rate); ?>%<span> / trade</span></div>
-                <p class="pricing-tagline">Pay per trade, no commitment</p>
-                <ul class="pricing-features">
-                    <li>✓ $0 monthly subscription</li>
-                    <li>✓ <?php echo esc_html($commission_rate); ?>% on every buy & sell</li>
-                    <li>✓ Unlimited trading budget</li>
-                    <li>✓ All features included</li>
-                    <li>✓ Cancel anytime</li>
-                </ul>
-                <p class="pricing-note">Best for: Testing the platform, smaller budgets, or occasional trading</p>
-                <a href="#download" class="btn btn-secondary btn-block">Start with Commission</a>
-            </div>
-            
-            <!-- Subscription Intro -->
-            <div class="card pricing-card pricing-subscription-intro">
-                <h3>Subscription</h3>
-                <div class="price">$5 - $1,000<span> / month</span></div>
-                <p class="pricing-tagline">Zero trading fees, fixed cost</p>
-                <ul class="pricing-features">
-                    <li>✓ 0% commission on all trades</li>
-                    <li>✓ 5 tiers from $5 to $1,000/mo</li>
-                    <li>✓ Budget limits: $100 - $25,000</li>
-                    <li>✓ More bots allowed per tier</li>
-                    <li>✓ Upgrade/downgrade anytime</li>
-                </ul>
-                <p class="pricing-note">Best for: Active traders who want predictable costs</p>
-                <a href="#pricing-tiers" class="btn btn-primary btn-block">See All Tiers ↓</a>
-            </div>
-            
-        </div>
-        
-        <!-- Subscription Tiers Detail -->
-        <div class="pricing-tiers-section" id="pricing-tiers">
-            <h3 class="text-center mt-3xl mb-xl">Subscription Tiers</h3>
-            <div class="pricing-tiers-grid">
-                <?php foreach ($pricing_tiers as $code => $tier) : 
+        <div class="pricing-carousel-wrapper">
+            <div class="pricing-carousel" id="pricingCarousel">
+                <?php
+                $tiers = get_option('ioi_pricing_tiers', [
+                    'STARTER' => ['name' => 'Starter', 'price' => 5, 'budget' => 100, 'max_bots' => 1, 'features' => ['$100 trading budget', '1 real bot', 'Zero platform fees'], 'is_popular' => false],
+                    'BASIC' => ['name' => 'Basic', 'price' => 100, 'budget' => 2500, 'max_bots' => 3, 'features' => ['$2,500 trading budget', '3 real bots', 'Zero platform fees'], 'is_popular' => true],
+                    'PRO' => ['name' => 'Pro', 'price' => 250, 'budget' => 5000, 'max_bots' => 5, 'features' => ['$5,000 trading budget', '5 real bots', 'Zero platform fees'], 'is_popular' => false],
+                    'ADVANCED' => ['name' => 'Advanced', 'price' => 500, 'budget' => 10000, 'max_bots' => 10, 'features' => ['$10,000 trading budget', '10 real bots', 'Priority support'], 'is_popular' => false],
+                    'ENTERPRISE' => ['name' => 'Enterprise', 'price' => 1000, 'budget' => 25000, 'max_bots' => 99, 'features' => ['$25,000 trading budget', 'Unlimited bots', 'Dedicated support'], 'is_popular' => false],
+                ]);
+                
+                $index = 0;
+                foreach ($tiers as $code => $tier) :
                     $is_popular = !empty($tier['is_popular']);
+                    $features = is_array($tier['features']) ? $tier['features'] : explode("\n", $tier['features']);
                 ?>
-                <div class="card pricing-tier-card <?php echo $is_popular ? 'card-highlight' : ''; ?>">
+                <div class="carousel-card" data-index="<?php echo $index; ?>">
                     <?php if ($is_popular) : ?>
-                    <span class="badge badge-top">POPULAR</span>
+                    <span class="popular-badge">POPULAR</span>
                     <?php endif; ?>
-                    <h4><?php echo esc_html($tier['name']); ?></h4>
-                    <div class="tier-price">$<?php echo esc_html($tier['price']); ?><span>/mo</span></div>
-                    <div class="tier-budget">$<?php echo number_format($tier['budget']); ?> budget</div>
-                    <div class="tier-bots"><?php echo esc_html($tier['max_bots']); ?> <?php echo $tier['max_bots'] >= 99 ? 'unlimited' : 'real'; ?> bot<?php echo $tier['max_bots'] > 1 ? 's' : ''; ?></div>
-                    <a href="#download" class="btn <?php echo $is_popular ? 'btn-primary' : 'btn-outline'; ?> btn-sm btn-block">Select</a>
+                    
+                    <h3 class="tier-name"><?php echo esc_html($tier['name']); ?></h3>
+                    <div class="tier-price">
+                        <span class="currency">$</span>
+                        <span class="amount"><?php echo esc_html($tier['price']); ?></span>
+                        <span class="period">/mo</span>
+                    </div>
+                    
+                    <ul class="tier-features">
+                        <li class="budget">$<?php echo number_format($tier['budget']); ?> budget</li>
+                        <li class="bots"><?php echo $tier['max_bots'] >= 99 ? 'Unlimited' : $tier['max_bots']; ?> real bot<?php echo $tier['max_bots'] > 1 ? 's' : ''; ?></li>
+                    </ul>
                 </div>
-                <?php endforeach; ?>
+                <?php 
+                    $index++;
+                endforeach; 
+                ?>
+            </div>
+            
+            <div class="carousel-hint">
+                <span class="hint-icon">👆</span>
+                <span>Drag to explore tiers</span>
             </div>
         </div>
-        
     </div>
 </section>
 
