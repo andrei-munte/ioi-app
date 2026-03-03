@@ -11,7 +11,7 @@
     var cards = carousel.querySelectorAll('.carousel-card');
     var cardCount = cards.length;
     var anglePerCard = 360 / cardCount;
-    var radius = 350;
+    var radius = 320;
     
     var currentAngle = 0;
     var targetAngle = 0;
@@ -23,6 +23,12 @@
     var lastTime = 0;
     var animationId = null;
     
+    // SENSITIVITY - lower = slower/less sensitive
+    var dragSensitivity = 0.15;  // Was 0.3 - now half as sensitive
+    var momentumFriction = 0.92; // Was 0.95 - now slows down faster
+    var snapSpeed = 0.08;        // Was 0.15 - now snaps slower
+    var minVelocityForMomentum = 3; // Was 2 - need faster swipe for momentum
+    
     function positionCards() {
         cards.forEach(function(card, index) {
             var angle = (index * anglePerCard) + currentAngle;
@@ -31,14 +37,15 @@
             var x = Math.sin(radians) * radius;
             var z = Math.cos(radians) * radius - radius;
             
-            var scale = Math.max(0.6, (z + radius * 2) / (radius * 2));
-            var opacity = Math.max(0.3, scale);
+            var scale = Math.max(0.65, (z + radius * 2) / (radius * 2));
+            var opacity = Math.max(0.4, scale);
             
             card.style.transform = 'translateX(' + x + 'px) translateZ(' + z + 'px) scale(' + scale + ')';
             card.style.opacity = opacity;
             card.style.zIndex = Math.round(scale * 100);
             
-            if (z > -50) {
+            // Active card is the one closest to front
+            if (z > -30) {
                 card.classList.add('active');
             } else {
                 card.classList.remove('active');
@@ -58,13 +65,13 @@
         function step() {
             var diff = targetAngle - currentAngle;
             
-            if (Math.abs(diff) < 0.5) {
+            if (Math.abs(diff) < 0.3) {
                 currentAngle = targetAngle;
                 positionCards();
                 return;
             }
             
-            currentAngle += diff * 0.15;
+            currentAngle += diff * snapSpeed;
             positionCards();
             animationId = requestAnimationFrame(step);
         }
@@ -76,13 +83,13 @@
         if (animationId) cancelAnimationFrame(animationId);
         
         function step() {
-            if (Math.abs(velocity) < 0.5) {
+            if (Math.abs(velocity) < 0.3) {
                 snapToNearestCard();
                 return;
             }
             
             currentAngle += velocity;
-            velocity *= 0.95;
+            velocity *= momentumFriction;
             positionCards();
             animationId = requestAnimationFrame(step);
         }
@@ -109,13 +116,17 @@
         var currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         var deltaX = currentX - startX;
         
-        currentAngle = startAngle - (deltaX * 0.3);
+        // Apply drag sensitivity
+        currentAngle = startAngle - (deltaX * dragSensitivity);
         positionCards();
         
+        // Calculate velocity for momentum
         var now = Date.now();
         var dt = now - lastTime;
         if (dt > 0) {
-            velocity = -(currentX - lastX) * 0.3 / dt * 16;
+            velocity = -(currentX - lastX) * dragSensitivity / dt * 16;
+            // Cap velocity to prevent crazy speeds
+            velocity = Math.max(-8, Math.min(8, velocity));
         }
         lastX = currentX;
         lastTime = now;
@@ -127,7 +138,8 @@
         isDragging = false;
         carousel.classList.remove('dragging');
         
-        if (Math.abs(velocity) > 2) {
+        // Only apply momentum if swipe was fast enough
+        if (Math.abs(velocity) > minVelocityForMomentum) {
             applyMomentum();
         } else {
             snapToNearestCard();
@@ -147,7 +159,7 @@
     // Prevent context menu
     carousel.parentElement.addEventListener('contextmenu', function(e) { e.preventDefault(); });
     
-    // Keyboard navigation
+    // Keyboard navigation - move one card at a time
     document.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowLeft') {
             targetAngle = currentAngle + anglePerCard;
@@ -158,7 +170,7 @@
         }
     });
     
-    // Find popular card and center it
+    // Find popular card and center it on load
     var popularIndex = 1;
     cards.forEach(function(card, index) {
         if (card.querySelector('.popular-badge')) {

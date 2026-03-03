@@ -1,32 +1,145 @@
 /* ============================================
-   PRICING 3D CAROUSEL
+   PRICING SECTION - Full Styles
+   Commission Cards + 3D Carousel
    ============================================ */
 
 .pricing {
-    padding: var(--space-4xl) 0;
-    background: var(--ioi-black);
+    padding: 80px 0;
+    background: #0a0a0a;
     overflow: hidden;
 }
 
 .pricing .section-header {
     text-align: center;
-    margin-bottom: var(--space-3xl);
+    margin-bottom: 50px;
 }
 
 .pricing .section-header h2 {
     font-size: clamp(1.75rem, 4vw, 2.5rem);
-    margin-bottom: var(--space-md);
+    margin-bottom: 12px;
+    color: #fff;
 }
 
 .pricing .section-header p {
-    color: var(--ioi-gray-3);
+    color: #888;
     font-size: 1.1rem;
 }
 
-/* Carousel Wrapper */
+/* ============================================
+   PRICING MODELS (Commission + Subscription)
+   ============================================ */
+.pricing-models {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto 60px;
+}
+
+.pricing-model-card {
+    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.pricing-model-card:hover {
+    border-color: #D4AF37;
+    transform: translateY(-4px);
+}
+
+.pricing-model-card .model-header h3 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.pricing-model-card .model-price {
+    margin-bottom: 16px;
+}
+
+.pricing-model-card .model-price .amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #D4AF37;
+}
+
+.pricing-model-card .model-price .period {
+    font-size: 1rem;
+    color: #888;
+    margin-left: 4px;
+}
+
+.pricing-model-card .model-tagline {
+    color: #aaa;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+}
+
+.pricing-model-card .model-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    text-align: left;
+}
+
+.pricing-model-card .model-features li {
+    padding: 8px 0;
+    color: #ccc;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #222;
+    padding-left: 24px;
+    position: relative;
+}
+
+.pricing-model-card .model-features li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #D4AF37;
+}
+
+.pricing-model-card .model-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-model-card .model-note {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* ============================================
+   SUBSCRIPTION TIERS SECTION
+   ============================================ */
+.subscription-tiers-section {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid #222;
+}
+
+.subscription-tiers-section .tiers-title {
+    text-align: center;
+    font-size: 1.75rem;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.subscription-tiers-section .tiers-subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+/* ============================================
+   3D CAROUSEL
+   ============================================ */
 .pricing-carousel-wrapper {
     position: relative;
-    height: 450px;
+    height: 420px;
     perspective: 1200px;
     perspective-origin: 50% 50%;
     cursor: grab;
@@ -38,13 +151,12 @@
     cursor: grabbing;
 }
 
-/* Carousel Container */
 .pricing-carousel {
     position: absolute;
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .pricing-carousel.dragging {
@@ -58,7 +170,7 @@
     top: 50%;
     width: 280px;
     margin-left: -140px;
-    margin-top: -190px;
+    margin-top: -175px;
     padding: 28px 24px;
     background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
     border: 1px solid #2a2a2a;
@@ -66,12 +178,11 @@
     text-align: center;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                opacity 0.4s ease,
-                box-shadow 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.5s ease,
+                box-shadow 0.5s ease;
 }
 
-/* Card in focus (front) */
 .carousel-card.active {
     border-color: #D4AF37;
     box-shadow: 
@@ -150,7 +261,7 @@
     border-bottom: none;
 }
 
-.carousel-card .tier-features .budget {
+.carousel-card .tier-features .feature-budget {
     color: #D4AF37;
     font-weight: 600;
 }
@@ -164,9 +275,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #666;
+    color: #555;
     font-size: 0.85rem;
-    opacity: 0.7;
+    opacity: 0.8;
     transition: opacity 0.3s ease;
     pointer-events: none;
 }
@@ -184,35 +295,56 @@
     opacity: 0;
 }
 
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 900px) {
+    .pricing-models {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+    }
+}
+
 @media (max-width: 768px) {
+    .pricing {
+        padding: 60px 0;
+    }
+    
     .pricing-carousel-wrapper {
-        height: 420px;
+        height: 400px;
         perspective: 1000px;
     }
     
     .carousel-card {
         width: 260px;
         margin-left: -130px;
-        margin-top: -180px;
+        margin-top: -170px;
         padding: 24px 20px;
     }
     
     .carousel-card .amount {
         font-size: 3rem;
     }
+    
+    .pricing-model-card {
+        padding: 24px;
+    }
+    
+    .pricing-model-card .model-price .amount {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 480px) {
     .pricing-carousel-wrapper {
-        height: 400px;
+        height: 380px;
         perspective: 800px;
     }
     
     .carousel-card {
         width: 240px;
         margin-left: -120px;
-        margin-top: -175px;
+        margin-top: -165px;
         padding: 20px 16px;
     }
     
