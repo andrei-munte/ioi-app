@@ -1,0 +1,17 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/sftp.json
+.idea/
+
+# Logs
+*.log
+
+# Dependencies (if any)
+node_modules/
+vendor/
+
+# Build
+*.zip
