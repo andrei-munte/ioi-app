@@ -2,7 +2,7 @@
 /**
  * Plugin Name: IOI Content Manager
  * Description: Full admin control for IOI landing page content, sections, and settings
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: IOI Team
  */
 
@@ -55,19 +55,15 @@ class IOI_Content_Manager {
         if (strpos($hook, 'ioi-') === false && strpos($hook, 'ioi-manager') === false) return;
         
         wp_enqueue_media();
-        wp_enqueue_style('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.css', [], '1.1.0');
-        wp_enqueue_script('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.js', ['jquery'], '1.1.0', true);
+        wp_enqueue_style('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.css', [], '1.2.0');
+        wp_enqueue_script('ioi-admin', plugin_dir_url(__FILE__) . 'assets/admin.js', ['jquery'], '1.2.0', true);
         wp_localize_script('ioi-admin', 'ioiAdmin', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('ioi_admin'),
         ]);
     }
     
-    // =========================================================
-    // HANDLE TIER ACTIONS (Add/Edit/Delete)
-    // =========================================================
     public function handle_tier_actions() {
-        // Handle Delete
         if (isset($_GET['page']) && $_GET['page'] === 'ioi-pricing' && isset($_GET['action']) && $_GET['action'] === 'delete_tier') {
             $tier_code = sanitize_text_field($_GET['tier']);
             if (wp_verify_nonce($_GET['_wpnonce'], 'delete_tier_' . $tier_code)) {
@@ -79,7 +75,6 @@ class IOI_Content_Manager {
             }
         }
         
-        // Handle Add/Edit Tier
         if (isset($_POST['save_tier']) && isset($_POST['ioi_tier_nonce'])) {
             if (wp_verify_nonce($_POST['ioi_tier_nonce'], 'ioi_save_tier')) {
                 $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
@@ -106,24 +101,44 @@ class IOI_Content_Manager {
             }
         }
         
-        // Handle Commission Settings
+        if (isset($_POST['save_pricing_header']) && isset($_POST['_wpnonce'])) {
+            if (wp_verify_nonce($_POST['_wpnonce'], 'ioi_save_pricing_header')) {
+                update_option('ioi_pricing_title', sanitize_text_field($_POST['pricing_title']));
+                update_option('ioi_pricing_subtitle', sanitize_text_field($_POST['pricing_subtitle']));
+                wp_redirect(admin_url('admin.php?page=ioi-pricing&header_saved=1'));
+                exit;
+            }
+        }
+        
         if (isset($_POST['save_commission']) && isset($_POST['_wpnonce'])) {
             if (wp_verify_nonce($_POST['_wpnonce'], 'ioi_save_commission')) {
+                update_option('ioi_commission_title', sanitize_text_field($_POST['commission_title']));
                 update_option('ioi_commission_rate', sanitize_text_field($_POST['commission_rate']));
-                update_option('ioi_commission_description', sanitize_textarea_field($_POST['commission_description']));
+                update_option('ioi_commission_tagline', sanitize_text_field($_POST['commission_tagline']));
+                update_option('ioi_commission_features', sanitize_textarea_field($_POST['commission_features']));
+                update_option('ioi_commission_note', sanitize_text_field($_POST['commission_note']));
                 wp_redirect(admin_url('admin.php?page=ioi-pricing&commission_saved=1'));
+                exit;
+            }
+        }
+        
+        if (isset($_POST['save_subscription']) && isset($_POST['_wpnonce'])) {
+            if (wp_verify_nonce($_POST['_wpnonce'], 'ioi_save_subscription')) {
+                update_option('ioi_subscription_title', sanitize_text_field($_POST['subscription_title']));
+                update_option('ioi_subscription_price_range', sanitize_text_field($_POST['subscription_price_range']));
+                update_option('ioi_subscription_tagline', sanitize_text_field($_POST['subscription_tagline']));
+                update_option('ioi_subscription_features', sanitize_textarea_field($_POST['subscription_features']));
+                update_option('ioi_subscription_note', sanitize_text_field($_POST['subscription_note']));
+                wp_redirect(admin_url('admin.php?page=ioi-pricing&subscription_saved=1'));
                 exit;
             }
         }
     }
     
-    // =========================================================
-    // DASHBOARD
-    // =========================================================
     public function render_dashboard() {
         ?>
         <div class="wrap ioi-admin">
-            <h1>🚀 IOI Content Manager</h1>
+            <h1>IOI Content Manager</h1>
             <p>Manage all landing page content from one place.</p>
             
             <div class="ioi-dashboard-grid">
@@ -203,9 +218,6 @@ class IOI_Content_Manager {
         return [['code' => 'en', 'name' => 'English']];
     }
     
-    // =========================================================
-    // HERO EDITOR
-    // =========================================================
     public function render_hero_editor() {
         $this->save_section_if_posted('hero');
         ?>
@@ -284,49 +296,102 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // PRICING EDITOR
-    // =========================================================
     public function render_pricing_editor() {
-        // Show notices
         if (isset($_GET['added'])) echo '<div class="notice notice-success"><p>Tier added successfully!</p></div>';
         if (isset($_GET['updated'])) echo '<div class="notice notice-success"><p>Tier updated successfully!</p></div>';
         if (isset($_GET['deleted'])) echo '<div class="notice notice-success"><p>Tier deleted successfully!</p></div>';
-        if (isset($_GET['commission_saved'])) echo '<div class="notice notice-success"><p>Commission settings saved!</p></div>';
+        if (isset($_GET['header_saved'])) echo '<div class="notice notice-success"><p>Section header saved!</p></div>';
+        if (isset($_GET['commission_saved'])) echo '<div class="notice notice-success"><p>Commission card saved!</p></div>';
+        if (isset($_GET['subscription_saved'])) echo '<div class="notice notice-success"><p>Subscription card saved!</p></div>';
         
         $tiers = get_option('ioi_pricing_tiers', $this->get_default_tiers());
         ?>
         <div class="wrap ioi-admin">
             <h1>Pricing</h1>
             
-            <!-- Commission Model -->
-            <h2>Commission Model (Default)</h2>
+            <h2>Section Header</h2>
             <form method="post" class="ioi-form">
-                <?php wp_nonce_field('ioi_save_commission'); ?>
+                <?php wp_nonce_field('ioi_save_pricing_header'); ?>
                 <table class="form-table">
                     <tr>
-                        <th>Commission Rate</th>
-                        <td>
-                            <input type="text" name="commission_rate" value="<?php echo esc_attr(get_option('ioi_commission_rate', '0.065')); ?>" class="small-text">
-                            <span>% per trade</span>
-                            <p class="description">Applied to every trade (buy & sell). NOT profit-based.</p>
-                        </td>
+                        <th>Section Title</th>
+                        <td><input type="text" name="pricing_title" value="<?php echo esc_attr(get_option('ioi_pricing_title', 'Simple, Transparent Pricing')); ?>" class="large-text"></td>
                     </tr>
                     <tr>
-                        <th>Commission Description</th>
-                        <td>
-                            <textarea name="commission_description" rows="2" class="large-text"><?php echo esc_textarea(get_option('ioi_commission_description', 'No subscription required. Pay 0.065% on every trade.')); ?></textarea>
-                        </td>
+                        <th>Section Subtitle</th>
+                        <td><input type="text" name="pricing_subtitle" value="<?php echo esc_attr(get_option('ioi_pricing_subtitle', 'Choose commission-based trading or subscribe for zero fees')); ?>" class="large-text"></td>
                     </tr>
                 </table>
-                <?php submit_button('Save Commission Settings', 'secondary', 'save_commission'); ?>
+                <?php submit_button('Save Header', 'secondary', 'save_pricing_header'); ?>
             </form>
             
             <hr style="margin: 30px 0;">
             
-            <!-- Subscription Tiers Table -->
-            <h2>Subscription Tiers</h2>
-            <p class="description">Zero trading fees when subscribed. Each tier has a monthly budget limit.</p>
+            <h2>Commission Card</h2>
+            <form method="post" class="ioi-form">
+                <?php wp_nonce_field('ioi_save_commission'); ?>
+                <table class="form-table">
+                    <tr>
+                        <th>Card Title</th>
+                        <td><input type="text" name="commission_title" value="<?php echo esc_attr(get_option('ioi_commission_title', 'Commission')); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr>
+                        <th>Rate</th>
+                        <td>
+                            <input type="text" name="commission_rate" value="<?php echo esc_attr(get_option('ioi_commission_rate', '0.065')); ?>" class="small-text">
+                            <span>% per trade</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Tagline</th>
+                        <td><input type="text" name="commission_tagline" value="<?php echo esc_attr(get_option('ioi_commission_tagline', 'Pay per trade, no commitment')); ?>" class="large-text"></td>
+                    </tr>
+                    <tr>
+                        <th>Features (one per line)</th>
+                        <td><textarea name="commission_features" rows="4" class="large-text"><?php echo esc_textarea(get_option('ioi_commission_features', "\$0 monthly subscription\n0.065% on every buy and sell\nUnlimited trading budget\nAll features included")); ?></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Note (bottom text)</th>
+                        <td><input type="text" name="commission_note" value="<?php echo esc_attr(get_option('ioi_commission_note', 'Best for testing or occasional trading')); ?>" class="large-text"></td>
+                    </tr>
+                </table>
+                <?php submit_button('Save Commission Card', 'secondary', 'save_commission'); ?>
+            </form>
+            
+            <hr style="margin: 30px 0;">
+            
+            <h2>Subscription Card</h2>
+            <form method="post" class="ioi-form">
+                <?php wp_nonce_field('ioi_save_subscription'); ?>
+                <table class="form-table">
+                    <tr>
+                        <th>Card Title</th>
+                        <td><input type="text" name="subscription_title" value="<?php echo esc_attr(get_option('ioi_subscription_title', 'Subscription')); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr>
+                        <th>Price Range Display</th>
+                        <td><input type="text" name="subscription_price_range" value="<?php echo esc_attr(get_option('ioi_subscription_price_range', '$5-$1k')); ?>" class="regular-text"></td>
+                    </tr>
+                    <tr>
+                        <th>Tagline</th>
+                        <td><input type="text" name="subscription_tagline" value="<?php echo esc_attr(get_option('ioi_subscription_tagline', 'Zero trading fees, fixed monthly cost')); ?>" class="large-text"></td>
+                    </tr>
+                    <tr>
+                        <th>Features (one per line)</th>
+                        <td><textarea name="subscription_features" rows="4" class="large-text"><?php echo esc_textarea(get_option('ioi_subscription_features', "0% commission on all trades\n5 tiers to choose from\nBudget limits \$100 to \$25,000\nUpgrade or downgrade anytime")); ?></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>Note (bottom text)</th>
+                        <td><input type="text" name="subscription_note" value="<?php echo esc_attr(get_option('ioi_subscription_note', 'Best for active traders wanting predictable costs')); ?>" class="large-text"></td>
+                    </tr>
+                </table>
+                <?php submit_button('Save Subscription Card', 'secondary', 'save_subscription'); ?>
+            </form>
+            
+            <hr style="margin: 30px 0;">
+            
+            <h2>Subscription Tiers (Carousel)</h2>
+            <p class="description">These tiers appear in the 3D carousel. Zero trading fees when subscribed.</p>
             
             <table class="wp-list-table widefat fixed striped ioi-tier-table" style="margin-top: 15px;">
                 <thead>
@@ -373,7 +438,6 @@ class IOI_Content_Manager {
                 </tbody>
             </table>
             
-            <!-- Add/Edit Tier Form -->
             <div id="tier-form" style="margin-top: 30px; padding: 20px; background: #1e1e1e; border: 1px solid #333; border-radius: 8px;">
                 <h3 id="tier-form-title">Add New Tier</h3>
                 
@@ -463,7 +527,7 @@ class IOI_Content_Manager {
                 'price' => 100,
                 'budget' => 2500,
                 'max_bots' => 3,
-                'features' => ['$2,500 trading budget', '3 real bots + 5 test bots', 'Zero platform fees', 'All strategies included'],
+                'features' => ['$2,500 trading budget', '3 real bots + 5 bots', 'Zero platform fees', 'All strategies included'],
                 'is_popular' => true,
             ],
             'PRO' => [
@@ -498,9 +562,6 @@ class IOI_Content_Manager {
         return count($tiers);
     }
     
-    // =========================================================
-    // FEATURES EDITOR
-    // =========================================================
     public function render_features_editor() {
         $this->save_section_if_posted('features');
         ?>
@@ -548,9 +609,6 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // SECURITY EDITOR
-    // =========================================================
     public function render_security_editor() {
         $this->save_section_if_posted('security');
         ?>
@@ -589,9 +647,6 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // FAQ EDITOR
-    // =========================================================
     public function render_faq_editor() {
         $this->save_section_if_posted('faq');
         ?>
@@ -628,9 +683,6 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // DOWNLOADS EDITOR
-    // =========================================================
     public function render_downloads_editor() {
         if (isset($_POST['ioi_save_downloads']) && check_admin_referer('ioi_save_downloads')) {
             update_option('ioi_apk_url', esc_url_raw($_POST['apk_url']));
@@ -667,9 +719,6 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // BRANDING EDITOR
-    // =========================================================
     public function render_branding_editor() {
         if (isset($_POST['ioi_save_branding']) && check_admin_referer('ioi_save_branding')) {
             update_option('ioi_logo_id', intval($_POST['logo_id']));
@@ -738,9 +787,6 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // NAV & FOOTER EDITOR
-    // =========================================================
     public function render_nav_editor() {
         $this->save_section_if_posted('nav');
         $this->save_section_if_posted('footer');
@@ -784,9 +830,6 @@ class IOI_Content_Manager {
         <?php
     }
     
-    // =========================================================
-    // TRANSLATIONS
-    // =========================================================
     public function render_translations() {
         global $wpdb;
         
@@ -885,9 +928,6 @@ class IOI_Content_Manager {
         return $html;
     }
     
-    // =========================================================
-    // HELPERS
-    // =========================================================
     private function get_string($section, $key) {
         global $wpdb;
         
@@ -913,12 +953,10 @@ class IOI_Content_Manager {
         
         global $wpdb;
         
-        // Handle options
         if (isset($_POST['ioi_spots_remaining'])) {
             update_option('ioi_spots_remaining', intval($_POST['ioi_spots_remaining']));
         }
         
-        // Handle stats (they're in 'stats' section)
         for ($i = 1; $i <= 4; $i++) {
             if (isset($_POST["stat_{$i}_value"])) {
                 $this->update_string('stats', "stat_{$i}_value", sanitize_text_field($_POST["stat_{$i}_value"]));
@@ -928,7 +966,6 @@ class IOI_Content_Manager {
             }
         }
         
-        // Handle other strings
         foreach ($_POST as $key => $value) {
             if (in_array($key, ['ioi_section', '_wpnonce', '_wp_http_referer', 'submit', 'ioi_spots_remaining'])) continue;
             if (strpos($key, 'stat_') === 0) continue;
@@ -962,7 +999,6 @@ class IOI_Content_Manager {
         ", $string_id, $value, $value));
     }
     
-    // AJAX handlers
     public function ajax_save_content() {
         check_ajax_referer('ioi_admin', 'nonce');
         wp_send_json_success();
@@ -983,7 +1019,6 @@ class IOI_Content_Manager {
         $lang = sanitize_text_field($_POST['lang']);
         $value = sanitize_textarea_field($_POST['value']);
         
-        // Get language ID
         $lang_id = $wpdb->get_var($wpdb->prepare(
             "SELECT id FROM {$wpdb->prefix}ioi_languages WHERE code = %s",
             $lang
@@ -994,7 +1029,6 @@ class IOI_Content_Manager {
             return;
         }
         
-        // Get string ID
         $string_id = $wpdb->get_var($wpdb->prepare("
             SELECT str.id FROM {$wpdb->prefix}ioi_strings str
             JOIN {$wpdb->prefix}ioi_sections s ON s.id = str.section_id
@@ -1006,7 +1040,6 @@ class IOI_Content_Manager {
             return;
         }
         
-        // Upsert translation
         $wpdb->query($wpdb->prepare("
             INSERT INTO {$wpdb->prefix}ioi_translations (string_id, language_id, content, is_approved)
             VALUES (%d, %d, %s, 1)
@@ -1017,5 +1050,4 @@ class IOI_Content_Manager {
     }
 }
 
-// Initialize
 IOI_Content_Manager::instance();

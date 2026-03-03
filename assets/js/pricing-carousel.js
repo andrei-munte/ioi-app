@@ -23,11 +23,11 @@
     var lastTime = 0;
     var animationId = null;
     
-    // SENSITIVITY - lower = slower/less sensitive
-    var dragSensitivity = 0.15;  // Was 0.3 - now half as sensitive
-    var momentumFriction = 0.92; // Was 0.95 - now slows down faster
-    var snapSpeed = 0.08;        // Was 0.15 - now snaps slower
-    var minVelocityForMomentum = 3; // Was 2 - need faster swipe for momentum
+    // TUNING - slower, smoother feel
+    var dragSensitivity = 0.10;
+    var momentumFriction = 0.88;
+    var snapSpeed = 0.06;
+    var minVelocityForMomentum = 2.5;
     
     function positionCards() {
         cards.forEach(function(card, index) {
@@ -116,17 +116,17 @@
         var currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         var deltaX = currentX - startX;
         
-        // Apply drag sensitivity
-        currentAngle = startAngle - (deltaX * dragSensitivity);
+        // Natural direction: swipe left = see next card on right
+        currentAngle = startAngle + (deltaX * dragSensitivity);
         positionCards();
         
         // Calculate velocity for momentum
         var now = Date.now();
         var dt = now - lastTime;
         if (dt > 0) {
-            velocity = -(currentX - lastX) * dragSensitivity / dt * 16;
-            // Cap velocity to prevent crazy speeds
-            velocity = Math.max(-8, Math.min(8, velocity));
+            velocity = (currentX - lastX) * dragSensitivity / dt * 16;
+            // Cap velocity to prevent wild spinning
+            velocity = Math.max(-5, Math.min(5, velocity));
         }
         lastX = currentX;
         lastTime = now;

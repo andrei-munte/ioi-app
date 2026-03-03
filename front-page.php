@@ -125,49 +125,57 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
     </div>
 </section>
 
-<!-- PRICING SECTION - 3D CAROUSEL -->
+<!-- PRICING SECTION -->
 <section id="pricing" class="pricing">
     <div class="container">
         <div class="section-header">
-            <h2>Simple, Transparent Pricing</h2>
-            <p>Choose commission-based trading or subscribe for zero fees</p>
+            <h2><?php echo esc_html(get_option('ioi_pricing_title', 'Simple, Transparent Pricing')); ?></h2>
+            <p><?php echo esc_html(get_option('ioi_pricing_subtitle', 'Choose commission-based trading or subscribe for zero fees')); ?></p>
         </div>
         
         <div class="pricing-models">
             <div class="pricing-model-card">
                 <div class="model-header">
-                    <h3>Commission</h3>
+                    <h3><?php echo esc_html(get_option('ioi_commission_title', 'Commission')); ?></h3>
                     <div class="model-price">
-                        <span class="amount"><?php echo esc_html($commission_rate); ?>%</span>
+                        <span class="amount"><?php echo esc_html(get_option('ioi_commission_rate', '0.065')); ?>%</span>
                         <span class="period">per trade</span>
                     </div>
                 </div>
-                <p class="model-tagline">Pay per trade, no commitment</p>
+                <p class="model-tagline"><?php echo esc_html(get_option('ioi_commission_tagline', 'Pay per trade, no commitment')); ?></p>
                 <ul class="model-features">
-                    <li>$0 monthly subscription</li>
-                    <li><?php echo esc_html($commission_rate); ?>% on every buy and sell</li>
-                    <li>Unlimited trading budget</li>
-                    <li>All features included</li>
+                    <?php 
+                    $comm_features = explode("\n", get_option('ioi_commission_features', "\$0 monthly subscription\n0.065% on every buy and sell\nUnlimited trading budget\nAll features included"));
+                    foreach ($comm_features as $feature) :
+                        $feature = trim($feature);
+                        if (empty($feature)) continue;
+                    ?>
+                    <li><?php echo esc_html($feature); ?></li>
+                    <?php endforeach; ?>
                 </ul>
-                <p class="model-note">Best for testing or occasional trading</p>
+                <p class="model-note"><?php echo esc_html(get_option('ioi_commission_note', 'Best for testing or occasional trading')); ?></p>
             </div>
             
             <div class="pricing-model-card">
                 <div class="model-header">
-                    <h3>Subscription</h3>
+                    <h3><?php echo esc_html(get_option('ioi_subscription_title', 'Subscription')); ?></h3>
                     <div class="model-price">
-                        <span class="amount">$5-$1k</span>
+                        <span class="amount"><?php echo esc_html(get_option('ioi_subscription_price_range', '$5-$1k')); ?></span>
                         <span class="period">per month</span>
                     </div>
                 </div>
-                <p class="model-tagline">Zero trading fees, fixed monthly cost</p>
+                <p class="model-tagline"><?php echo esc_html(get_option('ioi_subscription_tagline', 'Zero trading fees, fixed monthly cost')); ?></p>
                 <ul class="model-features">
-                    <li>0% commission on all trades</li>
-                    <li>5 tiers to choose from</li>
-                    <li>Budget limits $100 to $25,000</li>
-                    <li>Upgrade or downgrade anytime</li>
+                    <?php 
+                    $sub_features = explode("\n", get_option('ioi_subscription_features', "0% commission on all trades\n5 tiers to choose from\nBudget limits \$100 to \$25,000\nUpgrade or downgrade anytime"));
+                    foreach ($sub_features as $feature) :
+                        $feature = trim($feature);
+                        if (empty($feature)) continue;
+                    ?>
+                    <li><?php echo esc_html($feature); ?></li>
+                    <?php endforeach; ?>
                 </ul>
-                <p class="model-note">Best for active traders wanting predictable costs</p>
+                <p class="model-note"><?php echo esc_html(get_option('ioi_subscription_note', 'Best for active traders wanting predictable costs')); ?></p>
             </div>
         </div>
         
@@ -215,12 +223,11 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
                 </div>
                 
                 <div class="carousel-hint">
-                    <span class="hint-icon">&#128070;</span>
+                    <span class="hint-icon">👆</span>
                     <span>Drag to explore tiers</span>
                 </div>
             </div>
         </div>
-        
     </div>
 </section>
 
