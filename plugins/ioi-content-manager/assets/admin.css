@@ -1,31 +1,55 @@
-/* IOI Content Manager - Admin Styles */
+/**
+ * IOI Content Manager - Admin Styles
+ */
 
+/* General Admin Styling */
 .ioi-admin {
-    max-width: 1200px;
+    color: #f0f0f0;
+}
+
+.ioi-admin h1,
+.ioi-admin h2,
+.ioi-admin h3,
+.ioi-admin h4 {
+    color: #f0f0f0;
+}
+
+.ioi-admin p,
+.ioi-admin label,
+.ioi-admin span,
+.ioi-admin td,
+.ioi-admin th {
+    color: #ccc;
+}
+
+.ioi-admin a {
+    color: #D4AF37;
+}
+
+.ioi-admin a:hover {
+    color: #f0d060;
 }
 
 /* Dashboard Grid */
 .ioi-dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     margin: 30px 0;
 }
 
 .ioi-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 25px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s ease;
     display: block;
+    padding: 25px;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
 .ioi-card:hover {
     border-color: #D4AF37;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transform: translateY(-2px);
 }
 
@@ -39,12 +63,13 @@
 
 .ioi-card h3 {
     margin: 10px 0 5px;
-    color: #1d2327;
+    color: #fff;
+    font-size: 16px;
 }
 
 .ioi-card p {
     margin: 0;
-    color: #666;
+    color: #888;
     font-size: 13px;
 }
 
@@ -52,8 +77,8 @@
 .ioi-stats-bar {
     display: flex;
     gap: 30px;
-    background: #f0f0f1;
-    padding: 20px 30px;
+    padding: 20px;
+    background: #1e1e1e;
     border-radius: 8px;
     margin-top: 30px;
 }
@@ -69,106 +94,263 @@
 }
 
 .ioi-stats-bar .stat span {
-    color: #666;
+    color: #888;
     font-size: 13px;
 }
 
-/* Forms */
+/* Form Styling */
 .ioi-form {
-    background: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-top: 20px;
+    max-width: 800px;
 }
 
-.ioi-form h2 {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+.ioi-admin .form-table th {
+    color: #f0f0f0;
+    padding: 15px 10px 15px 0;
+    font-weight: 600;
+}
+
+.ioi-admin .form-table td {
+    padding: 10px 0;
+}
+
+.ioi-admin .form-table label {
+    color: #ccc;
+}
+
+.ioi-admin input[type="text"],
+.ioi-admin input[type="url"],
+.ioi-admin input[type="email"],
+.ioi-admin input[type="number"],
+.ioi-admin input[type="password"],
+.ioi-admin textarea,
+.ioi-admin select {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #f0f0f0;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+
+.ioi-admin input[type="text"]:focus,
+.ioi-admin input[type="url"]:focus,
+.ioi-admin input[type="email"]:focus,
+.ioi-admin input[type="number"]:focus,
+.ioi-admin input[type="password"]:focus,
+.ioi-admin textarea:focus,
+.ioi-admin select:focus {
+    border-color: #D4AF37;
+    outline: none;
+    box-shadow: 0 0 0 1px #D4AF37;
+}
+
+.ioi-admin input::placeholder,
+.ioi-admin textarea::placeholder {
+    color: #666;
+}
+
+.ioi-admin .description {
+    color: #888;
+    font-style: italic;
+}
+
+/* Tier Form Specific */
+#tier-form {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 25px;
     margin-top: 30px;
 }
 
-.ioi-form h2:first-of-type {
+#tier-form h3,
+#tier-form-title {
+    color: #D4AF37;
     margin-top: 0;
-}
-
-/* Feature Cards */
-.ioi-feature-card {
-    background: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 15px;
     margin-bottom: 20px;
+    font-size: 18px;
 }
 
-.ioi-feature-card h3 {
-    margin: 0 0 10px;
+#tier-form .form-table th {
+    color: #f0f0f0;
+    width: 180px;
+}
+
+#tier-form .form-table td {
+    color: #ccc;
+}
+
+#tier-form label {
+    color: #ccc;
+}
+
+#tier-form .description {
+    color: #888;
+    margin-top: 5px;
+}
+
+#tier-form input[type="text"],
+#tier-form input[type="number"],
+#tier-form textarea {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #f0f0f0;
+}
+
+#tier-form input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Buttons */
+.ioi-admin .button {
+    background: #333;
+    border-color: #444;
+    color: #f0f0f0;
+}
+
+.ioi-admin .button:hover {
+    background: #444;
+    border-color: #555;
+    color: #fff;
+}
+
+.ioi-admin .button-primary {
+    background: #D4AF37;
+    border-color: #D4AF37;
+    color: #000;
+}
+
+.ioi-admin .button-primary:hover {
+    background: #e5c04a;
+    border-color: #e5c04a;
+    color: #000;
+}
+
+/* Tables */
+.ioi-admin .wp-list-table {
+    border: 1px solid #333;
+}
+
+.ioi-admin .wp-list-table thead th {
+    background: #1a1a1a;
     color: #D4AF37;
+    border-bottom: 1px solid #333;
 }
 
-/* FAQ Items */
-.ioi-faq-item {
-    background: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
+.ioi-admin .wp-list-table tbody tr {
+    background: #1e1e1e;
 }
 
-.ioi-faq-item h3 {
-    margin: 0 0 10px;
-    color: #D4AF37;
+.ioi-admin .wp-list-table tbody tr:nth-child(odd) {
+    background: #222;
 }
 
-/* Pricing Table */
-#pricing-tiers {
-    margin-top: 20px;
+.ioi-admin .wp-list-table tbody td {
+    border-bottom: 1px solid #333;
+    color: #ccc;
+    vertical-align: middle;
 }
 
-#pricing-tiers .popular-badge {
+.ioi-admin .wp-list-table code {
+    background: #333;
+    color: #888;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Popular Badge */
+.popular-badge {
     background: #D4AF37;
     color: #000;
     padding: 2px 8px;
     border-radius: 3px;
     font-size: 11px;
-    margin-left: 5px;
+    font-weight: 600;
+    margin-left: 8px;
 }
 
-#pricing-tiers td {
-    vertical-align: top;
+/* Feature Cards in Admin */
+.ioi-feature-card,
+.ioi-faq-item {
+    background: #1e1e1e;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border: 1px solid #333;
 }
 
-/* Image Upload */
-.ioi-image-upload {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+.ioi-feature-card h3,
+.ioi-faq-item h3 {
+    color: #D4AF37;
+    margin-top: 0;
+    font-size: 16px;
 }
 
-.ioi-image-upload img {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* Translation Table */
+/* Translation Input */
 .translation-input {
-    width: 100% !important;
+    transition: border-color 0.3s ease;
 }
 
 .translation-input:focus {
-    border-color: #D4AF37;
-    box-shadow: 0 0 0 1px #D4AF37;
+    border-color: #D4AF37 !important;
+}
+
+/* Checkbox styling */
+.ioi-admin input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #D4AF37;
+}
+
+/* Image Upload */
+.ioi-image-upload img {
+    display: block;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #333;
+}
+
+.ioi-image-upload .button {
+    margin-right: 5px;
+}
+
+/* Notices */
+.ioi-admin .notice {
+    border-left-color: #D4AF37;
+}
+
+.ioi-admin .notice-success {
+    border-left-color: #46b450;
+}
+
+.ioi-admin .notice-error {
+    border-left-color: #dc3232;
+}
+
+/* Horizontal Rule */
+.ioi-admin hr {
+    border: none;
+    border-top: 1px solid #333;
+    margin: 30px 0;
 }
 
 /* Responsive */
-@media (max-width: 782px) {
+@media screen and (max-width: 782px) {
     .ioi-dashboard-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
     }
     
     .ioi-stats-bar {
-        flex-direction: column;
-        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    #tier-form .form-table th {
+        width: 100%;
+        display: block;
+        padding-bottom: 5px;
+    }
+    
+    #tier-form .form-table td {
+        display: block;
+        padding-left: 0;
     }
 }
