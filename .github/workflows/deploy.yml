@@ -35,6 +35,15 @@ jobs:
           --exclude='sql' \
           ./ $SSH_USER@$SSH_HOST:domains/getioi.app/public_html/wp-content/themes/ioi-app/
 
+    - name: Create Plugin Directory
+      env:
+        SSH_USER: ${{ secrets.FTP_USERNAME }}
+        SSH_HOST: ${{ secrets.FTP_SERVER }}
+        SSH_PORT: ${{ secrets.SSH_PORT }}
+      run: |
+        ssh -i ~/.ssh/id_ed25519 -p $SSH_PORT $SSH_USER@$SSH_HOST \
+          "mkdir -p domains/getioi.app/public_html/wp-content/plugins/ioi-content-manager"
+
     - name: Deploy Plugin
       env:
         SSH_USER: ${{ secrets.FTP_USERNAME }}
