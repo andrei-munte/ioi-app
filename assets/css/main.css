@@ -875,8 +875,192 @@ h6 { font-size: 0.875rem; }
 .mt-md { margin-top: var(--space-md); }
 .mt-lg { margin-top: var(--space-lg); }
 .mt-xl { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+.mt-3xl { margin-top: var(--space-3xl); }
 
 .mb-sm { margin-bottom: var(--space-sm); }
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
 .mb-xl { margin-bottom: var(--space-xl); }
+
+/* ============================================================
+   PRICING SECTION - Updated
+   ============================================================ */
+
+.pricing-models-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xl);
+    margin-bottom: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+    .pricing-models-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pricing-card {
+    padding: var(--space-2xl);
+    text-align: center;
+}
+
+.pricing-card h3,
+.pricing-card h4 {
+    color: var(--ioi-white);
+    margin-bottom: var(--space-sm);
+}
+
+.pricing-card .price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--ioi-gold);
+    margin: var(--space-md) 0;
+}
+
+.pricing-card .price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--ioi-gray-3);
+}
+
+.pricing-tagline {
+    color: var(--ioi-gray-4);
+    margin-bottom: var(--space-lg);
+}
+
+.pricing-features {
+    list-style: none;
+    text-align: left;
+    margin: var(--space-xl) 0;
+    padding: 0;
+}
+
+.pricing-features li {
+    padding: var(--space-sm) 0;
+    color: var(--ioi-gray-4);
+    border-bottom: 1px solid var(--ioi-dark-4);
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-note {
+    font-size: 0.85rem;
+    color: var(--ioi-gray-3);
+    font-style: italic;
+    margin-bottom: var(--space-lg);
+}
+
+/* Subscription Tiers Grid */
+.pricing-tiers-section {
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--ioi-dark-4);
+}
+
+.pricing-tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-md);
+}
+
+@media (max-width: 1024px) {
+    .pricing-tiers-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .pricing-tiers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.pricing-tier-card {
+    padding: var(--space-lg);
+    text-align: center;
+    position: relative;
+}
+
+.pricing-tier-card h4 {
+    font-size: 1rem;
+    color: var(--ioi-white);
+    margin-bottom: var(--space-xs);
+}
+
+.tier-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ioi-gold);
+}
+
+.tier-price span {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--ioi-gray-3);
+}
+
+.tier-budget {
+    font-size: 0.85rem;
+    color: var(--ioi-gray-4);
+    margin: var(--space-xs) 0;
+}
+
+.tier-bots {
+    font-size: 0.75rem;
+    color: var(--ioi-gray-3);
+    margin-bottom: var(--space-md);
+}
+
+/* Highlight Popular Tier */
+.pricing-tier-card.card-highlight {
+    border-color: var(--ioi-gold);
+    transform: scale(1.05);
+}
+
+.pricing-tier-card.card-highlight .badge-top {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ioi-gold);
+    color: var(--ioi-black);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+}
+
+/* Button Variants */
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--ioi-gray-2);
+    color: var(--ioi-white);
+}
+
+.btn-outline:hover {
+    border-color: var(--ioi-gold);
+    color: var(--ioi-gold);
+}
+
+.btn-sm {
+    padding: var(--space-sm) var(--space-md);
+    font-size: 0.85rem;
+}
+
+/* Step Number Styling */
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--ioi-gold-20);
+    border: 2px solid var(--ioi-gold);
+    color: var(--ioi-gold);
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-lg);
+}

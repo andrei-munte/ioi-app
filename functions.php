@@ -285,6 +285,55 @@ function ioi_get_spots() {
 }
 
 /**
+ * Get default pricing tiers
+ * Based on actual app subscription structure
+ */
+function ioi_get_default_tiers() {
+    return [
+        'STARTER' => [
+            'name' => 'Starter',
+            'price' => 5,
+            'budget' => 100,
+            'max_bots' => 1,
+            'features' => ['$100 trading budget', '1 real bot + 2 test bots', 'Zero platform fees', 'All strategies included'],
+            'is_popular' => false,
+        ],
+        'BASIC' => [
+            'name' => 'Basic',
+            'price' => 100,
+            'budget' => 2500,
+            'max_bots' => 3,
+            'features' => ['$2,500 trading budget', '3 real bots + 5 test bots', 'Zero platform fees', 'All strategies included'],
+            'is_popular' => true,
+        ],
+        'PRO' => [
+            'name' => 'Pro',
+            'price' => 250,
+            'budget' => 5000,
+            'max_bots' => 5,
+            'features' => ['$5,000 trading budget', '5 real bots + 10 test bots', 'Zero platform fees', 'All strategies included'],
+            'is_popular' => false,
+        ],
+        'ADVANCED' => [
+            'name' => 'Advanced',
+            'price' => 500,
+            'budget' => 10000,
+            'max_bots' => 10,
+            'features' => ['$10,000 trading budget', '10 real bots + 15 test bots', 'Zero platform fees', 'Priority support'],
+            'is_popular' => false,
+        ],
+        'ENTERPRISE' => [
+            'name' => 'Enterprise',
+            'price' => 1000,
+            'budget' => 25000,
+            'max_bots' => 99,
+            'features' => ['$25,000 trading budget', 'Unlimited bots', 'Zero platform fees', 'Dedicated support'],
+            'is_popular' => false,
+        ],
+    ];
+}
+
+/**
  * ============================================================
  * ADMIN: Clear translation cache
  * ============================================================

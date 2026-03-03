@@ -6,6 +6,8 @@
 
 get_header();
 $spots = ioi_get_spots();
+$pricing_tiers = get_option('ioi_pricing_tiers', ioi_get_default_tiers());
+$commission_rate = get_option('ioi_commission_rate', '0.065');
 ?>
 
 <!-- Hero -->
@@ -56,17 +58,17 @@ $spots = ioi_get_spots();
         </div>
         <div class="grid grid-3 gap-xl">
             <div class="card text-center">
-                <div class="step-number" style="margin: 0 auto var(--space-lg);">1</div>
+                <div class="step-number">1</div>
                 <h3><?php ioi_e('how_it_works', 'step_1_title'); ?></h3>
                 <p class="text-gray mt-md"><?php ioi_e('how_it_works', 'step_1_desc'); ?></p>
             </div>
             <div class="card text-center">
-                <div class="step-number" style="margin: 0 auto var(--space-lg);">2</div>
+                <div class="step-number">2</div>
                 <h3><?php ioi_e('how_it_works', 'step_2_title'); ?></h3>
                 <p class="text-gray mt-md"><?php ioi_e('how_it_works', 'step_2_desc'); ?></p>
             </div>
             <div class="card text-center">
-                <div class="step-number" style="margin: 0 auto var(--space-lg);">3</div>
+                <div class="step-number">3</div>
                 <h3><?php ioi_e('how_it_works', 'step_3_title'); ?></h3>
                 <p class="text-gray mt-md"><?php ioi_e('how_it_works', 'step_3_desc'); ?></p>
             </div>
@@ -121,35 +123,67 @@ $spots = ioi_get_spots();
     <div class="container">
         <div class="section-header">
             <h2><?php ioi_e('pricing', 'section_title'); ?></h2>
-            <p><?php ioi_e('pricing', 'section_subtitle'); ?></p>
+            <p>Choose commission-based trading or subscribe for zero fees.</p>
         </div>
-        <div class="pricing-grid">
-            <!-- Commission -->
-            <div class="card pricing-card">
-                <h3><?php ioi_e('pricing', 'commission_title'); ?></h3>
-                <div class="price"><?php ioi_e('pricing', 'commission_price'); ?><span><?php ioi_e('pricing', 'commission_suffix'); ?></span></div>
-                <p class="text-gray"><?php ioi_e('pricing', 'commission_tagline'); ?></p>
+        
+        <!-- Two Pricing Models Side by Side -->
+        <div class="pricing-models-grid">
+            
+            <!-- Commission Model -->
+            <div class="card pricing-card pricing-commission">
+                <h3>Commission</h3>
+                <div class="price"><?php echo esc_html($commission_rate); ?>%<span> / trade</span></div>
+                <p class="pricing-tagline">Pay per trade, no commitment</p>
                 <ul class="pricing-features">
-                    <?php for ($i = 1; $i <= 4; $i++) : ?>
-                    <li>✓ <?php ioi_e('pricing', "commission_f{$i}"); ?></li>
-                    <?php endfor; ?>
+                    <li>✓ $0 monthly subscription</li>
+                    <li>✓ <?php echo esc_html($commission_rate); ?>% on every buy & sell</li>
+                    <li>✓ Unlimited trading budget</li>
+                    <li>✓ All features included</li>
+                    <li>✓ Cancel anytime</li>
                 </ul>
-                <a href="#download" class="btn btn-secondary btn-block"><?php ioi_e('pricing', 'commission_cta'); ?></a>
+                <p class="pricing-note">Best for: Testing the platform, smaller budgets, or occasional trading</p>
+                <a href="#download" class="btn btn-secondary btn-block">Start with Commission</a>
             </div>
-            <!-- Subscription -->
-            <div class="card card-highlight pricing-card">
-                <span class="badge badge-top"><?php ioi_e('pricing', 'subscription_badge'); ?></span>
-                <h3><?php ioi_e('pricing', 'subscription_title'); ?></h3>
-                <div class="price"><?php ioi_e('pricing', 'subscription_price'); ?><span><?php ioi_e('pricing', 'subscription_suffix'); ?></span></div>
-                <p class="text-gray"><?php ioi_e('pricing', 'subscription_tagline'); ?></p>
+            
+            <!-- Subscription Intro -->
+            <div class="card pricing-card pricing-subscription-intro">
+                <h3>Subscription</h3>
+                <div class="price">$5 - $1,000<span> / month</span></div>
+                <p class="pricing-tagline">Zero trading fees, fixed cost</p>
                 <ul class="pricing-features">
-                    <?php for ($i = 1; $i <= 4; $i++) : ?>
-                    <li>✓ <?php ioi_e('pricing', "subscription_f{$i}"); ?></li>
-                    <?php endfor; ?>
+                    <li>✓ 0% commission on all trades</li>
+                    <li>✓ 5 tiers from $5 to $1,000/mo</li>
+                    <li>✓ Budget limits: $100 - $25,000</li>
+                    <li>✓ More bots allowed per tier</li>
+                    <li>✓ Upgrade/downgrade anytime</li>
                 </ul>
-                <a href="#download" class="btn btn-primary btn-block"><?php ioi_e('pricing', 'subscription_cta'); ?></a>
+                <p class="pricing-note">Best for: Active traders who want predictable costs</p>
+                <a href="#pricing-tiers" class="btn btn-primary btn-block">See All Tiers ↓</a>
+            </div>
+            
+        </div>
+        
+        <!-- Subscription Tiers Detail -->
+        <div class="pricing-tiers-section" id="pricing-tiers">
+            <h3 class="text-center mt-3xl mb-xl">Subscription Tiers</h3>
+            <div class="pricing-tiers-grid">
+                <?php foreach ($pricing_tiers as $code => $tier) : 
+                    $is_popular = !empty($tier['is_popular']);
+                ?>
+                <div class="card pricing-tier-card <?php echo $is_popular ? 'card-highlight' : ''; ?>">
+                    <?php if ($is_popular) : ?>
+                    <span class="badge badge-top">POPULAR</span>
+                    <?php endif; ?>
+                    <h4><?php echo esc_html($tier['name']); ?></h4>
+                    <div class="tier-price">$<?php echo esc_html($tier['price']); ?><span>/mo</span></div>
+                    <div class="tier-budget">$<?php echo number_format($tier['budget']); ?> budget</div>
+                    <div class="tier-bots"><?php echo esc_html($tier['max_bots']); ?> <?php echo $tier['max_bots'] >= 99 ? 'unlimited' : 'real'; ?> bot<?php echo $tier['max_bots'] > 1 ? 's' : ''; ?></div>
+                    <a href="#download" class="btn <?php echo $is_popular ? 'btn-primary' : 'btn-outline'; ?> btn-sm btn-block">Select</a>
+                </div>
+                <?php endforeach; ?>
             </div>
         </div>
+        
     </div>
 </section>
 

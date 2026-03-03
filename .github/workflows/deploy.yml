@@ -19,8 +19,8 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.FTP_SERVER }} >> ~/.ssh/known_hosts
-    
-    - name: Deploy via rsync over SSH
+
+    - name: Deploy Theme
       env:
         SSH_USER: ${{ secrets.FTP_USERNAME }}
         SSH_HOST: ${{ secrets.FTP_SERVER }}
@@ -31,4 +31,16 @@ jobs:
           --exclude='.git' \
           --exclude='.github' \
           --exclude='node_modules' \
+          --exclude='plugins' \
+          --exclude='sql' \
           ./ $SSH_USER@$SSH_HOST:domains/getioi.app/public_html/wp-content/themes/ioi-app/
+
+    - name: Deploy Plugin
+      env:
+        SSH_USER: ${{ secrets.FTP_USERNAME }}
+        SSH_HOST: ${{ secrets.FTP_SERVER }}
+        SSH_PORT: ${{ secrets.SSH_PORT }}
+      run: |
+        rsync -avz --delete \
+          -e "ssh -i ~/.ssh/id_ed25519 -p $SSH_PORT" \
+          ./plugins/ioi-content-manager/ $SSH_USER@$SSH_HOST:domains/getioi.app/public_html/wp-content/plugins/ioi-content-manager/

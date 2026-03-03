@@ -15,3 +15,6 @@ vendor/
 
 # Build
 *.zip
+
+# SQL files (for phpMyAdmin only, not deployed)
+# sql/
