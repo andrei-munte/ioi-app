@@ -16,6 +16,12 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
+<?php
+// Determine base URL for section links
+$is_front_page = is_front_page();
+$section_base = $is_front_page ? '' : home_url('/');
+?>
+
 <!-- Navigation -->
 <nav class="site-nav">
     <div class="nav-inner">
@@ -27,12 +33,18 @@
         </a>
         
         <ul class="nav-menu" id="primary-menu">
-            <li><a href="#how-it-works"><?php ioi_e('nav', 'link_how_it_works'); ?></a></li>
-            <li><a href="#features"><?php ioi_e('nav', 'link_features'); ?></a></li>
-            <li><a href="#security"><?php ioi_e('nav', 'link_security'); ?></a></li>
-            <li><a href="#pricing"><?php ioi_e('nav', 'link_pricing'); ?></a></li>
-            <li><a href="#download"><?php ioi_e('nav', 'link_download'); ?></a></li>
-            <li><a href="<?php echo home_url('/how-to/'); ?>"><?php ioi_e('nav', 'link_guide'); ?></a></li>
+            <li><a href="<?php echo esc_url($section_base); ?>#how-it-works"><?php ioi_e('nav', 'link_how_it_works'); ?></a></li>
+            <li><a href="<?php echo esc_url($section_base); ?>#features"><?php ioi_e('nav', 'link_features'); ?></a></li>
+            <li><a href="<?php echo esc_url($section_base); ?>#security"><?php ioi_e('nav', 'link_security'); ?></a></li>
+            <li><a href="<?php echo esc_url($section_base); ?>#pricing"><?php ioi_e('nav', 'link_pricing'); ?></a></li>
+            <li><a href="<?php echo esc_url($section_base); ?>#download"><?php ioi_e('nav', 'link_download'); ?></a></li>
+            <li class="has-dropdown">
+                <a href="#" class="dropdown-toggle">How To <span class="dropdown-arrow">▾</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="<?php echo home_url('/setup-guide/'); ?>">App Setup Guide</a></li>
+                    <li><a href="<?php echo home_url('/bot-settings-guide/'); ?>">Bot Settings Guide</a></li>
+                </ul>
+            </li>
         </ul>
         
         <?php echo ioi_language_switcher(); ?>

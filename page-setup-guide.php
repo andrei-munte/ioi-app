@@ -244,7 +244,7 @@ get_header();
                                 <span class="trust-icon">⏰</span>
                                 <div class="trust-content">
                                     <strong>Collected at Thresholds</strong>
-                                    <p>Commissions accumulate over time and are only collected when reaching a minimum threshold (e.g., $10). You won't see tiny withdrawals after every trade.</p>
+                                    <p>Commissions accumulate over time and are only collected when reaching the minimum threshold (shown in the app). You won't see tiny withdrawals after every trade.</p>
                                 </div>
                             </div>
                             
@@ -417,6 +417,20 @@ get_header();
                         </tr>
                     </tbody>
                 </table>
+            </section>
+
+            <!-- Next Steps -->
+            <section class="setup-next-steps">
+                <h2>🎯 Next Steps</h2>
+                <p>Now that your bot is running, learn how to optimize your settings:</p>
+                <div class="next-step-card">
+                    <div class="next-step-icon">⚙️</div>
+                    <div class="next-step-content">
+                        <h3>Bot Settings Guide</h3>
+                        <p>Understand each configuration option, learn when to use stop-loss protection, and discover the difference between graceful and force shutdown.</p>
+                        <a href="<?php echo home_url('/bot-settings-guide/'); ?>" class="btn btn-primary">Read Bot Settings Guide →</a>
+                    </div>
+                </div>
             </section>
 
             <!-- Need Help -->
@@ -608,6 +622,51 @@ get_header();
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.setup-next-steps {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.03));
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+}
+
+.setup-next-steps h2 {
+    color: #D4AF37;
+    margin-bottom: 0.5rem;
+}
+
+.next-step-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+}
+
+.next-step-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.next-step-content h3 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.next-step-content p {
+    color: #aaa;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .next-step-card {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 @media (max-width: 768px) {

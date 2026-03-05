@@ -1,5 +1,10 @@
 </main>
 
+<?php
+// Determine base URL for section links
+$section_base = is_front_page() ? '' : home_url('/');
+?>
+
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
@@ -16,18 +21,20 @@
             <div class="footer-col">
                 <h4><?php ioi_e('footer', 'col_product'); ?></h4>
                 <ul>
-                    <li><a href="#how-it-works"><?php ioi_e('nav', 'link_how_it_works'); ?></a></li>
-                    <li><a href="#features"><?php ioi_e('nav', 'link_features'); ?></a></li>
-                    <li><a href="#pricing"><?php ioi_e('nav', 'link_pricing'); ?></a></li>
-                    <li><a href="#download"><?php ioi_e('nav', 'link_download'); ?></a></li>
+                    <li><a href="<?php echo esc_url($section_base); ?>#how-it-works"><?php ioi_e('nav', 'link_how_it_works'); ?></a></li>
+                    <li><a href="<?php echo esc_url($section_base); ?>#features"><?php ioi_e('nav', 'link_features'); ?></a></li>
+                    <li><a href="<?php echo esc_url($section_base); ?>#pricing"><?php ioi_e('nav', 'link_pricing'); ?></a></li>
+                    <li><a href="<?php echo esc_url($section_base); ?>#download"><?php ioi_e('nav', 'link_download'); ?></a></li>
                 </ul>
             </div>
             
             <div class="footer-col">
                 <h4><?php ioi_e('footer', 'col_resources'); ?></h4>
                 <ul>
-                    <li><a href="<?php echo home_url('/how-to/'); ?>"><?php ioi_e('nav', 'link_guide'); ?></a></li>
+                    <li><a href="<?php echo home_url('/setup-guide/'); ?>">App Setup Guide</a></li>
+                    <li><a href="<?php echo home_url('/bot-settings-guide/'); ?>">Bot Settings Guide</a></li>
                     <li><a href="<?php echo home_url('/faq/'); ?>">FAQ</a></li>
+                    <li><a href="<?php echo home_url('/contact/'); ?>">Contact</a></li>
                 </ul>
             </div>
             

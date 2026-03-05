@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Mobile dropdown toggle
+    const dropdownToggles = document.querySelectorAll('.nav-menu .dropdown-toggle');
+    dropdownToggles.forEach(function(dropdownToggle) {
+        dropdownToggle.addEventListener('click', function(e) {
+            // Only handle click on mobile
+            if (window.innerWidth <= 900) {
+                e.preventDefault();
+                const parent = this.closest('.has-dropdown');
+                parent.classList.toggle('active');
+            }
+        });
+    });
+    
     // FAQ accordion
     document.querySelectorAll('.faq-question').forEach(function(question) {
         question.addEventListener('click', function() {
@@ -36,9 +49,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    document.querySelectorAll('a[href^="#"], a[href*="/#"]').forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
+            const href = this.getAttribute('href');
+            
+            // Handle links like "/#section" or "#section"
+            let targetId;
+            if (href.includes('/#')) {
+                // Link to homepage section from another page
+                // Let the browser navigate, the hash will be handled on page load
+                return;
+            } else if (href.startsWith('#')) {
+                targetId = href;
+            } else {
+                return;
+            }
+            
             if (targetId === '#') return;
             
             const target = document.querySelector(targetId);
@@ -53,6 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
+                // Close any open dropdowns
+                document.querySelectorAll('.has-dropdown.active').forEach(function(dd) {
+                    dd.classList.remove('active');
+                });
+                
                 // Smooth scroll to target
                 target.scrollIntoView({
                     behavior: 'smooth',
@@ -64,6 +95,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Handle hash on page load (for links from other pages)
+    if (window.location.hash) {
+        setTimeout(function() {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }, 100);
+    }
     
     // Navbar background on scroll
     const nav = document.querySelector('.site-nav');
@@ -77,30 +121,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Animate elements on scroll (intersection observer)
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-            }
-        });
-    }, observerOptions);
-    
-    // Observe cards and sections
-    document.querySelectorAll('.card, .stat-item, .section-header').forEach(function(el) {
-        observer.observe(el);
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.has-dropdown')) {
+            document.querySelectorAll('.has-dropdown.active').forEach(function(dd) {
+                dd.classList.remove('active');
+            });
+        }
     });
     
 });
-
-// Language switcher enhancement
-function setLanguage(langCode) {
-    document.cookie = 'ioi_lang=' + langCode + ';path=/;max-age=31536000';
-    window.location.href = window.location.pathname + '?lang=' + langCode;
-}

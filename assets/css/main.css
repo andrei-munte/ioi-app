@@ -1971,3 +1971,133 @@ h6 { font-size: 0.875rem; }
 .social-icon {
     font-size: 1.25rem;
 }
+
+/* ============================================================
+   DROPDOWN MENU STYLES
+   Add this to assets/css/main.css
+   ============================================================ */
+
+/* Dropdown container */
+.nav-menu li.has-dropdown {
+    position: relative;
+}
+
+.nav-menu .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.nav-menu .dropdown-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+.nav-menu li.has-dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown menu */
+.nav-menu .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 200px;
+    background: var(--ioi-dark-2);
+    border: 1px solid var(--ioi-dark-3);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+    transform: translateX(-50%) translateY(-10px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+/* Show dropdown on hover */
+.nav-menu li.has-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Dropdown items */
+.nav-menu .dropdown-menu li {
+    margin: 0;
+}
+
+.nav-menu .dropdown-menu a {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: var(--ioi-gray-3);
+    font-size: 0.9rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-menu .dropdown-menu a:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--ioi-gold);
+}
+
+/* Arrow pointer on dropdown */
+.nav-menu .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid var(--ioi-dark-3);
+}
+
+.nav-menu .dropdown-menu::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid var(--ioi-dark-2);
+}
+
+/* Mobile dropdown styles */
+@media (max-width: 900px) {
+    .nav-menu .dropdown-menu {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        min-width: 100%;
+        margin-top: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        display: none;
+    }
+    
+    .nav-menu .dropdown-menu::before,
+    .nav-menu .dropdown-menu::after {
+        display: none;
+    }
+    
+    .nav-menu li.has-dropdown.active .dropdown-menu {
+        display: block;
+    }
+    
+    .nav-menu .dropdown-menu a {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .nav-menu .dropdown-toggle {
+        justify-content: space-between;
+        width: 100%;
+    }
+}
