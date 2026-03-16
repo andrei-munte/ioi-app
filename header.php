@@ -25,7 +25,7 @@
     <!-- SEO Meta Tags -->
     <title><?php echo esc_attr(ioi_get_page_title()); ?></title>
     <meta name="description" content="<?php echo esc_attr(ioi_get_meta_description()); ?>">
-    <meta name="keywords" content="crypto trading bot, automated trading, Binance bot, cryptocurrency, trading algorithm, passive income crypto, IOI">
+    <meta name="keywords" content="crypto trading bot, binance trading bot, automated crypto trading, crypto bot android, momentum trading bot, automated trading app, passive income crypto, IOI">
     <meta name="author" content="IOI">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="<?php echo esc_url(ioi_get_canonical_url()); ?>">
@@ -38,7 +38,7 @@
     <meta property="og:image" content="<?php echo IOI_THEME_URI; ?>/assets/images/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="IOI - Crypto Trading Bot">
+    <meta property="og:site_name" content="IOI - Automated Crypto Trading Bot">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -56,12 +56,81 @@
     <link rel="icon" type="image/png" sizes="16x16" href="<?php echo IOI_THEME_URI; ?>/assets/images/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo IOI_THEME_URI; ?>/assets/images/apple-touch-icon.png">
     
-    <!-- Language Alternates (for international SEO) -->
+    <!-- Language Alternates (for international SEO) - UNCOMMENT WHEN TRANSLATIONS ARE READY
     <link rel="alternate" hreflang="en" href="<?php echo home_url('/'); ?>">
     <link rel="alternate" hreflang="de" href="<?php echo home_url('/de/'); ?>">
     <link rel="alternate" hreflang="es" href="<?php echo home_url('/es/'); ?>">
     <link rel="alternate" hreflang="fr" href="<?php echo home_url('/fr/'); ?>">
+    <link rel="alternate" hreflang="it" href="<?php echo home_url('/it/'); ?>">
+    <link rel="alternate" hreflang="pt" href="<?php echo home_url('/pt/'); ?>">
+    <link rel="alternate" hreflang="ro" href="<?php echo home_url('/ro/'); ?>">
+    <link rel="alternate" hreflang="ru" href="<?php echo home_url('/ru/'); ?>">
     <link rel="alternate" hreflang="x-default" href="<?php echo home_url('/'); ?>">
+    -->
+    
+    <!-- Schema.org Structured Data - SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "IOI Crypto Trading Bot",
+        "operatingSystem": "Android",
+        "applicationCategory": "FinanceApplication",
+        "description": "Automated crypto trading bot for Binance with momentum-based strategy. Client-side encryption protects your API keys. Trade 24/7 while you sleep.",
+        "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "0",
+            "highPrice": "1000",
+            "priceCurrency": "USD",
+            "offerCount": "6",
+            "offers": [
+                {
+                    "@type": "Offer",
+                    "name": "Commission-Based",
+                    "price": "0",
+                    "priceCurrency": "USD",
+                    "description": "Free to start, 0.065% commission per profitable trade"
+                },
+                {
+                    "@type": "Offer",
+                    "name": "Starter Subscription",
+                    "price": "5",
+                    "priceCurrency": "USD",
+                    "description": "Monthly subscription with zero platform commission"
+                }
+            ]
+        },
+        "featureList": [
+            "24/7 automated trading on Binance",
+            "Momentum-based token selection",
+            "Client-side API key encryption",
+            "No withdrawal permissions required",
+            "Dry-run testing mode",
+            "Real-time performance tracking"
+        ],
+        "screenshot": "<?php echo IOI_THEME_URI; ?>/assets/images/app-screenshot.png",
+        "downloadUrl": "https://play.google.com/store/apps/details?id=app.getioi.ioi",
+        "softwareVersion": "1.0",
+        "author": {
+            "@type": "Organization",
+            "name": "IOI",
+            "url": "https://getioi.app"
+        }
+    }
+    </script>
+    
+    <!-- Schema.org - Organization -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "IOI",
+        "url": "https://getioi.app",
+        "logo": "<?php echo IOI_THEME_URI; ?>/assets/images/logo-icon.png",
+        "description": "Automated crypto trading bot for Binance",
+        "sameAs": []
+    }
+    </script>
     
     <?php wp_head(); ?>
 </head>
@@ -79,7 +148,7 @@ $section_base = $is_front_page ? '' : home_url('/');
     <div class="nav-inner">
         <a href="<?php echo home_url('/'); ?>" class="logo">
             <div class="logo-icon">
-                <img src="<?php echo IOI_THEME_URI; ?>/assets/images/logo-icon.png" alt="ioi" width="28" height="28">
+                <img src="<?php echo IOI_THEME_URI; ?>/assets/images/logo-icon.png" alt="IOI Crypto Trading Bot" width="28" height="28">
             </div>
             <span>ioi</span>
         </a>
@@ -99,7 +168,9 @@ $section_base = $is_front_page ? '' : home_url('/');
             </li>
         </ul>
         
-        <?php echo ioi_language_switcher(); ?>
+        <?php // Language switcher - UNCOMMENT WHEN TRANSLATIONS ARE READY
+        // echo ioi_language_switcher(); 
+        ?>
         
         <button class="mobile-menu-toggle" aria-label="Menu">☰</button>
     </div>

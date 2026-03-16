@@ -245,7 +245,8 @@ function ioi_set_lang_cookie() {
 add_action('init', 'ioi_set_lang_cookie');
 
 /**
- * Add hreflang tags for SEO
+ * Add hreflang tags for SEO - DISABLED UNTIL TRANSLATIONS READY
+ * Uncomment add_action when multi-language is enabled
  */
 function ioi_hreflang_tags() {
     $languages = ioi_get_languages();
@@ -260,7 +261,7 @@ function ioi_hreflang_tags() {
     }
     printf('<link rel="alternate" hreflang="x-default" href="%s" />' . "\n", esc_url($base_url));
 }
-add_action('wp_head', 'ioi_hreflang_tags', 1);
+// add_action('wp_head', 'ioi_hreflang_tags', 1); // UNCOMMENT WHEN TRANSLATIONS ARE READY
 
 /**
  * Add body class for language
@@ -418,15 +419,15 @@ function ioi_get_default_tiers() {
  */
 function ioi_get_page_title() {
     if (is_front_page()) {
-        return 'IOI - Automated Crypto Trading Bot | 82-85% Win Rate';
+        return 'IOI | Automated Crypto Trading Bot for Binance | Android App';
     }
     
     if (is_page('setup-guide')) {
-        return 'App Setup Guide | IOI Trading Bot';
+        return 'Setup Guide - Connect Binance to IOI | Crypto Trading Bot';
     }
     
     if (is_page('bot-settings-guide')) {
-        return 'Bot Settings Guide | IOI Trading Bot';
+        return 'Bot Settings Guide | IOI Crypto Trading Bot';
     }
     
     if (is_page('faq')) {
@@ -462,19 +463,19 @@ function ioi_get_page_title() {
  */
 function ioi_get_meta_description() {
     if (is_front_page()) {
-        return 'Automated cryptocurrency trading bot for Binance. 82-85% win rate, zero-knowledge security. Start trading with as little as $100. Free to download.';
+        return 'Trade crypto 24/7 with IOI automated bot for Binance. Momentum strategy, client-side encryption, no withdrawal permissions. Free Android app.';
     }
     
     if (is_page('setup-guide')) {
-        return 'Step-by-step guide to set up IOI trading bot. Connect your Binance account securely and start automated crypto trading in under 5 minutes.';
+        return 'Set up IOI crypto trading bot in 5 minutes. Connect to Binance, configure your bot, start automated trading. Step-by-step guide.';
     }
     
     if (is_page('bot-settings-guide')) {
-        return 'Complete guide to IOI bot settings. Learn about lookback period, profit targets, stop-loss, reinvestment strategies, and how to optimize your trading.';
+        return 'Configure your IOI trading bot. Learn about budget settings, risk levels, token selection, and stop-loss configuration.';
     }
     
     if (is_page('faq')) {
-        return 'Frequently asked questions about IOI crypto trading bot. Security, expected returns, API setup, pricing, and more.';
+        return 'Frequently asked questions about IOI crypto trading bot. Security, pricing, API setup, and more.';
     }
     
     if (is_page('contact')) {
@@ -486,7 +487,7 @@ function ioi_get_meta_description() {
     }
     
     if (is_page('privacy')) {
-        return 'Privacy Policy for IOI. Learn how we protect your data with zero-knowledge encryption.';
+        return 'Privacy Policy for IOI. Learn how we protect your data with client-side encryption.';
     }
     
     if (is_page('risk-disclosure')) {
@@ -494,7 +495,7 @@ function ioi_get_meta_description() {
     }
     
     // Fallback
-    return 'IOI - Automated cryptocurrency trading bot with 82-85% win rate. Let your crypto work for you.';
+    return 'IOI - Automated crypto trading bot for Binance. Secure, simple, mobile-first.';
 }
 
 /**
