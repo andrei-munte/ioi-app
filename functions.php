@@ -28,6 +28,14 @@ function ioi_theme_setup() {
 add_action('after_setup_theme', 'ioi_theme_setup');
 
 /**
+ * Disable oEmbed to prevent email leak and force social platforms to use og: tags
+ */
+remove_action('wp_head', 'wp_oembed_add_discovery_links');
+remove_action('rest_api_init', 'wp_oembed_register_route');
+add_filter('embed_oembed_discover', '__return_false');
+remove_action('wp_head', 'rest_output_link_wp_head');
+
+/**
  * Enqueue Styles and Scripts
  */
 function ioi_enqueue_assets() {
