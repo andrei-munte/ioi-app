@@ -49,28 +49,56 @@ get_header();
                 </div>
                 <div class="step-content">
                     <p>Download IOI from one of our official sources:</p>
+                    <?php
+                    // Get download URLs and visibility settings
+                    $apk_url = get_option('ioi_apk_url', '#');
+                    $galaxy_url = get_option('ioi_galaxy_url', '#');
+                    $huawei_url = get_option('ioi_huawei_url', '#');
+                    $show_galaxy = get_option('ioi_show_galaxy', 0);
+                    $show_huawei = get_option('ioi_show_huawei', 0);
+                    ?>
                     <div class="download-options">
-                        <a href="<?php echo esc_url(get_option('ioi_apk_url', '#')); ?>" class="download-option">
+                        <!-- APK Download - Always visible, highlighted -->
+                        <a href="<?php echo esc_url($apk_url); ?>" 
+                           class="download-option primary-download"
+                           onclick="trackDownload('APK Direct')"
+                           <?php echo ($apk_url && $apk_url !== '#') ? '' : 'style="pointer-events: none; opacity: 0.5;"'; ?>>
                             <span class="option-icon">📥</span>
                             <span class="option-text">
                                 <strong>Direct APK Download</strong>
                                 <small>For all Android devices</small>
                             </span>
                         </a>
-                        <a href="<?php echo esc_url(get_option('ioi_galaxy_url', '#')); ?>" class="download-option">
+                        
+                        <?php if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') : ?>
+                        <!-- Galaxy Store - Conditional -->
+                        <a href="<?php echo esc_url($galaxy_url); ?>" 
+                           class="download-option"
+                           target="_blank"
+                           rel="noopener"
+                           onclick="trackDownload('Galaxy Store')">
                             <span class="option-icon">🌌</span>
                             <span class="option-text">
                                 <strong>Samsung Galaxy Store</strong>
                                 <small>For Samsung devices</small>
                             </span>
                         </a>
-                        <a href="<?php echo esc_url(get_option('ioi_huawei_url', '#')); ?>" class="download-option">
+                        <?php endif; ?>
+                        
+                        <?php if ($show_huawei && $huawei_url && $huawei_url !== '#') : ?>
+                        <!-- Huawei AppGallery - Conditional -->
+                        <a href="<?php echo esc_url($huawei_url); ?>" 
+                           class="download-option"
+                           target="_blank"
+                           rel="noopener"
+                           onclick="trackDownload('Huawei AppGallery')">
                             <span class="option-icon">📦</span>
                             <span class="option-text">
                                 <strong>Huawei AppGallery</strong>
                                 <small>For Huawei devices</small>
                             </span>
                         </a>
+                        <?php endif; ?>
                     </div>
                     <div class="info-box">
                         <strong>Why not Google Play?</strong>
@@ -502,6 +530,12 @@ get_header();
     border-radius: 6px;
     font-size: 0.85rem;
     color: #D4AF37;
+}
+
+/* Primary download button highlight */
+.primary-download {
+    border-color: #D4AF37 !important;
+    background: rgba(212, 175, 55, 0.1) !important;
 }
 
 .permissions-tabs {

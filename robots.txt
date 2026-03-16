@@ -1,0 +1,51 @@
+# robots.txt for getioi.app
+# https://getioi.app/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://getioi.app/sitemap.xml
+Sitemap: https://getioi.app/sitemap_index.xml
+
+# Block WordPress admin and sensitive paths
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/cache/
+Disallow: /wp-json/
+Disallow: /feed/
+Disallow: /trackback/
+Disallow: /?s=
+Disallow: /search/
+Disallow: /*?*
+Disallow: /*.php$
+
+# Allow specific resources
+Allow: /wp-content/uploads/
+Allow: /wp-content/themes/ioi-app/assets/
+
+# Crawl delay (be nice to server)
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+Disallow: /wp-admin/
+
+User-agent: Googlebot-Image
+Allow: /wp-content/uploads/
+Allow: /wp-content/themes/ioi-app/assets/images/

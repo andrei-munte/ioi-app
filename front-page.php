@@ -237,28 +237,62 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
         <h2><?php ioi_e('download', 'section_title'); ?></h2>
         <p class="text-gray mt-md mb-xl"><?php ioi_e('download', 'section_subtitle'); ?></p>
         
-        <div class="download-buttons">
-            <a href="<?php echo esc_url(get_option('ioi_apk_url', '#')); ?>" class="download-btn">
+        <?php
+        // Get download URLs and visibility settings
+        $apk_url = get_option('ioi_apk_url', '#');
+        $galaxy_url = get_option('ioi_galaxy_url', '#');
+        $huawei_url = get_option('ioi_huawei_url', '#');
+        $show_galaxy = get_option('ioi_show_galaxy', 0);
+        $show_huawei = get_option('ioi_show_huawei', 0);
+        
+        // Count visible buttons for layout
+        $button_count = 1; // APK always visible
+        if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') $button_count++;
+        if ($show_huawei && $huawei_url && $huawei_url !== '#') $button_count++;
+        ?>
+        
+        <div class="download-buttons buttons-<?php echo $button_count; ?>">
+            <!-- APK Download - Always visible -->
+            <a href="<?php echo esc_url($apk_url); ?>" 
+               class="download-btn primary-download" 
+               onclick="trackDownload('APK Direct')"
+               <?php echo ($apk_url && $apk_url !== '#') ? '' : 'style="pointer-events: none; opacity: 0.5;"'; ?>>
                 <span class="icon">📱</span>
                 <span class="text">
                     <small><?php ioi_e('download', 'btn_apk_label'); ?></small>
                     <strong><?php ioi_e('download', 'btn_apk_title'); ?></strong>
                 </span>
             </a>
-            <a href="<?php echo esc_url(get_option('ioi_galaxy_url', '#')); ?>" class="download-btn">
+            
+            <?php if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') : ?>
+            <!-- Galaxy Store - Conditional -->
+            <a href="<?php echo esc_url($galaxy_url); ?>" 
+               class="download-btn" 
+               target="_blank" 
+               rel="noopener"
+               onclick="trackDownload('Galaxy Store')">
                 <span class="icon">🌐</span>
                 <span class="text">
                     <small><?php ioi_e('download', 'btn_galaxy_label'); ?></small>
                     <strong><?php ioi_e('download', 'btn_galaxy_title'); ?></strong>
                 </span>
             </a>
-            <a href="<?php echo esc_url(get_option('ioi_huawei_url', '#')); ?>" class="download-btn">
+            <?php endif; ?>
+            
+            <?php if ($show_huawei && $huawei_url && $huawei_url !== '#') : ?>
+            <!-- Huawei AppGallery - Conditional -->
+            <a href="<?php echo esc_url($huawei_url); ?>" 
+               class="download-btn" 
+               target="_blank" 
+               rel="noopener"
+               onclick="trackDownload('Huawei AppGallery')">
                 <span class="icon">📲</span>
                 <span class="text">
                     <small><?php ioi_e('download', 'btn_huawei_label'); ?></small>
                     <strong><?php ioi_e('download', 'btn_huawei_title'); ?></strong>
                 </span>
             </a>
+            <?php endif; ?>
         </div>
         
         <div class="playstore-note">
@@ -285,5 +319,24 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
         </div>
     </div>
 </section>
+
+<!-- Download button layout styles -->
+<style>
+.download-buttons.buttons-1 {
+    justify-content: center;
+}
+.download-buttons.buttons-1 .download-btn {
+    min-width: 280px;
+}
+.download-buttons.buttons-2 {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.primary-download {
+    border-color: var(--ioi-gold) !important;
+    background: rgba(212, 175, 55, 0.1) !important;
+}
+</style>
 
 <?php get_footer(); ?>

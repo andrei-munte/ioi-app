@@ -3,12 +3,12 @@
  * IOI Theme Functions
  * 
  * @package IOI
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 defined('ABSPATH') || exit;
 
-define('IOI_VERSION', '1.0.0');
+define('IOI_VERSION', '1.1.0');
 define('IOI_THEME_DIR', get_template_directory());
 define('IOI_THEME_URI', get_template_directory_uri());
 
@@ -39,7 +39,7 @@ function ioi_enqueue_assets() {
         IOI_VERSION
     );
 
-    // Pricing Carousel CSS  <-- ADD THIS
+    // Pricing Carousel CSS
     wp_enqueue_style(
         'ioi-pricing-carousel',
         IOI_THEME_URI . '/assets/css/pricing-carousel.css',
@@ -53,10 +53,10 @@ function ioi_enqueue_assets() {
         IOI_THEME_URI . '/assets/js/main.js',
         [],
         IOI_VERSION,
-        true // Load in footer
+        true
     );
 
-    // Pricing Carousel JS  <-- ADD THIS
+    // Pricing Carousel JS
     wp_enqueue_script(
         'ioi-pricing-carousel',
         IOI_THEME_URI . '/assets/js/pricing-carousel.js',
@@ -185,11 +185,6 @@ function ioi_get_content() {
 
 /**
  * Get translated string
- * 
- * @param string $section Section key
- * @param string $key String key
- * @param string $default Default if not found
- * @return string
  */
 function ioi_t($section, $key, $default = '') {
     $content = ioi_get_content();
@@ -283,27 +278,89 @@ add_filter('body_class', 'ioi_body_class');
  */
 
 /**
- * Get spots remaining
- * Can be: hardcoded, from WP option, or from CryptoTrader API
+ * Get spots remaining from CryptoTrader API
+ * Falls back to WordPress option if API is unavailable
  */
 function ioi_get_spots() {
-    // Option 1: WordPress setting (easiest to update)
-    $spots = get_option('ioi_spots_remaining', 23);
+    // Try cache first (avoid hitting API on every page load)
+    $cache_key = 'ioi_spots_remaining_api';
+    $cached = get_transient($cache_key);
     
-    // Option 2: Fetch from CryptoTrader API (uncomment when ready)
-    // $api_url = 'https://your-cryptotrader-api.com/stats/spots';
-    // $response = wp_remote_get($api_url, ['timeout' => 5]);
-    // if (!is_wp_error($response)) {
-    //     $data = json_decode(wp_remote_retrieve_body($response), true);
-    //     $spots = $data['spots_remaining'] ?? 23;
-    // }
+    if ($cached !== false) {
+        return intval($cached);
+    }
     
-    return intval($spots);
+    // Fetch from CryptoTrader API
+    $api_url = 'http://135.181.137.243:8001/api/v1/stats/public';
+    
+    $response = wp_remote_get($api_url, [
+        'timeout' => 5,
+        'sslverify' => false,
+    ]);
+    
+    if (!is_wp_error($response)) {
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        
+        if (isset($data['capacity']['free_slots'])) {
+            $spots = intval($data['capacity']['free_slots']);
+            
+            // Cache for 5 minutes
+            set_transient($cache_key, $spots, 5 * MINUTE_IN_SECONDS);
+            
+            return $spots;
+        }
+    }
+    
+    // Fallback to WordPress option if API fails
+    return intval(get_option('ioi_spots_remaining', 23));
+}
+
+/**
+ * Get all public stats from CryptoTrader API
+ * Useful for displaying win rate, total trades, etc.
+ */
+function ioi_get_public_stats() {
+    $cache_key = 'ioi_public_stats';
+    $cached = get_transient($cache_key);
+    
+    if ($cached !== false) {
+        return $cached;
+    }
+    
+    $api_url = 'http://135.181.137.243:8001/api/v1/stats/public';
+    
+    $response = wp_remote_get($api_url, [
+        'timeout' => 5,
+        'sslverify' => false,
+    ]);
+    
+    if (!is_wp_error($response)) {
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        
+        if ($data && isset($data['capacity'])) {
+            // Cache for 5 minutes
+            set_transient($cache_key, $data, 5 * MINUTE_IN_SECONDS);
+            return $data;
+        }
+    }
+    
+    // Return defaults if API fails
+    return [
+        'capacity' => [
+            'total_slots' => 70,
+            'free_slots' => get_option('ioi_spots_remaining', 23),
+        ],
+        'trading' => [
+            'rt_win_rate_pct' => 85,
+            'total_trades' => 0,
+        ],
+    ];
 }
 
 /**
  * Get default pricing tiers
- * Based on actual app subscription structure
  */
 function ioi_get_default_tiers() {
     return [
@@ -352,6 +409,112 @@ function ioi_get_default_tiers() {
 
 /**
  * ============================================================
+ * SEO HELPER FUNCTIONS
+ * ============================================================
+ */
+
+/**
+ * Get page-specific title for SEO
+ */
+function ioi_get_page_title() {
+    if (is_front_page()) {
+        return 'IOI - Automated Crypto Trading Bot | 82-85% Win Rate';
+    }
+    
+    if (is_page('setup-guide')) {
+        return 'App Setup Guide | IOI Trading Bot';
+    }
+    
+    if (is_page('bot-settings-guide')) {
+        return 'Bot Settings Guide | IOI Trading Bot';
+    }
+    
+    if (is_page('faq')) {
+        return 'FAQ - Frequently Asked Questions | IOI Trading Bot';
+    }
+    
+    if (is_page('contact')) {
+        return 'Contact Us | IOI Trading Bot';
+    }
+    
+    if (is_page('terms')) {
+        return 'Terms of Service | IOI Trading Bot';
+    }
+    
+    if (is_page('privacy')) {
+        return 'Privacy Policy | IOI Trading Bot';
+    }
+    
+    if (is_page('risk-disclosure')) {
+        return 'Risk Disclosure | IOI Trading Bot';
+    }
+    
+    if (is_page('aml-policy')) {
+        return 'AML Policy | IOI Trading Bot';
+    }
+    
+    // Fallback: use WordPress title
+    return get_the_title() . ' | IOI Trading Bot';
+}
+
+/**
+ * Get page-specific meta description
+ */
+function ioi_get_meta_description() {
+    if (is_front_page()) {
+        return 'Automated cryptocurrency trading bot for Binance. 82-85% win rate, zero-knowledge security. Start trading with as little as $100. Free to download.';
+    }
+    
+    if (is_page('setup-guide')) {
+        return 'Step-by-step guide to set up IOI trading bot. Connect your Binance account securely and start automated crypto trading in under 5 minutes.';
+    }
+    
+    if (is_page('bot-settings-guide')) {
+        return 'Complete guide to IOI bot settings. Learn about lookback period, profit targets, stop-loss, reinvestment strategies, and how to optimize your trading.';
+    }
+    
+    if (is_page('faq')) {
+        return 'Frequently asked questions about IOI crypto trading bot. Security, expected returns, API setup, pricing, and more.';
+    }
+    
+    if (is_page('contact')) {
+        return 'Contact the IOI team. Get support for your automated crypto trading bot.';
+    }
+    
+    if (is_page('terms')) {
+        return 'Terms of Service for IOI automated cryptocurrency trading platform.';
+    }
+    
+    if (is_page('privacy')) {
+        return 'Privacy Policy for IOI. Learn how we protect your data with zero-knowledge encryption.';
+    }
+    
+    if (is_page('risk-disclosure')) {
+        return 'Risk disclosure for cryptocurrency trading with IOI. Understand the risks before you trade.';
+    }
+    
+    // Fallback
+    return 'IOI - Automated cryptocurrency trading bot with 82-85% win rate. Let your crypto work for you.';
+}
+
+/**
+ * Get canonical URL for current page
+ */
+function ioi_get_canonical_url() {
+    if (is_front_page()) {
+        return home_url('/');
+    }
+    
+    $url = get_permalink();
+    if ($url) {
+        return $url;
+    }
+    
+    return home_url($_SERVER['REQUEST_URI']);
+}
+
+/**
+ * ============================================================
  * ADMIN: Clear translation cache
  * ============================================================
  */
@@ -362,6 +525,10 @@ function ioi_clear_cache() {
     foreach ($languages as $lang) {
         wp_cache_delete('ioi_content_' . $lang);
     }
+    
+    // Also clear API stats cache
+    delete_transient('ioi_spots_remaining_api');
+    delete_transient('ioi_public_stats');
 }
 
 /**
@@ -411,8 +578,21 @@ function ioi_settings_page() {
         update_option('ioi_apk_url', esc_url_raw($_POST['apk_url']));
         update_option('ioi_galaxy_url', esc_url_raw($_POST['galaxy_url']));
         update_option('ioi_huawei_url', esc_url_raw($_POST['huawei_url']));
+        update_option('ioi_show_galaxy', isset($_POST['show_galaxy']) ? 1 : 0);
+        update_option('ioi_show_huawei', isset($_POST['show_huawei']) ? 1 : 0);
+        
+        // Clear API cache when settings saved
+        delete_transient('ioi_spots_remaining_api');
+        delete_transient('ioi_public_stats');
+        
         echo '<div class="notice notice-success"><p>Settings saved!</p></div>';
     }
+    
+    $show_galaxy = get_option('ioi_show_galaxy', 0);
+    $show_huawei = get_option('ioi_show_huawei', 0);
+    
+    // Get live spots from API for display
+    $live_spots = ioi_get_spots();
     ?>
     <div class="wrap">
         <h1>IOI Settings</h1>
@@ -420,24 +600,76 @@ function ioi_settings_page() {
             <?php wp_nonce_field('ioi_settings'); ?>
             <table class="form-table">
                 <tr>
-                    <th>Spots Remaining</th>
-                    <td><input type="number" name="spots" value="<?php echo esc_attr(get_option('ioi_spots_remaining', 23)); ?>" min="0" max="999"></td>
+                    <th>Spots Remaining (Fallback)</th>
+                    <td>
+                        <input type="number" name="spots" value="<?php echo esc_attr(get_option('ioi_spots_remaining', 23)); ?>" min="0" max="999">
+                        <p class="description">
+                            Used only if API is unavailable. 
+                            <strong>Live from API: <?php echo esc_html($live_spots); ?> spots</strong>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2"><hr><h2 style="margin: 0;">Download Links</h2></th>
                 </tr>
                 <tr>
                     <th>APK Download URL</th>
-                    <td><input type="url" name="apk_url" value="<?php echo esc_attr(get_option('ioi_apk_url', '')); ?>" class="regular-text"></td>
+                    <td>
+                        <input type="url" name="apk_url" value="<?php echo esc_attr(get_option('ioi_apk_url', '')); ?>" class="regular-text" placeholder="https://...">
+                        <p class="description">Direct APK download link (always visible)</p>
+                    </td>
                 </tr>
                 <tr>
                     <th>Galaxy Store URL</th>
-                    <td><input type="url" name="galaxy_url" value="<?php echo esc_attr(get_option('ioi_galaxy_url', '')); ?>" class="regular-text"></td>
+                    <td>
+                        <input type="url" name="galaxy_url" value="<?php echo esc_attr(get_option('ioi_galaxy_url', '')); ?>" class="regular-text" placeholder="https://...">
+                        <br><br>
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" name="show_galaxy" value="1" <?php checked($show_galaxy, 1); ?>>
+                            <strong>Show Galaxy Store button</strong>
+                            <span style="color: #666;">(Enable when store approves the app)</span>
+                        </label>
+                    </td>
                 </tr>
                 <tr>
                     <th>Huawei AppGallery URL</th>
-                    <td><input type="url" name="huawei_url" value="<?php echo esc_attr(get_option('ioi_huawei_url', '')); ?>" class="regular-text"></td>
+                    <td>
+                        <input type="url" name="huawei_url" value="<?php echo esc_attr(get_option('ioi_huawei_url', '')); ?>" class="regular-text" placeholder="https://...">
+                        <br><br>
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" name="show_huawei" value="1" <?php checked($show_huawei, 1); ?>>
+                            <strong>Show Huawei AppGallery button</strong>
+                            <span style="color: #666;">(Enable when store approves the app)</span>
+                        </label>
+                    </td>
                 </tr>
             </table>
             <p><input type="submit" name="ioi_save" class="button button-primary" value="Save Settings"></p>
         </form>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #f0f0f1; border-radius: 8px; border-left: 4px solid #D4AF37;">
+            <h3 style="margin-top: 0; color: #1d2327;">📱 Store Approval Status</h3>
+            <p><strong>APK Direct:</strong> ✅ Always visible</p>
+            <p><strong>Galaxy Store:</strong> <?php echo $show_galaxy ? '✅ Approved & Visible' : '⏳ Pending - Button Hidden'; ?></p>
+            <p><strong>Huawei AppGallery:</strong> <?php echo $show_huawei ? '✅ Approved & Visible' : '⏳ Pending - Button Hidden'; ?></p>
+            <p style="color: #666; margin-bottom: 0;">Toggle the checkboxes above when each store approves your app.</p>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 20px; background: #f0f0f1; border-radius: 8px; border-left: 4px solid #2271b1;">
+            <h3 style="margin-top: 0; color: #1d2327;">📊 Live API Stats</h3>
+            <?php
+            $stats = ioi_get_public_stats();
+            if (isset($stats['capacity'])) {
+                echo '<p><strong>Total Slots:</strong> ' . esc_html($stats['capacity']['total_slots'] ?? 'N/A') . '</p>';
+                echo '<p><strong>Free Slots:</strong> ' . esc_html($stats['capacity']['free_slots'] ?? 'N/A') . '</p>';
+            }
+            if (isset($stats['trading'])) {
+                echo '<p><strong>Win Rate:</strong> ' . esc_html($stats['trading']['rt_win_rate_pct'] ?? 'N/A') . '%</p>';
+                echo '<p><strong>Total Trades:</strong> ' . esc_html(number_format($stats['trading']['total_trades'] ?? 0)) . '</p>';
+            }
+            ?>
+            <p style="color: #666; margin-bottom: 0;">Data refreshes every 5 minutes. <a href="<?php echo wp_nonce_url(admin_url('admin-post.php?action=ioi_clear_cache'), 'ioi_clear'); ?>">Clear cache now</a></p>
+        </div>
     </div>
     <?php
 }

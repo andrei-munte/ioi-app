@@ -22,26 +22,46 @@
         }
     </script>
     
-    <!-- SEO Meta -->
-    <meta name="description" content="<?php echo esc_attr(ioi_t('hero', 'subtitle')); ?>">
+    <!-- SEO Meta Tags -->
+    <title><?php echo esc_attr(ioi_get_page_title()); ?></title>
+    <meta name="description" content="<?php echo esc_attr(ioi_get_meta_description()); ?>">
     <meta name="keywords" content="crypto trading bot, automated trading, Binance bot, cryptocurrency, trading algorithm, passive income crypto, IOI">
     <meta name="author" content="IOI">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0a0a0a">
+    <link rel="canonical" href="<?php echo esc_url(ioi_get_canonical_url()); ?>">
     
-    <!-- Open Graph -->
-    <meta property="og:title" content="ioi - <?php echo esc_attr(ioi_t('hero', 'title_highlight')); ?>">
-    <meta property="og:description" content="<?php echo esc_attr(ioi_t('hero', 'subtitle')); ?>">
-    <meta property="og:image" content="<?php echo IOI_THEME_URI; ?>/assets/images/og-image.jpg">
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo esc_url(home_url($_SERVER['REQUEST_URI'])); ?>">
+    <meta property="og:url" content="<?php echo esc_url(ioi_get_canonical_url()); ?>">
+    <meta property="og:title" content="<?php echo esc_attr(ioi_get_page_title()); ?>">
+    <meta property="og:description" content="<?php echo esc_attr(ioi_get_meta_description()); ?>">
+    <meta property="og:image" content="<?php echo IOI_THEME_URI; ?>/assets/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="IOI - Crypto Trading Bot">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ioi - <?php echo esc_attr(ioi_t('hero', 'title_highlight')); ?>">
-    <meta name="twitter:description" content="<?php echo esc_attr(ioi_t('hero', 'subtitle')); ?>">
+    <meta name="twitter:title" content="<?php echo esc_attr(ioi_get_page_title()); ?>">
+    <meta name="twitter:description" content="<?php echo esc_attr(ioi_get_meta_description()); ?>">
     <meta name="twitter:image" content="<?php echo IOI_THEME_URI; ?>/assets/images/og-image.jpg">
+    
+    <!-- App Meta -->
+    <meta name="application-name" content="IOI">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="msapplication-TileColor" content="#0a0a0a">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo IOI_THEME_URI; ?>/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo IOI_THEME_URI; ?>/assets/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo IOI_THEME_URI; ?>/assets/images/apple-touch-icon.png">
+    
+    <!-- Language Alternates (for international SEO) -->
+    <link rel="alternate" hreflang="en" href="<?php echo home_url('/'); ?>">
+    <link rel="alternate" hreflang="de" href="<?php echo home_url('/de/'); ?>">
+    <link rel="alternate" hreflang="es" href="<?php echo home_url('/es/'); ?>">
+    <link rel="alternate" hreflang="fr" href="<?php echo home_url('/fr/'); ?>">
+    <link rel="alternate" hreflang="x-default" href="<?php echo home_url('/'); ?>">
     
     <?php wp_head(); ?>
 </head>
