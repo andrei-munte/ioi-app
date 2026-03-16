@@ -7,6 +7,205 @@
 get_header();
 ?>
 
+<style>
+/* FAQ Page Styles */
+.faq-page .page-header {
+    padding: 80px 0 40px;
+    text-align: center;
+}
+
+.faq-page .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.faq-page .page-subtitle {
+    color: var(--text-muted, #888);
+    font-size: 1.1rem;
+}
+
+/* Category Navigation */
+.faq-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+}
+
+.faq-cat-link {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    color: var(--text-muted, #888);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.faq-cat-link:hover {
+    color: var(--ioi-gold, #D4A017);
+    background: rgba(212, 160, 23, 0.1);
+}
+
+.faq-cat-link.active {
+    background: var(--ioi-gold, #D4A017);
+    color: #000;
+    font-weight: 600;
+}
+
+/* FAQ Sections */
+.faq-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 100px;
+}
+
+.faq-section h2 {
+    color: var(--ioi-gold, #D4A017);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+/* FAQ Items - Accordion */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+}
+
+.faq-question {
+    width: 100%;
+    text-align: left;
+    padding: 1.25rem 3rem 1.25rem 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.faq-question:hover {
+    color: var(--ioi-gold, #D4A017);
+}
+
+/* Plus/Minus Icon */
+.faq-question::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--ioi-gold, #D4A017);
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question::after {
+    content: '−';
+}
+
+/* Answer - Hidden by default */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 0 0 0;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 1000px;
+    padding: 0 0 1.5rem 0;
+}
+
+.faq-answer p {
+    color: var(--text-muted, #aaa);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.faq-answer p:last-child {
+    margin-bottom: 0;
+}
+
+.faq-answer ul,
+.faq-answer ol {
+    color: var(--text-muted, #aaa);
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.faq-answer li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.faq-answer a {
+    color: var(--ioi-gold, #D4A017);
+    text-decoration: underline;
+}
+
+.faq-answer a:hover {
+    color: #fff;
+}
+
+.faq-answer strong {
+    color: #fff;
+}
+
+/* Contact Section */
+.faq-contact {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    margin-top: 3rem;
+}
+
+.faq-contact h2 {
+    border: none;
+    padding-bottom: 0;
+    margin-bottom: 0.5rem;
+}
+
+.faq-contact p {
+    color: var(--text-muted, #888);
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .faq-categories {
+        gap: 0.25rem;
+    }
+    
+    .faq-cat-link {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .faq-question {
+        font-size: 1rem;
+        padding-right: 2.5rem;
+    }
+}
+</style>
+
 <main class="internal-page faq-page">
     <div class="page-header">
         <div class="container">
@@ -35,14 +234,14 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">What is IOI?</button>
                         <div class="faq-answer">
-                            <p>IOI is an automated cryptocurrency trading application that connects to your Binance account via API. It uses algorithmic strategies to execute trades 24/7, capturing small profits across multiple positions while managing risk. You maintain full control of your funds on Binance - IOI only has permission to trade, never to withdraw.</p>
+                            <p>IOI is an automated cryptocurrency trading application that connects to your Binance account via API. It uses a momentum-based strategy to execute trades 24/7, capturing profits across multiple positions while managing risk. You maintain full control of your funds on Binance - IOI only has permission to trade, never to withdraw.</p>
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <button class="faq-question">How does IOI make money for me?</button>
                         <div class="faq-answer">
-                            <p>IOI's trading algorithm identifies short-term price movements across hundreds of cryptocurrency pairs. It buys tokens when conditions are favorable and sells when targets are reached, typically capturing small profits (0.5-2%) per trade. By executing many trades consistently, these small gains compound over time. The bot operates 24/7, taking advantage of opportunities you'd miss while sleeping or working.</p>
+                            <p>IOI's momentum trading algorithm identifies tokens showing upward price movement. It buys tokens in uptrends and sells when profit targets are reached, typically capturing small profits per trade. By executing many trades consistently, these gains can compound over time. The bot operates 24/7, taking advantage of opportunities you'd miss while sleeping or working.</p>
                         </div>
                     </div>
 
@@ -57,7 +256,7 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">Why isn't IOI on the Google Play Store?</button>
                         <div class="faq-answer">
-                            <p>Google Play's policies prohibit apps that facilitate cryptocurrency trading. This is a policy decision by Google, not a reflection of our app's legitimacy or safety. Many reputable crypto apps face the same restriction. Our APK is digitally signed, and we're available on Samsung Galaxy Store and Huawei AppGallery for additional verification.</p>
+                            <p>Google Play's policies restrict apps that facilitate cryptocurrency trading. This is a policy decision by Google, not a reflection of our app's legitimacy or safety. Many reputable crypto apps face the same restriction. Our APK is digitally signed, and we're working on availability through Samsung Galaxy Store and Huawei AppGallery.</p>
                         </div>
                     </div>
 
@@ -82,9 +281,9 @@ get_header();
                             <p>Yes, IOI is designed with security as a top priority:</p>
                             <ul>
                                 <li><strong>No withdrawal access:</strong> We only request trading permissions, never withdrawal permissions</li>
-                                <li><strong>Zero-knowledge encryption:</strong> Your API keys are encrypted on your device with your PIN</li>
+                                <li><strong>Client-side encryption:</strong> Your API keys are encrypted on your device with your PIN before being sent to our servers</li>
                                 <li><strong>Your funds stay on Binance:</strong> We never hold or have access to your cryptocurrency</li>
-                                <li><strong>IP whitelisting:</strong> You can restrict API access to only our server IPs</li>
+                                <li><strong>IP whitelisting:</strong> You can restrict API access to only our server IPs for extra protection</li>
                             </ul>
                         </div>
                     </div>
@@ -111,16 +310,17 @@ get_header();
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question">What is zero-knowledge encryption?</button>
+                        <button class="faq-question">How does IOI protect my API keys?</button>
                         <div class="faq-answer">
-                            <p>Zero-knowledge means our servers never see your unencrypted API credentials. Here's how it works:</p>
+                            <p>IOI uses client-side encryption to protect your credentials:</p>
                             <ol>
                                 <li>You enter your API key and secret in the app</li>
-                                <li>The app encrypts them using a key derived from your PIN</li>
-                                <li>Only encrypted data is sent to our servers</li>
-                                <li>We cannot decrypt your credentials without your PIN</li>
-                                <li>If you forget your PIN, you must re-enter your API credentials (we can't recover them)</li>
+                                <li>The app encrypts them on your device using a key derived from your PIN</li>
+                                <li>Only the encrypted data is sent to our servers</li>
+                                <li>Your PIN never leaves your device</li>
+                                <li>When trading, our server decrypts temporarily to execute trades, then discards the keys from memory</li>
                             </ol>
+                            <p>If you forget your PIN, you'll need to re-enter your API credentials - we cannot recover them for you.</p>
                         </div>
                     </div>
 
@@ -135,21 +335,29 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">What's the minimum amount needed to start?</button>
                         <div class="faq-answer">
-                            <p>We recommend starting with at least $100 USDT/USDC for meaningful results. The bot works better with more capital as it can diversify across more positions. However, you can technically start with any amount - just keep in mind that smaller amounts may result in fewer trading opportunities.</p>
+                            <p>We recommend starting with at least $100 USDT/USDC for meaningful results. The bot works better with more capital as it can diversify across more positions. However, you can technically start with any amount - just keep in mind that smaller amounts may result in fewer trading opportunities due to Binance's minimum order sizes.</p>
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <button class="faq-question">What returns can I expect?</button>
                         <div class="faq-answer">
-                            <p>We cannot guarantee specific returns - cryptocurrency trading always involves risk. Historical performance has shown monthly returns in the range of 3-10%, with win rates typically between 75-90%. However, past performance does not guarantee future results. Market conditions vary, and losses are possible. Please read our <a href="<?php echo home_url('/risk-disclosure/'); ?>">Risk Disclosure</a> for more information.</p>
+                            <p>The app has been in development and testing for over a year. Results vary significantly based on market conditions and your bot configuration.</p>
+                            <p>In our testing, we've seen anywhere from <strong>10% to 45% monthly returns</strong> during favorable market conditions. However, crypto markets are volatile - losses are possible, especially during downtrends or sideways markets.</p>
+                            <p>We strongly recommend:</p>
+                            <ul>
+                                <li>Starting with dry-run mode to test different bot setups</li>
+                                <li>Experimenting with multiple configurations to find what works best</li>
+                                <li>Never investing more than you can afford to lose</li>
+                            </ul>
+                            <p><strong>Past performance doesn't guarantee future results.</strong> Please read our <a href="<?php echo home_url('/risk-disclosure/'); ?>">Risk Disclosure</a> for more information.</p>
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <button class="faq-question">Can I lose money?</button>
                         <div class="faq-answer">
-                            <p><strong>Yes.</strong> While our algorithms are designed to minimize risk, cryptocurrency trading always carries the possibility of losses. You can lose some or all of your invested capital. Never trade with money you can't afford to lose. We strongly recommend starting with Dry Run mode and small amounts to understand the risks involved.</p>
+                            <p><strong>Yes.</strong> While our algorithms are designed to minimize risk with features like automatic stop-loss, cryptocurrency trading always carries the possibility of losses. You can lose some or all of your invested capital. Never trade with money you can't afford to lose. We strongly recommend starting with Dry Run mode and small amounts to understand how the bot performs.</p>
                         </div>
                     </div>
 
@@ -158,7 +366,7 @@ get_header();
                         <div class="faq-answer">
                             <p>You have two options:</p>
                             <ul>
-                                <li><strong>Graceful Shutdown:</strong> The bot will stop opening new positions and wait for existing positions to close profitably (or at stop-loss). This is the recommended method.</li>
+                                <li><strong>Graceful Shutdown:</strong> The bot stops opening new positions and waits for existing positions to close at profit targets or stop-loss. This is the recommended method.</li>
                                 <li><strong>Force Stop:</strong> Immediately sells all open positions at market price. Use this only if you need to exit immediately, as it may result in losses on open positions.</li>
                             </ul>
                         </div>
@@ -167,7 +375,13 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">What tokens does the bot trade?</button>
                         <div class="faq-answer">
-                            <p>IOI trades a curated selection of tokens on Binance, primarily against USDT and USDC pairs. We exclude low-liquidity tokens, newly listed tokens (until they prove stable), and tokens showing signs of potential delisting. The specific tokens traded depend on market conditions and our algorithm's analysis.</p>
+                            <p>IOI trades a curated selection of tokens on Binance, primarily against USDT pairs. We apply quality filters to exclude:</p>
+                            <ul>
+                                <li>Low-liquidity tokens</li>
+                                <li>Newly listed tokens (until they prove stable)</li>
+                                <li>Tokens showing signs of potential issues</li>
+                            </ul>
+                            <p>The specific tokens traded depend on market conditions and momentum signals at any given time.</p>
                         </div>
                     </div>
 
@@ -214,7 +428,7 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">How are commissions collected?</button>
                         <div class="faq-answer">
-                            <p>Commissions are collected automatically via Binance Universal Transfer from your spot wallet. This happens periodically (not after every trade) to minimize transaction overhead. You'll always see a clear record of commission transfers in your transaction history.</p>
+                            <p>Commissions are collected automatically via Binance Universal Transfer from your spot wallet. This happens periodically (not after every trade) to minimize transaction overhead. You'll always see a clear record of commission transfers in your transaction history within the app.</p>
                         </div>
                     </div>
 
@@ -238,8 +452,7 @@ get_header();
                         <div class="faq-answer">
                             <ul>
                                 <li><strong>Android:</strong> Version 8.0 (Oreo) or higher</li>
-                                <li><strong>iOS:</strong> Coming soon</li>
-                                <li><strong>Storage:</strong> ~50MB free space</li>
+                                <li><strong>Storage:</strong> ~60MB free space</li>
                                 <li><strong>Internet:</strong> Stable connection recommended (bot runs on our servers, not your phone)</li>
                             </ul>
                         </div>
@@ -248,14 +461,14 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">Does my phone need to stay on?</button>
                         <div class="faq-answer">
-                            <p>No! The trading bot runs on our servers, not your phone. Once configured, it continues trading even if your phone is off, in airplane mode, or uninstalled. Your phone is only needed to monitor performance and adjust settings. Think of the app as a remote control for your bot.</p>
+                            <p>No! The trading bot runs on our servers, not your phone. Once configured, it continues trading even if your phone is off, in airplane mode, or the app is uninstalled. Your phone is only needed to monitor performance and adjust settings. Think of the app as a remote control for your bot.</p>
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <button class="faq-question">What happens during server maintenance?</button>
                         <div class="faq-answer">
-                            <p>We schedule maintenance during low-volume periods and keep downtime minimal (typically under 30 minutes). During maintenance:</p>
+                            <p>We schedule maintenance during low-volume periods and keep downtime minimal. During maintenance:</p>
                             <ul>
                                 <li>No new trades are opened</li>
                                 <li>Existing positions remain on Binance (unaffected)</li>
@@ -268,26 +481,26 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">I forgot my PIN. What do I do?</button>
                         <div class="faq-answer">
-                            <p>Due to our zero-knowledge security model, we cannot recover your PIN. If you forget it:</p>
+                            <p>Due to our client-side encryption model, we cannot recover your PIN. If you forget it:</p>
                             <ol>
                                 <li>Uninstall and reinstall the app</li>
                                 <li>Re-enter your Binance API credentials</li>
                                 <li>Create a new PIN</li>
                             </ol>
-                            <p>Your bots on our server will continue running. The app will reconnect to them once you log back in.</p>
+                            <p>Your bots on our server will continue running. The app will reconnect to them once you log back in with your API credentials.</p>
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <button class="faq-question">How do I update the app?</button>
                         <div class="faq-answer">
-                            <p>If you installed from Galaxy Store or AppGallery, updates are automatic. For APK installs:</p>
+                            <p>For APK installs:</p>
                             <ol>
                                 <li>Download the latest APK from getioi.app</li>
                                 <li>Install it over your existing app (don't uninstall first)</li>
                                 <li>Your settings and login will be preserved</li>
                             </ol>
-                            <p>We recommend enabling notifications to be alerted about important updates.</p>
+                            <p>We recommend enabling notifications in the app to be alerted about important updates.</p>
                         </div>
                     </div>
 
@@ -298,7 +511,7 @@ get_header();
             <section class="faq-contact">
                 <h2>Still Have Questions?</h2>
                 <p>Can't find what you're looking for? Our support team is happy to help.</p>
-                <a href="<?php echo home_url('/contact/'); ?>" class="btn btn-primary btn-lg">Contact Support</a>
+                <a href="mailto:support@getioi.app" class="btn btn-primary btn-lg">Contact Support</a>
             </section>
 
         </div>
@@ -306,33 +519,62 @@ get_header();
 </main>
 
 <script>
-// FAQ Accordion
-document.querySelectorAll('.faq-question').forEach(button => {
-    button.addEventListener('click', () => {
-        const item = button.parentElement;
-        const isActive = item.classList.contains('active');
-        
-        // Close all items in the same section
-        item.parentElement.querySelectorAll('.faq-item').forEach(i => {
-            i.classList.remove('active');
+document.addEventListener('DOMContentLoaded', function() {
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var item = this.parentElement;
+            var isActive = item.classList.contains('active');
+            
+            // Close all items in the same section
+            var section = item.closest('.faq-list');
+            section.querySelectorAll('.faq-item').forEach(function(i) {
+                i.classList.remove('active');
+            });
+            
+            // Toggle clicked item
+            if (!isActive) {
+                item.classList.add('active');
+            }
         });
-        
-        // Toggle clicked item
-        if (!isActive) {
-            item.classList.add('active');
-        }
     });
-});
 
-// Category navigation
-document.querySelectorAll('.faq-cat-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        document.querySelectorAll('.faq-cat-link').forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+    // Category navigation with smooth scroll
+    document.querySelectorAll('.faq-cat-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active state
+            document.querySelectorAll('.faq-cat-link').forEach(function(l) {
+                l.classList.remove('active');
+            });
+            this.classList.add('active');
+            
+            // Smooth scroll to section
+            var targetId = this.getAttribute('href');
+            var target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    // Highlight category on scroll
+    var sections = document.querySelectorAll('.faq-section');
+    window.addEventListener('scroll', function() {
+        var scrollPos = window.scrollY + 150;
         
-        const target = document.querySelector(link.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        sections.forEach(function(section) {
+            if (section.offsetTop <= scrollPos && (section.offsetTop + section.offsetHeight) > scrollPos) {
+                var id = section.getAttribute('id');
+                document.querySelectorAll('.faq-cat-link').forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
     });
 });
 </script>
