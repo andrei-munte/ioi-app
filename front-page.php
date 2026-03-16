@@ -179,7 +179,7 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
                     <li><?php echo esc_html($feature); ?></li>
                     <?php endforeach; ?>
                 </ul>
-                <p class="model-note"><?php echo esc_html(get_option('ioi_commission_note', 'Best for testing or occasional trading')); ?></p>
+                <p class="model-note"><?php echo esc_html(get_option('ioi_commission_note', 'No limits. No commitments. Pay only for results.')); ?></p>
             </div>
             
             <div class="pricing-model-card">
