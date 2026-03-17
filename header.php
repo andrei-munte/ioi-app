@@ -3,6 +3,10 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Cookie Consent Management (AdOpt) -->
+    <meta name="adopt-website-id" content="ee6d49b4-0dd2-45c1-9b67-33194440e9be" />
+    <script src="//tag.goadopt.io/injector.js?website_code=ee6d49b4-0dd2-45c1-9b67-33194440e9be" class="adopt-injector"></script>
     
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RCPXNFE066"></script>
