@@ -519,32 +519,30 @@ get_header();
 </main>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // FAQ Accordion - using event delegation for reliability
-    document.addEventListener('click', function(e) {
-        // Check if clicked element is a FAQ question button
-        var button = e.target.closest('.faq-question');
-        if (!button) return;
-        
-        var item = button.closest('.faq-item');
-        if (!item) return;
-        
-        var isActive = item.classList.contains('active');
-        var section = item.closest('.faq-list');
-        
-        // Close all items in the same section
-        if (section) {
-            section.querySelectorAll('.faq-item.active').forEach(function(i) {
-                i.classList.remove('active');
-            });
-        }
-        
-        // Toggle clicked item
-        if (!isActive) {
-            item.classList.add('active');
-        }
-    });
+(function() {
+    // FAQ Accordion - runs immediately
+    var buttons = document.getElementsByClassName('faq-question');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = function() {
+            var item = this.parentElement;
+            var wasActive = item.classList.contains('active');
+            
+            // Close all items in same section
+            var section = item.parentElement;
+            var allItems = section.getElementsByClassName('faq-item');
+            for (var j = 0; j < allItems.length; j++) {
+                allItems[j].classList.remove('active');
+            }
+            
+            // Toggle clicked item
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        };
+    }
+})();
 
+document.addEventListener('DOMContentLoaded', function() {
     // Category navigation with smooth scroll
     document.querySelectorAll('.faq-cat-link').forEach(function(link) {
         link.addEventListener('click', function(e) {
@@ -582,8 +580,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    console.log('FAQ script loaded - found', document.querySelectorAll('.faq-question').length, 'questions');
 });
 </script>
 
