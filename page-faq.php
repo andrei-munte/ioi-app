@@ -70,7 +70,7 @@ get_header();
     border-bottom: 1px solid rgba(212, 160, 23, 0.3);
 }
 
-/* FAQ Items - Accordion */
+/* FAQ Items - Native Details/Summary */
 .faq-list {
     display: flex;
     flex-direction: column;
@@ -85,7 +85,7 @@ get_header();
     border-bottom: none;
 }
 
-.faq-question {
+.faq-item summary {
     width: 100%;
     text-align: left;
     padding: 1.25rem 3rem 1.25rem 0;
@@ -97,14 +97,23 @@ get_header();
     cursor: pointer;
     position: relative;
     transition: color 0.2s ease;
+    list-style: none;
 }
 
-.faq-question:hover {
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::marker {
+    display: none;
+}
+
+.faq-item summary:hover {
     color: var(--ioi-gold, #D4A017);
 }
 
 /* Plus/Minus Icon */
-.faq-question::after {
+.faq-item summary::after {
     content: '+';
     position: absolute;
     right: 0;
@@ -116,18 +125,13 @@ get_header();
     transition: transform 0.3s ease;
 }
 
-.faq-item.active .faq-question::after {
+.faq-item[open] summary::after {
     content: '−';
 }
 
-/* Answer - Hidden by default */
+/* Answer */
 .faq-answer {
-    display: none;
     padding: 0 0 1.5rem 0;
-}
-
-.faq-item.active .faq-answer {
-    display: block;
 }
 
 .faq-answer p {
@@ -196,7 +200,7 @@ get_header();
         font-size: 0.85rem;
     }
     
-    .faq-question {
+    .faq-item summary {
         font-size: 1rem;
         padding-right: 2.5rem;
     }
@@ -228,41 +232,41 @@ get_header();
                 <h2>General Questions</h2>
                 <div class="faq-list">
                     
-                    <div class="faq-item">
-                        <button class="faq-question">What is IOI?</button>
+                    <details class="faq-item">
+                        <summary>What is IOI?</summary>
                         <div class="faq-answer">
                             <p>IOI is an automated cryptocurrency trading application that connects to your Binance account via API. It uses a momentum-based strategy to execute trades 24/7, capturing profits across multiple positions while managing risk. You maintain full control of your funds on Binance - IOI only has permission to trade, never to withdraw.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">How does IOI make money for me?</button>
+                    <details class="faq-item">
+                        <summary>How does IOI make money for me?</summary>
                         <div class="faq-answer">
                             <p>IOI's momentum trading algorithm identifies tokens showing upward price movement. It buys tokens in uptrends and sells when profit targets are reached, typically capturing small profits per trade. By executing many trades consistently, these gains can compound over time. The bot operates 24/7, taking advantage of opportunities you'd miss while sleeping or working.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">What's the difference between Dry Run and Real Trading?</button>
+                    <details class="faq-item">
+                        <summary>What's the difference between Dry Run and Real Trading?</summary>
                         <div class="faq-answer">
                             <p><strong>Dry Run (DR)</strong> is simulation mode. The bot tracks real market prices but doesn't execute actual trades. It's perfect for testing strategies without risking real money.</p>
                             <p><strong>Real Trading (RT)</strong> executes actual trades on your Binance account using your real balance. Only use this once you're comfortable with how the bot works.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">Why isn't IOI on the Google Play Store?</button>
+                    <details class="faq-item">
+                        <summary>Why isn't IOI on the Google Play Store?</summary>
                         <div class="faq-answer">
                             <p>Google Play's policies restrict apps that facilitate cryptocurrency trading. This is a policy decision by Google, not a reflection of our app's legitimacy or safety. Many reputable crypto apps face the same restriction. Our APK is digitally signed, and we're working on availability through Samsung Galaxy Store and Huawei AppGallery.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">What exchanges does IOI support?</button>
+                    <details class="faq-item">
+                        <summary>What exchanges does IOI support?</summary>
                         <div class="faq-answer">
                             <p>Currently, IOI exclusively supports Binance (binance.com). Binance is the world's largest cryptocurrency exchange by trading volume, offering excellent liquidity and a wide selection of trading pairs. We may add support for additional exchanges in the future.</p>
                         </div>
-                    </div>
+                    </details>
 
                 </div>
             </section>
@@ -272,8 +276,8 @@ get_header();
                 <h2>Security</h2>
                 <div class="faq-list">
                     
-                    <div class="faq-item">
-                        <button class="faq-question">Is IOI safe to use?</button>
+                    <details class="faq-item">
+                        <summary>Is IOI safe to use?</summary>
                         <div class="faq-answer">
                             <p>Yes, IOI is designed with security as a top priority:</p>
                             <ul>
@@ -283,17 +287,17 @@ get_header();
                                 <li><strong>IP whitelisting:</strong> You can restrict API access to only our server IPs for extra protection</li>
                             </ul>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">Can IOI withdraw my funds?</button>
+                    <details class="faq-item">
+                        <summary>Can IOI withdraw my funds?</summary>
                         <div class="faq-answer">
                             <p><strong>No, absolutely not.</strong> When creating your API key, you should NEVER enable withdrawal permissions. IOI only needs "Enable Reading" and "Enable Spot & Margin Trading" permissions. With withdrawals disabled at the API level, it's technically impossible for anyone (including IOI) to withdraw funds from your account using your API key.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">What happens if I lose my phone?</button>
+                    <details class="faq-item">
+                        <summary>What happens if I lose my phone?</summary>
                         <div class="faq-answer">
                             <p>If you lose your phone:</p>
                             <ol>
@@ -304,10 +308,10 @@ get_header();
                             </ol>
                             <p>Since we can't withdraw funds, losing your phone doesn't put your assets at risk - just delete the API key as a precaution.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">How does IOI protect my API keys?</button>
+                    <details class="faq-item">
+                        <summary>How does IOI protect my API keys?</summary>
                         <div class="faq-answer">
                             <p>IOI uses client-side encryption to protect your credentials:</p>
                             <ol>
@@ -319,7 +323,7 @@ get_header();
                             </ol>
                             <p>If you forget your PIN, you'll need to re-enter your API credentials - we cannot recover them for you.</p>
                         </div>
-                    </div>
+                    </details>
 
                 </div>
             </section>
@@ -329,15 +333,15 @@ get_header();
                 <h2>Trading</h2>
                 <div class="faq-list">
                     
-                    <div class="faq-item">
-                        <button class="faq-question">What's the minimum amount needed to start?</button>
+                    <details class="faq-item">
+                        <summary>What's the minimum amount needed to start?</summary>
                         <div class="faq-answer">
                             <p>We recommend starting with at least $100 USDT/USDC for meaningful results. The bot works better with more capital as it can diversify across more positions. However, you can technically start with any amount - just keep in mind that smaller amounts may result in fewer trading opportunities due to Binance's minimum order sizes.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">What returns can I expect?</button>
+                    <details class="faq-item">
+                        <summary>What returns can I expect?</summary>
                         <div class="faq-answer">
                             <p>The app has been in development and testing for over a year. Results vary significantly based on market conditions and your bot configuration.</p>
                             <p>In our testing, we've seen anywhere from <strong>10% to 45% monthly returns</strong> during favorable market conditions. However, crypto markets are volatile - losses are possible, especially during downtrends or sideways markets.</p>
@@ -349,17 +353,17 @@ get_header();
                             </ul>
                             <p><strong>Past performance doesn't guarantee future results.</strong> Please read our <a href="<?php echo home_url('/risk-disclosure/'); ?>">Risk Disclosure</a> for more information.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">Can I lose money?</button>
+                    <details class="faq-item">
+                        <summary>Can I lose money?</summary>
                         <div class="faq-answer">
                             <p><strong>Yes.</strong> While our algorithms are designed to minimize risk with features like automatic stop-loss, cryptocurrency trading always carries the possibility of losses. You can lose some or all of your invested capital. Never trade with money you can't afford to lose. We strongly recommend starting with Dry Run mode and small amounts to understand how the bot performs.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">How do I stop the bot?</button>
+                    <details class="faq-item">
+                        <summary>How do I stop the bot?</summary>
                         <div class="faq-answer">
                             <p>You have two options:</p>
                             <ul>
@@ -367,10 +371,10 @@ get_header();
                                 <li><strong>Force Stop:</strong> Immediately sells all open positions at market price. Use this only if you need to exit immediately, as it may result in losses on open positions.</li>
                             </ul>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">What tokens does the bot trade?</button>
+                    <details class="faq-item">
+                        <summary>What tokens does the bot trade?</summary>
                         <div class="faq-answer">
                             <p>IOI trades a curated selection of tokens on Binance, primarily against USDT pairs. We apply quality filters to exclude:</p>
                             <ul>
@@ -380,14 +384,14 @@ get_header();
                             </ul>
                             <p>The specific tokens traded depend on market conditions and momentum signals at any given time.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">Does the bot trade 24/7?</button>
+                    <details class="faq-item">
+                        <summary>Does the bot trade 24/7?</summary>
                         <div class="faq-answer">
                             <p>Yes! Once started, the bot monitors markets and executes trades around the clock, 7 days a week. This is one of the main advantages of automated trading - it captures opportunities even while you sleep. You can monitor performance and make adjustments anytime through the app.</p>
                         </div>
-                    </div>
+                    </details>
 
                 </div>
             </section>
@@ -397,8 +401,8 @@ get_header();
                 <h2>Pricing</h2>
                 <div class="faq-list">
                     
-                    <div class="faq-item">
-                        <button class="faq-question">How much does IOI cost?</button>
+                    <details class="faq-item">
+                        <summary>How much does IOI cost?</summary>
                         <div class="faq-answer">
                             <p>IOI offers two pricing models:</p>
                             <ul>
@@ -407,10 +411,10 @@ get_header();
                             </ul>
                             <p>Visit our <a href="<?php echo home_url('/#pricing'); ?>">Pricing</a> section to compare options.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">How is the 0.065% commission calculated?</button>
+                    <details class="faq-item">
+                        <summary>How is the 0.065% commission calculated?</summary>
                         <div class="faq-answer">
                             <p>The commission is calculated on the total trade value, charged on both buy and sell transactions. For example:</p>
                             <ul>
@@ -420,21 +424,21 @@ get_header();
                             </ul>
                             <p>This is lower than Binance's standard trading fee of 0.1% (or 0.075% with BNB discount).</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">How are commissions collected?</button>
+                    <details class="faq-item">
+                        <summary>How are commissions collected?</summary>
                         <div class="faq-answer">
                             <p>Commissions are collected automatically via Binance Universal Transfer from your spot wallet. This happens periodically (not after every trade) to minimize transaction overhead. You'll always see a clear record of commission transfers in your transaction history within the app.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">Can I switch between pricing models?</button>
+                    <details class="faq-item">
+                        <summary>Can I switch between pricing models?</summary>
                         <div class="faq-answer">
                             <p>Yes! You can switch between commission-based and subscription models at any time. When you upgrade to a subscription, commission charges stop immediately. If you cancel your subscription, you'll automatically revert to the commission model.</p>
                         </div>
-                    </div>
+                    </details>
 
                 </div>
             </section>
@@ -444,8 +448,8 @@ get_header();
                 <h2>Technical</h2>
                 <div class="faq-list">
                     
-                    <div class="faq-item">
-                        <button class="faq-question">What are the system requirements?</button>
+                    <details class="faq-item">
+                        <summary>What are the system requirements?</summary>
                         <div class="faq-answer">
                             <ul>
                                 <li><strong>Android:</strong> Version 8.0 (Oreo) or higher</li>
@@ -453,17 +457,17 @@ get_header();
                                 <li><strong>Internet:</strong> Stable connection recommended (bot runs on our servers, not your phone)</li>
                             </ul>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">Does my phone need to stay on?</button>
+                    <details class="faq-item">
+                        <summary>Does my phone need to stay on?</summary>
                         <div class="faq-answer">
                             <p>No! The trading bot runs on our servers, not your phone. Once configured, it continues trading even if your phone is off, in airplane mode, or the app is uninstalled. Your phone is only needed to monitor performance and adjust settings. Think of the app as a remote control for your bot.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">What happens during server maintenance?</button>
+                    <details class="faq-item">
+                        <summary>What happens during server maintenance?</summary>
                         <div class="faq-answer">
                             <p>We schedule maintenance during low-volume periods and keep downtime minimal. During maintenance:</p>
                             <ul>
@@ -473,10 +477,10 @@ get_header();
                                 <li>Trading resumes automatically when maintenance completes</li>
                             </ul>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">I forgot my PIN. What do I do?</button>
+                    <details class="faq-item">
+                        <summary>I forgot my PIN. What do I do?</summary>
                         <div class="faq-answer">
                             <p>Due to our client-side encryption model, we cannot recover your PIN. If you forget it:</p>
                             <ol>
@@ -486,10 +490,10 @@ get_header();
                             </ol>
                             <p>Your bots on our server will continue running. The app will reconnect to them once you log back in with your API credentials.</p>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="faq-item">
-                        <button class="faq-question">How do I update the app?</button>
+                    <details class="faq-item">
+                        <summary>How do I update the app?</summary>
                         <div class="faq-answer">
                             <p>For APK installs:</p>
                             <ol>
@@ -499,7 +503,7 @@ get_header();
                             </ol>
                             <p>We recommend enabling notifications in the app to be alerted about important updates.</p>
                         </div>
-                    </div>
+                    </details>
 
                 </div>
             </section>
@@ -517,18 +521,6 @@ get_header();
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // FAQ Accordion - using body-level event delegation
-    document.body.addEventListener('click', function(e) {
-        var button = e.target.closest('.faq-question');
-        if (!button) return;
-        
-        e.preventDefault();
-        e.stopPropagation();
-        
-        var item = button.parentElement;
-        item.classList.toggle('active');
-    });
-
     // Category navigation with smooth scroll
     document.querySelectorAll('.faq-cat-link').forEach(function(link) {
         link.addEventListener('click', function(e) {
