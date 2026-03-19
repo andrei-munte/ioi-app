@@ -32,7 +32,7 @@ get_header();
                     </div>
                     <div class="requirement-item">
                         <span class="req-icon">💰</span>
-                        <span class="req-text">USDT or USDC balance</span>
+                        <span class="req-text">At least $100 USDT or USDC</span>
                     </div>
                     <div class="requirement-item">
                         <span class="req-icon">⏱️</span>
@@ -284,6 +284,35 @@ get_header();
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Sub-Account Option -->
+                        <div class="subaccount-tip">
+                            <h4>🛡️ Want Commission Trading Without Trusting Your Main Account?</h4>
+                            <p><strong>Use a Binance Sub-Account.</strong> This gives you the best of both worlds: commission-based trading (no upfront costs) with complete isolation from your main holdings.</p>
+                            
+                            <div class="subaccount-steps">
+                                <h5>How it works:</h5>
+                                <ol>
+                                    <li><strong>Create a sub-account on Binance</strong> — Free and takes about 2 minutes. Go to "Sub-Account" in your Binance dashboard.</li>
+                                    <li><strong>Connect IOI to the sub-account</strong> — Create API keys for the sub-account (not your main account).</li>
+                                    <li><strong>Fund only what you want to trade</strong> — Transfer USDT/USDC from your main account to the sub-account. Minimum is $100. Add some BNB if you want the 25% Binance fee discount.</li>
+                                    <li><strong>Trade with complete peace of mind</strong> — Even with withdrawal permissions enabled, IOI can only access funds in the sub-account. Your main holdings are completely isolated.</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="subaccount-benefits">
+                                <h5>Benefits:</h5>
+                                <ul>
+                                    <li>✅ Pay-as-you-go commission model (0.065% per trade)</li>
+                                    <li>✅ No upfront subscription costs</li>
+                                    <li>✅ Your main account is never connected to IOI</li>
+                                    <li>✅ You control exactly how much capital is at risk</li>
+                                    <li>✅ Top up anytime by transferring more from your main account</li>
+                                </ul>
+                            </div>
+                            
+                            <p class="subaccount-note"><strong>This is our recommended approach</strong> for users who want commission-based trading but prefer maximum security and control.</p>
+                        </div>
                     </div>
 
                     <div class="info-box">
@@ -324,8 +353,8 @@ get_header();
                     </ol>
 
                     <div class="info-box">
-                        <strong>🔐 Zero-Knowledge Security</strong>
-                        <p>Your API credentials are encrypted on your device using your PIN. Our servers never have access to your unencrypted keys.</p>
+                        <strong>🔐 Client-Side Encryption</strong>
+                        <p>Your API credentials are encrypted on your device using your PIN. Your PIN never leaves your device.</p>
                     </div>
                 </div>
             </section>
@@ -348,7 +377,7 @@ get_header();
                         </li>
                         <li>
                             <strong>Set Your Budget</strong>
-                            <p>Enter how much USDT/USDC you want the bot to trade with. Start small!</p>
+                            <p>Enter how much USDT/USDC you want the bot to trade with. Minimum is $100 — the bot needs this to split across multiple positions while meeting Binance's minimum order sizes.</p>
                         </li>
                         <li>
                             <strong>Configure Settings (Optional)</strong>
@@ -378,8 +407,8 @@ get_header();
                     </div>
                     <div class="tip-card">
                         <span class="tip-icon">📊</span>
-                        <h4>Start Small</h4>
-                        <p>Begin with a small budget ($100-500) and scale up as you gain confidence.</p>
+                        <h4>Start at $100</h4>
+                        <p>Begin with the minimum budget and scale up as you gain confidence in your settings.</p>
                     </div>
                     <div class="tip-card">
                         <span class="tip-icon">⏰</span>
@@ -391,6 +420,64 @@ get_header();
                         <h4>Keep App Updated</h4>
                         <p>We regularly release improvements. Enable auto-updates or check for new versions.</p>
                     </div>
+                </div>
+            </section>
+
+            <!-- BNB Fee Discount -->
+            <section class="setup-bnb-discount">
+                <h2>💎 Save 25% on Binance Fees with BNB</h2>
+                <p>Binance offers a 25% discount on trading fees if you pay them with BNB (Binance Coin). This applies to Binance's own fees — separate from IOI's commission.</p>
+                
+                <div class="bnb-explanation">
+                    <div class="fee-comparison">
+                        <div class="fee-card">
+                            <h4>Standard Binance Fee</h4>
+                            <div class="fee-amount">0.10%</div>
+                            <p>per trade</p>
+                        </div>
+                        <div class="fee-arrow">→</div>
+                        <div class="fee-card highlighted">
+                            <h4>With BNB Discount</h4>
+                            <div class="fee-amount">0.075%</div>
+                            <p>per trade (25% off)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bnb-setup">
+                    <h3>How to Enable BNB Fee Discount</h3>
+                    <ol class="setup-instructions">
+                        <li>
+                            <strong>Buy Some BNB</strong>
+                            <p>On Binance, go to "Trade" → "Convert" or "Spot" and buy a small amount of BNB. Even $5-10 worth is enough to start — fees are tiny per trade.</p>
+                        </li>
+                        <li>
+                            <strong>Enable BNB Fee Payment</strong>
+                            <p>Go to your Binance Dashboard → Click your profile icon → "Fee" or search for "Using BNB to pay for fees"</p>
+                            <p>Toggle <strong>"Use BNB for Fees"</strong> to ON.</p>
+                        </li>
+                        <li>
+                            <strong>Keep BNB Balance Topped Up</strong>
+                            <p>Binance will automatically deduct fees from your BNB balance. If it runs out, fees revert to 0.10%. Check occasionally and top up when low.</p>
+                        </li>
+                    </ol>
+                </div>
+                
+                <div class="bnb-math">
+                    <h4>📊 How Much Does This Save?</h4>
+                    <p>For every $1,000 in trading volume:</p>
+                    <ul>
+                        <li><strong>Without BNB:</strong> $1.00 Binance fee (0.10%)</li>
+                        <li><strong>With BNB:</strong> $0.75 Binance fee (0.075%)</li>
+                        <li><strong>Savings:</strong> $0.25 per $1,000 traded</li>
+                    </ul>
+                    <p>It adds up! Active traders can save hundreds over time.</p>
+                </div>
+                
+                <div class="info-box">
+                    <strong>💡 Note:</strong> The BNB discount applies to <em>Binance's</em> trading fees, not IOI's commission. Both fees are separate:
+                    <br>• <strong>Binance fee:</strong> 0.075% with BNB (or 0.10% without)
+                    <br>• <strong>IOI commission:</strong> 0.065% (or $0 with subscription)
                 </div>
             </section>
 
@@ -439,7 +526,7 @@ get_header();
                         </tr>
                         <tr>
                             <td><strong>Best For</strong></td>
-                            <td>Testing, occasional trading</td>
+                            <td>Testing, pay-as-you-go</td>
                             <td>Active traders, convenience</td>
                             <td>Maximum control</td>
                         </tr>
@@ -467,7 +554,7 @@ get_header();
                 <p>If you encounter any issues during setup, we're here to help:</p>
                 <div class="help-options">
                     <a href="<?php echo home_url('/faq/'); ?>" class="btn btn-secondary">View FAQ</a>
-                    <a href="<?php echo home_url('/contact/'); ?>" class="btn btn-primary">Contact Support</a>
+                    <a href="mailto:support@getioi.app" class="btn btn-primary">Contact Support</a>
                 </div>
             </section>
 
@@ -476,7 +563,7 @@ get_header();
 </main>
 
 <style>
-/* Additional styles for new sections */
+/* Payment Models Comparison */
 .payment-models-comparison {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -538,6 +625,7 @@ get_header();
     background: rgba(212, 175, 55, 0.1) !important;
 }
 
+/* Permissions Tabs */
 .permissions-tabs {
     display: grid;
     gap: 1.5rem;
@@ -582,6 +670,16 @@ get_header();
     word-break: break-all;
 }
 
+.ip-list {
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0;
+    font-family: monospace;
+}
+
+/* Trust Section */
 .trust-section {
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(212, 175, 55, 0.02));
     border: 1px solid rgba(212, 175, 55, 0.2);
@@ -590,7 +688,7 @@ get_header();
     margin: 2rem 0;
 }
 
-.trust-section h4 {
+.trust-section > h4 {
     color: #D4AF37;
     margin-bottom: 1rem;
 }
@@ -624,6 +722,74 @@ get_header();
     margin: 0;
 }
 
+/* Sub-Account Tip Section */
+.subaccount-tip {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.subaccount-tip h4 {
+    color: #64c896;
+    margin-bottom: 1rem;
+}
+
+.subaccount-tip > p {
+    color: #ccc;
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+}
+
+.subaccount-steps,
+.subaccount-benefits {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.subaccount-steps h5,
+.subaccount-benefits h5 {
+    color: #fff;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.subaccount-steps ol {
+    padding-left: 1.25rem;
+    margin: 0;
+}
+
+.subaccount-steps li {
+    color: #aaa;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.subaccount-steps li strong {
+    color: #fff;
+}
+
+.subaccount-benefits ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.subaccount-benefits li {
+    color: #aaa;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+}
+
+.subaccount-note {
+    color: #64c896;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+/* Comparison Table */
 .comparison-table {
     width: 100%;
     border-collapse: collapse;
@@ -652,12 +818,14 @@ get_header();
     background: rgba(255,255,255,0.02);
 }
 
+/* Payment Summary */
 .setup-payment-summary {
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
 }
 
+/* Next Steps */
 .setup-next-steps {
     margin-top: 3rem;
     padding: 2rem;
@@ -696,14 +864,130 @@ get_header();
     margin-bottom: 1rem;
 }
 
+/* BNB Discount Section */
+.setup-bnb-discount {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(240, 185, 11, 0.08), rgba(240, 185, 11, 0.02));
+    border: 1px solid rgba(240, 185, 11, 0.3);
+    border-radius: 16px;
+}
+
+.setup-bnb-discount h2 {
+    color: #F0B90B;
+    margin-bottom: 0.5rem;
+}
+
+.setup-bnb-discount > p {
+    color: #ccc;
+    margin-bottom: 1.5rem;
+}
+
+.fee-comparison {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.fee-card {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    min-width: 150px;
+}
+
+.fee-card.highlighted {
+    border-color: #F0B90B;
+    background: rgba(240, 185, 11, 0.1);
+}
+
+.fee-card h4 {
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-weight: normal;
+}
+
+.fee-card.highlighted h4 {
+    color: #F0B90B;
+}
+
+.fee-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.fee-card.highlighted .fee-amount {
+    color: #F0B90B;
+}
+
+.fee-card p {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.fee-arrow {
+    font-size: 1.5rem;
+    color: #F0B90B;
+}
+
+.bnb-setup {
+    margin-top: 2rem;
+}
+
+.bnb-setup h3 {
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.bnb-math {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.bnb-math h4 {
+    color: #F0B90B;
+    margin-bottom: 0.75rem;
+}
+
+.bnb-math ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0;
+}
+
+.bnb-math li {
+    padding: 0.3rem 0;
+    color: #ccc;
+}
+
+.bnb-math p {
+    color: #aaa;
+    margin: 0;
+}
+
+.bnb-math p:last-child {
+    margin-top: 0.75rem;
+    color: #F0B90B;
+    font-weight: 500;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .next-step-card {
         flex-direction: column;
         text-align: center;
     }
-}
-
-@media (max-width: 768px) {
+    
     .comparison-table {
         display: block;
         overflow-x: auto;
@@ -712,6 +996,16 @@ get_header();
     .trust-point {
         flex-direction: column;
         gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .fee-comparison {
+        flex-direction: column;
+    }
+    
+    .fee-arrow {
+        transform: rotate(90deg);
     }
 }
 </style>
