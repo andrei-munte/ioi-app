@@ -520,23 +520,29 @@ get_header();
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(function(button) {
-        button.addEventListener('click', function() {
-            var item = this.parentElement;
-            var isActive = item.classList.contains('active');
-            
-            // Close all items in the same section
-            var section = item.closest('.faq-list');
-            section.querySelectorAll('.faq-item').forEach(function(i) {
+    // FAQ Accordion - using event delegation for reliability
+    document.addEventListener('click', function(e) {
+        // Check if clicked element is a FAQ question button
+        var button = e.target.closest('.faq-question');
+        if (!button) return;
+        
+        var item = button.closest('.faq-item');
+        if (!item) return;
+        
+        var isActive = item.classList.contains('active');
+        var section = item.closest('.faq-list');
+        
+        // Close all items in the same section
+        if (section) {
+            section.querySelectorAll('.faq-item.active').forEach(function(i) {
                 i.classList.remove('active');
             });
-            
-            // Toggle clicked item
-            if (!isActive) {
-                item.classList.add('active');
-            }
-        });
+        }
+        
+        // Toggle clicked item
+        if (!isActive) {
+            item.classList.add('active');
+        }
     });
 
     // Category navigation with smooth scroll
@@ -576,6 +582,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    console.log('FAQ script loaded - found', document.querySelectorAll('.faq-question').length, 'questions');
 });
 </script>
 
