@@ -259,7 +259,8 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">What's the minimum amount needed to start?</button>
                         <div class="faq-answer">
-                            We recommend starting with at least $100 USDT/USDC for meaningful results. The bot works better with more capital as it can diversify across more positions. However, you can technically start with any amount - just keep in mind that smaller amounts may result in fewer trading opportunities due to Binance's minimum order sizes.
+                            <strong>The minimum trading budget is $100 USDT/USDC.</strong> This isn't an arbitrary limit - IOI's strategy splits your budget across multiple smaller positions, and Binance enforces minimum order sizes for each trade. With less than $100, the bot simply cannot execute its strategy effectively.<br><br>
+                            More capital allows the bot to diversify across more positions simultaneously, which can improve results and reduce risk. But $100 is enough to get started and see how the bot performs.
                         </div>
                     </div>
 
