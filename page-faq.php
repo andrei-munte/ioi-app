@@ -131,7 +131,7 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">What is IOI?</button>
                         <div class="faq-answer">
-                            IOI is an automated cryptocurrency trading application that connects to your Binance account via API. It uses a momentum-based strategy to execute trades 24/7, capturing profits across multiple positions while managing risk. You maintain full control of your funds on Binance - IOI only has permission to trade, never to withdraw.
+                            IOI is an automated cryptocurrency trading application that connects to your Binance account via API. It uses a momentum-based strategy to execute trades 24/7, capturing profits across multiple positions while managing risk. Your funds always stay on Binance - IOI trades on your behalf and collects fees transparently.
                         </div>
                     </div>
 
@@ -175,18 +175,38 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">Is IOI safe to use?</button>
                         <div class="faq-answer">
-                            Yes, IOI is designed with security as a top priority:<br><br>
-                            • <strong>No withdrawal access:</strong> We only request trading permissions, never withdrawal permissions<br>
+                            Yes, IOI is designed with security and transparency as top priorities:<br><br>
                             • <strong>Client-side encryption:</strong> Your API keys are encrypted on your device with your PIN before being sent to our servers<br>
                             • <strong>Your funds stay on Binance:</strong> We never hold or have access to your cryptocurrency<br>
+                            • <strong>Withdrawal whitelisting:</strong> You can restrict withdrawals to only our wallet address shown in the app<br>
+                            • <strong>Full transparency:</strong> Precise accounting of all fee withdrawals is available and can be requested at any time<br>
                             • <strong>IP whitelisting:</strong> You can restrict API access to only our server IPs for extra protection
                         </div>
                     </div>
 
                     <div class="faq-item">
-                        <button class="faq-question">Can IOI withdraw my funds?</button>
+                        <button class="faq-question">Does IOI need withdrawal permissions?</button>
                         <div class="faq-answer">
-                            <strong>No, absolutely not.</strong> When creating your API key, you should NEVER enable withdrawal permissions. IOI only needs "Enable Reading" and "Enable Spot & Margin Trading" permissions. With withdrawals disabled at the API level, it's technically impossible for anyone (including IOI) to withdraw funds from your account using your API key.
+                            <strong>It depends on your pricing model:</strong><br><br>
+                            • <strong>Commission-based trading:</strong> Yes, withdrawal permission is required so IOI can collect the 0.065% trading fees automatically<br>
+                            • <strong>Subscription with auto-pay:</strong> Yes, withdrawal permission is required for automated monthly payments<br>
+                            • <strong>Subscription with manual payment:</strong> No withdrawal permission needed - you pay manually each month and trade without granting withdrawal access<br><br>
+                            <strong>Important security steps if enabling withdrawals:</strong><br>
+                            1. Only whitelist the IOI wallet address shown in the app - no other addresses<br>
+                            2. Set withdrawal limits on your API key if desired<br>
+                            3. Precise accounting of all withdrawals is maintained and can be requested anytime
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">I want commission-based trading but don't trust withdrawal permissions. What can I do?</button>
+                        <div class="faq-answer">
+                            <strong>Use a Binance sub-account.</strong> This is the best solution for users who want the flexibility of commission-based trading but prefer extra security:<br><br>
+                            1. Create a sub-account on Binance (free and takes 2 minutes)<br>
+                            2. Connect IOI to the sub-account instead of your main account<br>
+                            3. Transfer only the amount you want to trade into the sub-account<br>
+                            4. Your main account remains completely isolated<br><br>
+                            This way, even with withdrawal permissions enabled, IOI can only access funds in the sub-account - never your main holdings. You stay in full control of how much capital is at risk.
                         </div>
                     </div>
 
@@ -198,7 +218,7 @@ get_header();
                             2. This immediately revokes IOI's access to your account<br>
                             3. Your funds remain safe on Binance<br>
                             4. When you get a new phone, install IOI and create a new API key<br><br>
-                            Since we can't withdraw funds, losing your phone doesn't put your assets at risk - just delete the API key as a precaution.
+                            Deleting your API key instantly stops all access - it's the fastest way to secure your account.
                         </div>
                     </div>
 
@@ -212,6 +232,19 @@ get_header();
                             4. Your PIN never leaves your device<br>
                             5. When trading, our server decrypts temporarily to execute trades, then discards the keys from memory<br><br>
                             If you forget your PIN, you'll need to re-enter your API credentials - we cannot recover them for you.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">How can I verify what IOI withdraws?</button>
+                        <div class="faq-answer">
+                            Full transparency is a core principle:<br><br>
+                            • Every withdrawal is logged with exact amounts, timestamps, and linked trades<br>
+                            • You can view withdrawal history in the app at any time<br>
+                            • Detailed accounting reports can be requested via support@getioi.app<br>
+                            • All withdrawals go only to the wallet address displayed in the app<br>
+                            • You can cross-reference with your Binance withdrawal history<br><br>
+                            We believe in radical transparency - you should always know exactly where your money goes.
                         </div>
                     </div>
 
@@ -289,8 +322,8 @@ get_header();
                         <button class="faq-question">How much does IOI cost?</button>
                         <div class="faq-answer">
                             IOI offers two pricing models:<br><br>
-                            • <strong>Commission Model:</strong> 0.065% per trade (both buy and sell). No monthly fees, unlimited budget. Perfect if you want to start without upfront costs.<br>
-                            • <strong>Subscription Model:</strong> Monthly fee ($5-$1,000) with zero trading commissions. Better value for active traders. Each tier has a monthly trading budget limit.<br><br>
+                            • <strong>Commission Model:</strong> 0.065% per trade (both buy and sell). No monthly fees, unlimited budget. Requires withdrawal permission for automatic fee collection.<br>
+                            • <strong>Subscription Model:</strong> Monthly fee ($5-$1,000) with zero trading commissions. Can be paid automatically (requires withdrawal permission) or manually (no withdrawal permission needed).<br><br>
                             Visit our <a href="<?php echo home_url('/#pricing'); ?>">Pricing</a> section to compare options.
                         </div>
                     </div>
@@ -309,14 +342,27 @@ get_header();
                     <div class="faq-item">
                         <button class="faq-question">How are commissions collected?</button>
                         <div class="faq-answer">
-                            Commissions are collected automatically via Binance Universal Transfer from your spot wallet. This happens periodically (not after every trade) to minimize transaction overhead. You'll always see a clear record of commission transfers in your transaction history within the app.
+                            Commissions are collected automatically via Binance withdrawal to our platform wallet. This happens periodically when accumulated fees reach a threshold (not after every trade) to minimize transaction overhead.<br><br>
+                            <strong>Important safeguards:</strong><br>
+                            • Only whitelist our wallet address (shown in the app) when creating your API key<br>
+                            • Every withdrawal is logged with full details<br>
+                            • You can request a detailed accounting report at any time<br>
+                            • All withdrawals are visible in your Binance history for verification
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">Can I use IOI without giving withdrawal permission?</button>
+                        <div class="faq-answer">
+                            <strong>Yes!</strong> Choose a subscription plan and select manual payment. You'll pay your monthly subscription directly (via crypto or card), and your API key only needs trading permissions - no withdrawal access required.<br><br>
+                            This is ideal for users who want maximum security and don't mind paying upfront for their subscription.
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <button class="faq-question">Can I switch between pricing models?</button>
                         <div class="faq-answer">
-                            Yes! You can switch between commission-based and subscription models at any time. When you upgrade to a subscription, commission charges stop immediately. If you cancel your subscription, you'll automatically revert to the commission model.
+                            Yes! You can switch between commission-based and subscription models at any time. When you upgrade to a subscription, commission charges stop immediately. If you cancel your subscription, you'll automatically revert to the commission model (make sure withdrawal permissions are enabled if using commission-based).
                         </div>
                     </div>
 
