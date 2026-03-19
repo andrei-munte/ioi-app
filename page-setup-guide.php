@@ -532,6 +532,18 @@ get_header();
                         </tr>
                     </tbody>
                 </table>
+                
+                <div class="commission-note">
+                    <h4>📋 How Commission Collection Works</h4>
+                    <p>Commissions are <strong>not</strong> transferred after every trade. Instead:</p>
+                    <ul>
+                        <li>Each trade's commission (0.065%) is logged and added to your running balance</li>
+                        <li>When the balance reaches the minimum threshold, a single transfer is made</li>
+                        <li>This minimizes transaction overhead and keeps your withdrawal history clean</li>
+                        <li>Full documentation of every trade and commission is available in the app</li>
+                        <li>Detailed reports can be exported anytime for your own accounting purposes</li>
+                    </ul>
+                </div>
             </section>
 
             <!-- Next Steps -->
@@ -818,6 +830,46 @@ get_header();
     background: rgba(255,255,255,0.02);
 }
 
+/* Commission Note */
+.commission-note {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+}
+
+.commission-note h4 {
+    color: #D4AF37;
+    margin-bottom: 0.75rem;
+}
+
+.commission-note p {
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.commission-note ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.commission-note li {
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.commission-note li::before {
+    content: "•";
+    color: #D4AF37;
+    position: absolute;
+    left: 0;
+}
+
 /* Payment Summary */
 .setup-payment-summary {
     margin-top: 3rem;
@@ -862,6 +914,31 @@ get_header();
 .next-step-content p {
     color: #aaa;
     margin-bottom: 1rem;
+}
+
+/* Help Section */
+.setup-help {
+    margin-top: 3rem;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255,255,255,0.02);
+    border-radius: 16px;
+}
+
+.setup-help h2 {
+    margin-bottom: 0.5rem;
+}
+
+.setup-help > p {
+    color: #888;
+    margin-bottom: 1.5rem;
+}
+
+.help-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* BNB Discount Section */
