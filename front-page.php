@@ -23,7 +23,7 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
             </div>
             <div class="spots-indicator">
                 <span class="number"><?php echo esc_html($spots); ?></span>
-                <span class="label">early access accounts left</span>
+                <span class="label">Early Access Accounts Left</span>
             </div>
         </div>
         <div class="hero-phone">
