@@ -266,21 +266,39 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
         <?php
         // Get download URLs and visibility settings
         $apk_url = get_option('ioi_apk_url', '#');
+        $playstore_url = get_option('ioi_playstore_url', '#');
         $galaxy_url = get_option('ioi_galaxy_url', '#');
         $huawei_url = get_option('ioi_huawei_url', '#');
+        $show_playstore = get_option('ioi_show_playstore', 0);
         $show_galaxy = get_option('ioi_show_galaxy', 0);
         $show_huawei = get_option('ioi_show_huawei', 0);
         
         // Count visible buttons for layout
         $button_count = 1; // APK always visible
+        if ($show_playstore && $playstore_url && $playstore_url !== '#') $button_count++;
         if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') $button_count++;
         if ($show_huawei && $huawei_url && $huawei_url !== '#') $button_count++;
         ?>
         
         <div class="download-buttons buttons-<?php echo $button_count; ?>">
+            <?php if ($show_playstore && $playstore_url && $playstore_url !== '#') : ?>
+            <!-- Google Play Store -->
+            <a href="<?php echo esc_url($playstore_url); ?>" 
+               class="download-btn primary-download" 
+               target="_blank" 
+               rel="noopener"
+               onclick="trackDownload('Google Play')">
+                <span class="icon">▶️</span>
+                <span class="text">
+                    <small>Get it on</small>
+                    <strong>Google Play</strong>
+                </span>
+            </a>
+            <?php endif; ?>
+            
             <!-- APK Download - Always visible -->
             <a href="<?php echo esc_url($apk_url); ?>" 
-               class="download-btn primary-download" 
+               class="download-btn <?php echo (!$show_playstore || !$playstore_url || $playstore_url === '#') ? 'primary-download' : ''; ?>" 
                onclick="trackDownload('APK Direct')"
                <?php echo ($apk_url && $apk_url !== '#') ? '' : 'style="pointer-events: none; opacity: 0.5;"'; ?>>
                 <span class="icon">📱</span>
@@ -291,7 +309,7 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
             </a>
             
             <?php if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') : ?>
-            <!-- Galaxy Store - Conditional -->
+            <!-- Galaxy Store -->
             <a href="<?php echo esc_url($galaxy_url); ?>" 
                class="download-btn" 
                target="_blank" 
@@ -306,7 +324,7 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
             <?php endif; ?>
             
             <?php if ($show_huawei && $huawei_url && $huawei_url !== '#') : ?>
-            <!-- Huawei AppGallery - Conditional -->
+            <!-- Huawei AppGallery -->
             <a href="<?php echo esc_url($huawei_url); ?>" 
                class="download-btn" 
                target="_blank" 
@@ -319,12 +337,6 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
                 </span>
             </a>
             <?php endif; ?>
-        </div>
-        
-        <div class="playstore-note">
-            <strong><?php echo esc_html(ioi_t('download', 'playstore_title', 'Why not Google Play?')); ?></strong>
-            <?php echo esc_html(ioi_t('download', 'playstore_text', 'Google restricts crypto trading apps. We offer direct APK download instead.')); ?>
-            <a href="<?php echo home_url('/why-not-playstore/'); ?>" class="text-gold"><?php echo esc_html(ioi_t('download', 'playstore_link', 'Learn more')); ?></a>
         </div>
     </div>
 </section>
