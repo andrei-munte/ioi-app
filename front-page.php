@@ -260,86 +260,44 @@ $commission_rate = get_option('ioi_commission_rate', '0.065');
 <!-- Download -->
 <section class="section text-center" id="download">
     <div class="container container-md">
-        <h2><?php echo esc_html(ioi_t('download', 'section_title', 'Download IOI')); ?></h2>
-        <p class="text-gray mt-md mb-xl"><?php echo esc_html(ioi_t('download', 'section_subtitle', 'Available for Android. Start trading in minutes.')); ?></p>
+        <h2><?php echo esc_html(ioi_t('download', 'section_title', 'Ready to Start?')); ?></h2>
+        <p class="text-gray mt-md mb-xl"><?php echo esc_html(ioi_t('download', 'section_subtitle', 'Download ioi and set up your first bot in under 5 minutes.')); ?></p>
         
         <?php
-        // Get download URLs and visibility settings
-        $apk_url = get_option('ioi_apk_url', '#');
-        $playstore_url = get_option('ioi_playstore_url', '#');
-        $galaxy_url = get_option('ioi_galaxy_url', '#');
-        $huawei_url = get_option('ioi_huawei_url', '#');
-        $show_playstore = get_option('ioi_show_playstore', 0);
-        $show_galaxy = get_option('ioi_show_galaxy', 0);
-        $show_huawei = get_option('ioi_show_huawei', 0);
-        
-        // Count visible buttons for layout
-        $button_count = 1; // APK always visible
-        if ($show_playstore && $playstore_url && $playstore_url !== '#') $button_count++;
-        if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') $button_count++;
-        if ($show_huawei && $huawei_url && $huawei_url !== '#') $button_count++;
+        $playstore_url = get_option('ioi_playstore_url', 'https://play.google.com/store/apps/details?id=app.getioi');
         ?>
         
-        <div class="download-buttons buttons-<?php echo $button_count; ?>">
-            <?php if ($show_playstore && $playstore_url && $playstore_url !== '#') : ?>
-            <!-- Google Play Store -->
+        <div class="download-buttons">
             <a href="<?php echo esc_url($playstore_url); ?>" 
-               class="download-btn primary-download" 
+               class="google-play-badge" 
                target="_blank" 
                rel="noopener"
                onclick="trackDownload('Google Play')">
-                <span class="icon">▶️</span>
-                <span class="text">
-                    <small>Get it on</small>
-                    <strong>Google Play</strong>
-                </span>
+                <img src="<?php echo IOI_THEME_URI; ?>/assets/images/google-play-badge.png" 
+                     alt="Get it on Google Play" 
+                     height="60">
             </a>
-            <?php endif; ?>
-            
-            <!-- APK Download - Always visible -->
-            <a href="<?php echo esc_url($apk_url); ?>" 
-               class="download-btn <?php echo (!$show_playstore || !$playstore_url || $playstore_url === '#') ? 'primary-download' : ''; ?>" 
-               onclick="trackDownload('APK Direct')"
-               <?php echo ($apk_url && $apk_url !== '#') ? '' : 'style="pointer-events: none; opacity: 0.5;"'; ?>>
-                <span class="icon">📱</span>
-                <span class="text">
-                    <small><?php echo esc_html(ioi_t('download', 'btn_apk_label', 'Direct Download')); ?></small>
-                    <strong><?php echo esc_html(ioi_t('download', 'btn_apk_title', 'Download APK')); ?></strong>
-                </span>
-            </a>
-            
-            <?php if ($show_galaxy && $galaxy_url && $galaxy_url !== '#') : ?>
-            <!-- Galaxy Store -->
-            <a href="<?php echo esc_url($galaxy_url); ?>" 
-               class="download-btn" 
-               target="_blank" 
-               rel="noopener"
-               onclick="trackDownload('Galaxy Store')">
-                <span class="icon">🌐</span>
-                <span class="text">
-                    <small><?php echo esc_html(ioi_t('download', 'btn_galaxy_label', 'Samsung')); ?></small>
-                    <strong><?php echo esc_html(ioi_t('download', 'btn_galaxy_title', 'Galaxy Store')); ?></strong>
-                </span>
-            </a>
-            <?php endif; ?>
-            
-            <?php if ($show_huawei && $huawei_url && $huawei_url !== '#') : ?>
-            <!-- Huawei AppGallery -->
-            <a href="<?php echo esc_url($huawei_url); ?>" 
-               class="download-btn" 
-               target="_blank" 
-               rel="noopener"
-               onclick="trackDownload('Huawei AppGallery')">
-                <span class="icon">📲</span>
-                <span class="text">
-                    <small><?php echo esc_html(ioi_t('download', 'btn_huawei_label', 'Huawei')); ?></small>
-                    <strong><?php echo esc_html(ioi_t('download', 'btn_huawei_title', 'AppGallery')); ?></strong>
-                </span>
-            </a>
-            <?php endif; ?>
         </div>
     </div>
 </section>
+
+<style>
+.download-buttons {
+    display: flex;
+    justify-content: center;
+}
+.google-play-badge {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+.google-play-badge:hover {
+    transform: scale(1.05);
+}
+.google-play-badge img {
+    height: 60px;
+    width: auto;
+}
+</style>
 
 <!-- FAQ -->
 <section class="section bg-dark-2" id="faq">
