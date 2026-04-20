@@ -9,7 +9,7 @@
     <script src="//tag.goadopt.io/injector.js?website_code=ee6d49b4-0dd2-45c1-9b67-33194440e9be" class="adopt-injector"></script>
     
     <!-- Google Analytics 4 (gated by GoAdopt consent) -->
-    <script type="text/plain" class="adopt-script" data-adopt-cookie="analytics">
+    <script type="text/plain" class="adopt-script" data-adopt-cookie="statistics">
         (function(){
             var s = document.createElement('script');
             s.src = 'https://www.googletagmanager.com/gtag/js?id=G-RCPXNFE066';
@@ -41,7 +41,7 @@
     </script>
 
     <!-- Reddit Pixel (gated by GoAdopt consent) -->
-    <script>
+    <script type="text/plain" class="adopt-script" data-adopt-cookie="marketing">
     !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js?pixel_id=a2_ioqthh554zqp",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);rdt('init','a2_ioqthh554zqp');rdt('track', 'PageVisit');
     </script>
     <!-- End Reddit Pixel -->
