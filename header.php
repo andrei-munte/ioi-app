@@ -4,49 +4,47 @@
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Cookie Consent Management (AdOpt) -->
+    <!-- Cookie Consent Management (GoAdopt) -->
     <meta name="adopt-website-id" content="ee6d49b4-0dd2-45c1-9b67-33194440e9be" />
     <script src="//tag.goadopt.io/injector.js?website_code=ee6d49b4-0dd2-45c1-9b67-33194440e9be" class="adopt-injector"></script>
     
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RCPXNFE066"></script>
+    <!-- Google Analytics 4 (gated by GoAdopt consent) -->
+    <script type="text/plain" class="adopt-script" data-adopt-cookie="analytics">
+        (function(){
+            var s = document.createElement('script');
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-RCPXNFE066';
+            s.async = true;
+            document.head.appendChild(s);
+            s.onload = function(){
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', 'G-RCPXNFE066');
+            };
+        })();
+    </script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-RCPXNFE066');
-        
-        // Track download button clicks
+        // Track download button clicks (always available, only fires if gtag loaded)
         function trackDownload(source) {
-            gtag('event', 'download_click', {
-                'event_category': 'Downloads',
-                'event_label': source,
-                'value': 1
-            });
+            if (typeof gtag === 'function') {
+                gtag('event', 'download_click', {
+                    'event_category': 'Downloads',
+                    'event_label': source,
+                    'value': 1
+                });
+            }
+            if (typeof rdt === 'function') {
+                rdt('track', 'Lead');
+            }
         }
     </script>
 
-    <!-- Microsoft Bing UET Tag -->
-    <script>
-        (function(w, d, t, u, o) {
-            w[u] = w[u] || [];
-            o.ts = (new Date).getTime();
-            var n = d.createElement(t);
-            n.src = "https://bat.bing.net/bat.js?ti=" + o.ti + ("uetq" != u ? "&q=" + u : "");
-            n.async = 1;
-            n.onload = n.onreadystatechange = function() {
-                var s = this.readyState;
-                s && "loaded" !== s && "complete" !== s || (o.q = w[u], w[u] = new UET(o), w[u].push("pageLoad"), n.onload = n.onreadystatechange = null)
-            };
-            var i = d.getElementsByTagName(t)[0];
-            i.parentNode.insertBefore(n, i);
-        })(window, document, "script", "uetq", {ti: "343239474", enableAutoSpaTracking: true});
+    <!-- Reddit Pixel (gated by GoAdopt consent) -->
+    <script type="text/plain" class="adopt-script" data-adopt-cookie="marketing">
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js?pixel_id=a2_ioqthh554zqp",t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);rdt('init','a2_ioqthh554zqp');rdt('track', 'PageVisit');
     </script>
-    <script>
-        // Default: deny ad storage until consent
-        window.uetq = window.uetq || [];
-        window.uetq.push('consent', 'default', {'ad_storage': 'denied'});
-    </script>
+    <!-- End Reddit Pixel -->
     
     <!-- SEO Meta Tags -->
     <title><?php echo esc_attr(ioi_get_page_title()); ?></title>
