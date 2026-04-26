@@ -181,6 +181,7 @@ $section_base = $is_front_page ? '' : home_url('/');
             <li><a href="<?php echo esc_url($section_base); ?>#how-it-works"><?php ioi_e('nav', 'link_how_it_works'); ?></a></li>
             <li><a href="<?php echo esc_url($section_base); ?>#features"><?php ioi_e('nav', 'link_features'); ?></a></li>
             <li><a href="<?php echo esc_url($section_base); ?>#security"><?php ioi_e('nav', 'link_security'); ?></a></li>
+            <li><a href="<?php echo home_url('/tradable-tokens/'); ?>">Tradable Tokens</a></li>
             <li><a href="<?php echo esc_url($section_base); ?>#pricing"><?php ioi_e('nav', 'link_pricing'); ?></a></li>
             <li><a href="<?php echo esc_url($section_base); ?>#download"><?php ioi_e('nav', 'link_download'); ?></a></li>
             <li class="has-dropdown">
