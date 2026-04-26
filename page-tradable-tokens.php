@@ -41,9 +41,12 @@ if ( false === $payload ) {
 // ─── Helper: format number compactly ────────────────────────────
 function ioi_format_compact( $value ) {
     if ( $value === null || $value === '' ) {
-        return '—';
+        return '-';
     }
     $num = (float) $value;
+    if ( $num <= 0 ) {
+        return '-';
+    }
     if ( $num >= 1_000_000_000_000 ) {
         return '$' . number_format( $num / 1_000_000_000_000, 2 ) . 'T';
     }
@@ -61,7 +64,7 @@ function ioi_format_compact( $value ) {
 
 function ioi_format_price( $value ) {
     if ( $value === null || $value === '' ) {
-        return '—';
+        return '-';
     }
     $num = (float) $value;
     if ( $num < 0.01 ) {
@@ -78,7 +81,7 @@ function ioi_format_price( $value ) {
 
 function ioi_format_change( $value ) {
     if ( $value === null || $value === '' ) {
-        return array( '—', 'flat' );
+        return array( '-', 'flat' );
     }
     $num  = (float) $value;
     $sign = $num >= 0 ? '+' : '';
@@ -330,7 +333,7 @@ $active_tab = isset( $_GET['quote'] ) && strtoupper( $_GET['quote'] ) === 'USDC'
                                 <td class="ioi-num"><?php echo esc_html( ioi_format_compact( $token['market_cap_usd'] ?? null ) ); ?></td>
                                 <td class="ioi-num"><?php echo esc_html( ioi_format_compact( $token['volume_24h_usd'] ?? null ) ); ?></td>
                                 <td class="ioi-num"><?php echo esc_html( ioi_format_compact( $token['avg_volume_7d_usd'] ?? null ) ); ?></td>
-                                <td class="ioi-num"><?php echo $token['trades_24h'] !== null ? esc_html( number_format( $token['trades_24h'] ) ) : '—'; ?></td>
+                                <td class="ioi-num"><?php echo $token['trades_24h'] !== null ? esc_html( number_format( $token['trades_24h'] ) ) : '-'; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -339,7 +342,7 @@ $active_tab = isset( $_GET['quote'] ) && strtoupper( $_GET['quote'] ) === 'USDC'
         </div>
 
         <p class="ioi-attribution">
-            Price &amp; volume data: Binance &nbsp;·&nbsp;
+            Price &amp; volume data: Binance &nbsp;&middot;&nbsp;
             Market cap &amp; supply: <a href="https://www.coingecko.com" rel="nofollow noopener" target="_blank">CoinGecko</a>
         </p>
 
