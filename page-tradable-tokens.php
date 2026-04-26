@@ -235,6 +235,31 @@ $active_tab = isset( $_GET['quote'] ) && strtoupper( $_GET['quote'] ) === 'USDC'
     color: #888;
     text-decoration: underline;
 }
+.ioi-data-note {
+    margin: 16px auto 0;
+    max-width: 820px;
+    font-size: 12px;
+    color: #888;
+    line-height: 1.7;
+    text-align: left;
+    padding: 14px 18px;
+    background: #121212;
+    border: 1px solid #1f1f1f;
+    border-radius: 6px;
+}
+.ioi-data-note strong {
+    color: #D4A017;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+.ioi-data-note code {
+    color: #c0c0c0;
+    background: #1c1c1c;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+}
 @media (max-width: 700px) {
     .ioi-tokens-wrap { padding: 20px 12px; }
     .ioi-tokens-wrap h1 { font-size: 24px; }
@@ -345,6 +370,16 @@ $active_tab = isset( $_GET['quote'] ) && strtoupper( $_GET['quote'] ) === 'USDC'
             Price &amp; volume data: Binance &nbsp;&middot;&nbsp;
             Market cap &amp; supply: <a href="https://www.coingecko.com" rel="nofollow noopener" target="_blank">CoinGecko</a>
         </p>
+
+        <div class="ioi-data-note">
+            <strong>Why some tokens show "-" for market cap</strong>
+            A small number of tokens display "-" for market cap. This happens because CoinGecko, our supply data source, doesnt report circulating supply for them. Common reasons:
+            tokens undergoing a rebrand or chain migration where supply data is in transition (e.g. <code>EOS→Vaulta</code>, <code>MKR→Sky</code>, <code>UTK</code>);
+            fiat pairs that arent crypto (<code>EUR</code>);
+            Binance "1000x" multiplier pairs where CoinGecko tracks the underlying token instead (<code>1000CHEEMS</code>, <code>1MBABYDOGE</code>);
+            or meme tokens CoinGecko doesnt track at all (<code>BROCCOLI714</code>).
+            Price, volume, and trade count for these tokens come directly from Binance and remain fully accurate - only the market cap field is affected.
+        </div>
 
     <?php endif; ?>
 </div>
