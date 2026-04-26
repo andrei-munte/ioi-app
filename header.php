@@ -189,6 +189,7 @@ $section_base = $is_front_page ? '' : home_url('/');
                 <ul class="dropdown-menu">
                     <li><a href="<?php echo home_url('/setup-guide/'); ?>">App Setup Guide</a></li>
                     <li><a href="<?php echo home_url('/bot-settings-guide/'); ?>">Bot Settings Guide</a></li>
+                    <li><a href="<?php echo home_url('/how-to-whitelist/'); ?>">Whitelist Our Address</a></li>
                 </ul>
             </li>
         </ul>
